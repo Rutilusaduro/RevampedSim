@@ -1,6 +1,6 @@
 // src/data/diaries.js
 
-export const diaries = {
+export const evolvedDiaries = {
   eating_captain: [
     "I made the whole squad stay after practice again. Told them it was conditioning. Really, I just wanted to see how far I could push them. I stayed later than everyone else. I always do.",
     "The other squads are starting to look at us differently. Good. I want them to see how soft we’re getting. How heavy. I want them to feel small when they look at us.",
