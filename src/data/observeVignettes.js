@@ -61,7 +61,163 @@ export const observeVignettes = {
     { minLbs: 820, text: "Madeline sits in the middle of a small group of very heavy girls, her own body now enormously fat. She moves slowly and with clear effort, but she still takes detailed notes as they talk about their experiences. She seems almost detached from her own massive size, treating it like just another piece of data."},
   ]
 },
-2: {
+  //Kylie
+3: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+  //Serena
+4: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+  //Fiona
+5: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+  //Destiny
+6: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+  //Tiffany
+7: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+  //Priya
+8: {
   Base: [
     //Stage 0 - Slight, 80lbs
     { minLbs: 80, text:  },
@@ -120,5 +276,222 @@ export const observeVignettes = {
     { minLbs: 595, text: "You watch Maya in what used to be her room. She has become a colossal, near-immobile presence in the center of it all. Several girls now seem to live in and out of the space, bringing her food, adjusting her pillows, and quietly tending to her needs. They move around her vast body like workers around a queen.",},
     //Stage 10 - Blob 820lbs
     { minLbs: 820, text: "Maya has become almost entirely immobile, a vast, soft mass of flesh that dominates the center of what used to be her room. Several other girls now move around her constantly — bringing fresh deliveries, clearing away empty containers, and quietly tending to her needs. She rarely has to speak. They already seem to know exactly what she wants."},
+  ]
+},
+//Chloe
+10: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+//Reneé
+11: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+//Kaylee
+12: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+//Nadia
+13: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+//Daisy
+14: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+//Mary Jane
+15: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
+  ]
+},
+//Lilith
+16: {
+  Base: [
+    //Stage 0 - Slight, 80lbs
+    { minLbs: 80, text:  },
+    //Stage 1 - Slim, 100lbs
+    { minLbs: 100, text:  },
+    //Stage 2 - Soft, 135 lbs
+    { minLbs: 135, text: },
+    //Stage 3 - Chubby, 162lbs
+    { minLbs: 162, text: },
+    //Stage 4 - Plump, 195lbs
+    { minLbs: 195, text: },
+    //Stage 5 - Heavy, 238lbs
+    { minLbs: 238, text: },
+  ],
+  evolved: [
+    //Stage 5 - Heavy (Evolved) 238lbs
+    { minLbs: 238, text: },
+    //Stage 6 - Fat 285lbs
+    { minLbs: 285, text: },
+    //Stage 7 - Very Fat 360lbs
+    { minLbs: 360, text: },
+    //Stage 8 - Enormous 465lbs
+    { minLbs: 465, text: },
+    //Stage 9 - Colossal 595lbs
+    { minLbs: 595, text: },
+    //Stage 10 - Blob 820lbs
+    { minLbs: 820, text: },
   ]
 },
