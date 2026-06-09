@@ -89,7 +89,7 @@ export const observeVignettes = {
     //Stage 9 - Colossal 595lbs
     { minLbs: 595, text: "You watch Kylie record another video from her bed. She can barely sit up straight anymore without her heavy belly and thick thighs getting in the way. She films herself slowly working through another massive meal, occasionally pausing to show off how much softer and wider her lower body has become."},
     //Stage 10 - Blob 820lbs
-    { minLbs: 820, text: "Kylie films from her bed, barely able to move much anymore. Her body has become enormously bottom-heavy — her hips and thighs take up most of the frame when she’s sitting, and her belly rests heavily in her lap. She talks to the camera between slow, heavy bites, showing off how massive she’s gotten since she started doing these videos.},
+    { minLbs: 820, text: "Kylie films from her bed, barely able to move much anymore. Her body has become enormously bottom-heavy — her hips and thighs take up most of the frame when she’s sitting, and her belly rests heavily in her lap. She talks to the camera between slow, heavy bites, showing off how massive she’s gotten since she started doing these videos."},
   ]
 },
   //Serena
