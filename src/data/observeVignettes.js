@@ -494,4 +494,4 @@ export const observeVignettes = {
     //Stage 10 - Blob 820lbs
     { minLbs: 820, text: ""},
   ]
-},
+}
