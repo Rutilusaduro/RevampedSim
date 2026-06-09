@@ -3,6 +3,7 @@ import StudentCard from './components/StudentCard'
 import { baseDiaries } from '../../data/baseDiaries'
 import { evolvedDiaries } from '../../data/evolvedDiaries'
 import { studentContent } from '../../data/studentContent'
+import { observeVignettes } from '../../data/observeVignettes'
 
 const ProfessorSim = () => {
   const [students, setStudents] = useState([
