@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+9import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
 import { baseDiaries } from '../../data/baseDiaries'
 import { evolvedDiaries } from '../../data/evolvedDiaries'
@@ -147,5 +147,5 @@ const getCurrentDiary = (student) => {
       </div>
     </div>
   </div>
-)}
+)},
 export default ProfessorSim
