@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
 import { baseDiaries } from '../../data/baseDiaries'
 import { evolvedDiaries } from '../../data/evolvedDiaries'
+import { studentContent } from '../../data/studentContent'
 
 const ProfessorSim = () => {
   const [students, setStudents] = useState([
@@ -46,7 +47,7 @@ const ProfessorSim = () => {
     setCurrentDiaryPage(0)
   }
 
-  // Get diary entries (base or evolved)
+  // Get diary (base or evolved)
   const getCurrentDiary = (student) => {
     if (student.formId && evolvedDiaries[student.formId]) {
       return evolvedDiaries[student.formId]
@@ -56,6 +57,27 @@ const ProfessorSim = () => {
 
   const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
 
+  // Dynamic content getter
+  const getDynamicText = (student, type) => {
+    if (!studentContent[student.id]) return "[Content not available yet]"
+
+    const contentSet = student.formId 
+      ? studentContent[student.id].evolved 
+      : studentContent[student.id].base
+
+    if (!contentSet || !contentSet[type]) return "[Content not available yet]"
+
+    const entries = contentSet[type]
+    let bestEntry = entries[0]
+
+    for (let entry of entries) {
+      if (student.lbs >= entry.minLbs) {
+        bestEntry = entry
+      }
+    }
+    return bestEntry.text
+  }
+
   // Try to feed a student
   const tryFeedStudent = (id) => {
     const studentIndex = students.findIndex(s => s.id === id)
@@ -63,14 +85,14 @@ const ProfessorSim = () => {
 
     const student = students[studentIndex]
 
-    // If not evolved and at or above Heavy → block feeding
+    // Block feeding if not evolved and at/above Heavy
     if (!student.formId && student.lbs >= HEAVY_THRESHOLD) {
       setPopupMessage("She's too lost in thought to eat more right now...")
       setShowFeedPopup(true)
       return
     }
 
-    // Otherwise feed
+    // Feed the student
     const newStudents = [...students]
     newStudents[studentIndex] = {
       ...student,
@@ -78,20 +100,9 @@ const ProfessorSim = () => {
     }
     setStudents(newStudents)
 
-    // Update selected student if open
     if (selectedStudent && selectedStudent.id === id) {
       setSelectedStudent(newStudents[studentIndex])
     }
-  }
-
-  // Simple dynamic text getter (placeholder system)
-  const getDynamicText = (student, type) => {
-    // For now we return placeholders. We'll expand this properly later.
-    if (type === 'observe') return "She seems different lately..."
-    if (type === 'feed') return "She eats slowly and thoughtfully..."
-    if (type === 'physicalDescription') return "Her body has changed noticeably."
-    if (type === 'innerThoughts') return "I feel different... heavier."
-    return "[Content not available]"
   }
 
   return (
@@ -193,8 +204,8 @@ const ProfessorSim = () => {
 
             {/* Inner Thoughts */}
             <div style={{ backgroundColor: "#f8f9fa", border: "1px solid #ddd", borderRadius: "8px", padding: "20px", marginBottom: "20px" }}>
-              <h3>Inner Thoughts <span style={{ fontSize: "0.8em", color: "#888" }}>(Locked)</span></h3>
-              <p style={{ color: "#999" }}>This section will unlock when you gain the ability to hear her thoughts.</p>
+              <h3>Inner Thoughts</h3>
+              <p>{getDynamicText(selectedStudent, 'innerThoughts')}</p>
             </div>
 
             {/* Actions */}
@@ -216,7 +227,7 @@ const ProfessorSim = () => {
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
           <div style={{ backgroundColor: "white", padding: "30px", borderRadius: "10px", maxWidth: "400px", textAlign: "center" }}>
             <h3>Feed {selectedStudent?.name}</h3>
-            <p>{popupMessage || "She eats slowly and thoughtfully..."}</p>
+            <p>{popupMessage}</p>
             <button onClick={() => setShowFeedPopup(false)}>Close</button>
           </div>
         </div>
