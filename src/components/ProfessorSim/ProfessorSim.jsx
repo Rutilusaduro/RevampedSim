@@ -1,4 +1,4 @@
-Iimport React, { useState } from 'react'
+import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
 import { baseDiaries } from '../../data/baseDiaries'
 import { evolvedDiaries } from '../../data/evolvedDiaries'
@@ -12,14 +12,21 @@ const ProfessorSim = () => {
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [showRoster, setShowRoster] = useState(true)
   const [currentDiaryPage, setCurrentDiaryPage] = useState(0)
+
+  // Simple pop-up states
+  const [showFeedPopup, setShowFeedPopup] = useState(false)
+  const [showObservePopup, setShowObservePopup] = useState(false)
+
   const handleCardClick = (student) => {
     setSelectedStudent(student)
     setShowRoster(false)
+    setCurrentDiaryPage(0) // Reset diary page when switching students
   }
 
   const goBackToRoster = () => {
     setSelectedStudent(null)
     setShowRoster(true)
+    setCurrentDiaryPage(0)
   }
 
   const getCurrentDiary = (student) => {
@@ -28,6 +35,8 @@ const ProfessorSim = () => {
     }
     return baseDiaries[student.archetype.toLowerCase()] || []
   }
+
+  const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
 
   return (
     <div style={{ fontFamily: "system-ui", backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
@@ -44,7 +53,7 @@ const ProfessorSim = () => {
         <button onClick={goBackToRoster}>Class Roster</button>
       </div>
 
-      <div style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
+      <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
         {/* Class Roster View */}
         {showRoster && (
           <>
@@ -110,96 +119,72 @@ const ProfessorSim = () => {
               <p>[Physical description will go here later]</p>
             </div>
 
-            {/* Diary Box - Page Style */}
-{selectedStudent && (
-  <div style={{
-    backgroundColor: "#fffef5",
-    border: "2px solid #d4c4a8",
-    borderRadius: "8px",
-    padding: "30px 40px",
-    marginBottom: "20px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    position: "relative",
-    minHeight: "220px"
-  }}>
-    <h3 style={{ 
-      marginTop: 0, 
-      color: "#5c4636",
-      borderBottom: "1px solid #d4c4a8",
-      paddingBottom: "8px"
-    }}>
-      Diary
-    </h3>
+            {/* Diary Box with Page Flipping */}
+            <div style={{
+              backgroundColor: "#fffef5",
+              border: "2px solid #d4c4a8",
+              borderRadius: "8px",
+              padding: "30px 40px",
+              marginBottom: "20px",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+              minHeight: "220px"
+            }}>
+              <h3 style={{ 
+                marginTop: 0, 
+                color: "#5c4636",
+                borderBottom: "1px solid #d4c4a8",
+                paddingBottom: "8px"
+              }}>
+                Diary
+              </h3>
 
-    <div style={{ 
-      minHeight: "120px",
-      color: "#3f2e1e",
-      fontFamily: "Georgia, serif",
-      fontSize: "1.05rem",
-      lineHeight: "1.7"
-    }}>
-      {getCurrentDiary(selectedStudent).length > 0 ? (
-        <p style={{ margin: 0 }}>
-          {getCurrentDiary(selectedStudent)[currentDiaryPage]?.text}
-        </p>
-      ) : (
-        <p style={{ color: "#888", fontStyle: "italic" }}>
-          No diary entries unlocked yet.
-        </p>
-      )}
-    </div>
-
-    {/* Page Navigation */}
-    {getCurrentDiary(selectedStudent).length > 1 && (
-      <div style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: "20px",
-        borderTop: "1px solid #d4c4a8",
-        paddingTop: "12px"
-      }}>
-        <button 
-          onClick={() => setCurrentDiaryPage(Math.max(0, currentDiaryPage - 1))}
-          disabled={currentDiaryPage === 0}
-          style={{ 
-            opacity: currentDiaryPage === 0 ? 0.4 : 1,
-            cursor: currentDiaryPage === 0 ? "not-allowed" : "pointer"
-          }}
-        >
-          ← Previous Entry
-        </button>
-
-        <span style={{ 
-          color: "#8b6f47", 
-          fontSize: "0.9rem",
-          fontFamily: "Georgia, serif"
-        }}>
-          Page {currentDiaryPage + 1} of {getCurrentDiary(selectedStudent).length}
-        </span>
-
-        <button 
-          onClick={() => setCurrentDiaryPage(Math.min(getCurrentDiary(selectedStudent).length - 1, currentDiaryPage + 1))}
-          disabled={currentDiaryPage === getCurrentDiary(selectedStudent).length - 1}
-          style={{ 
-            opacity: currentDiaryPage === getCurrentDiary(selectedStudent).length - 1 ? 0.4 : 1,
-            cursor: currentDiaryPage === getCurrentDiary(selectedStudent).length - 1 ? "not-allowed" : "pointer"
-          }}
-        >
-          Next Entry →
-        </button>
-      </div>
-    )}
-  </div>
-)}
-                {getCurrentDiary(selectedStudent).length > 0 ? (
-                  getCurrentDiary(selectedStudent).map((entry, index) => (
-                    <p key={index} style={{ marginBottom: "16px" }}>{entry}</p>
-                  ))
+              <div style={{ 
+                minHeight: "120px",
+                color: "#3f2e1e",
+                fontFamily: "Georgia, serif",
+                fontSize: "1.05rem",
+                lineHeight: "1.7"
+              }}>
+                {currentDiary.length > 0 ? (
+                  <p style={{ margin: 0 }}>
+                    {currentDiary[currentDiaryPage]?.text}
+                  </p>
                 ) : (
-                  <p style={{ color: "#999" }}>No diary entries yet.</p>
+                  <p style={{ color: "#888", fontStyle: "italic" }}>
+                    No diary entries unlocked yet.
+                  </p>
                 )}
               </div>
+
+              {/* Page Navigation */}
+              {currentDiary.length > 1 && (
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginTop: "20px",
+                  borderTop: "1px solid #d4c4a8",
+                  paddingTop: "12px"
+                }}>
+                  <button 
+                    onClick={() => setCurrentDiaryPage(Math.max(0, currentDiaryPage - 1))}
+                    disabled={currentDiaryPage === 0}
+                  >
+                    ← Previous Entry
+                  </button>
+
+                  <span style={{ color: "#8b6f47", fontSize: "0.9rem" }}>
+                    Page {currentDiaryPage + 1} of {currentDiary.length}
+                  </span>
+
+                  <button 
+                    onClick={() => setCurrentDiaryPage(Math.min(currentDiary.length - 1, currentDiaryPage + 1))}
+                    disabled={currentDiaryPage === currentDiary.length - 1}
+                  >
+                    Next Entry →
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Inner Thoughts (Locked) */}
@@ -221,15 +206,65 @@ const ProfessorSim = () => {
             <div style={{ marginTop: "30px" }}>
               <h3>Actions</h3>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                <button>Feed Her</button>
+                <button onClick={() => setShowFeedPopup(true)}>Feed Her</button>
                 <button>Talk</button>
                 <button>Take to Dinner</button>
-                <button>Observe</button>
+                <button onClick={() => setShowObservePopup(true)}>Observe</button>
               </div>
             </div>
           </div>
         )}
       </div>
+
+      {/* Feed Pop-up */}
+      {showFeedPopup && (
+        <div style={{
+          position: "fixed",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            padding: "30px",
+            borderRadius: "10px",
+            maxWidth: "400px",
+            textAlign: "center"
+          }}>
+            <h3>Feed {selectedStudent?.name}</h3>
+            <p>[Placeholder text for feeding interaction]</p>
+            <button onClick={() => setShowFeedPopup(false)}>Close</button>
+          </div>
+        </div>
+      )}
+
+      {/* Observe Pop-up */}
+      {showObservePopup && (
+        <div style={{
+          position: "fixed",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 1000
+        }}>
+          <div style={{
+            backgroundColor: "white",
+            padding: "30px",
+            borderRadius: "10px",
+            maxWidth: "400px",
+            textAlign: "center"
+          }}>
+            <h3>Observe {selectedStudent?.name}</h3>
+            <p>[Placeholder text for observation]</p>
+            <button onClick={() => setShowObservePopup(false)}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
