@@ -7,7 +7,6 @@ const ProfessorSim = () => {
   const [students] = useState([
     { id: 1, name: "Brittany", lbs: 145, relationship: 45, height: 66, archetype: "Cheerleader", formId: "eating_captain" },
     { id: 9, name: "Maya", lbs: 128, relationship: 60, height: 65, archetype: "Quiet", formId: "delivery_hive_queen" },
-    // Add more students here later
   ])
 
   const [selectedStudent, setSelectedStudent] = useState(null)
@@ -23,12 +22,13 @@ const ProfessorSim = () => {
     setShowRoster(true)
   }
 
-const getCurrentDiary = (student) => {
-  if (student.formId && evolvedDiaries[student.formId]) {
-    return evolvedDiaries[student.formId]
+  const getCurrentDiary = (student) => {
+    if (student.formId && evolvedDiaries[student.formId]) {
+      return evolvedDiaries[student.formId]
+    }
+    return baseDiaries[student.archetype.toLowerCase()] || []
   }
-  return baseDiaries[student.archetype.toLowerCase()] || []
-}
+
   return (
     <div style={{ fontFamily: "system-ui", backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
       {/* Menu Bar */}
@@ -45,6 +45,7 @@ const getCurrentDiary = (student) => {
       </div>
 
       <div style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
+        {/* Class Roster View */}
         {showRoster && (
           <>
             <h1>Class Roster</h1>
@@ -65,87 +66,107 @@ const getCurrentDiary = (student) => {
           </>
         )}
 
+        {/* Student Profile View */}
         {selectedStudent && (
-  <div style={{ 
-    backgroundColor: "#ffffff", 
-    color: "#222", 
-    padding: "20px",
-    borderRadius: "8px"
-  }}>
-    <button onClick={goBackToRoster} style={{ marginBottom: "20px" }}>
-      ← Back to Roster
-    </button>
+          <div style={{ 
+            backgroundColor: "#ffffff", 
+            color: "#222", 
+            padding: "20px",
+            borderRadius: "8px"
+          }}>
+            <button onClick={goBackToRoster} style={{ marginBottom: "20px" }}>
+              ← Back to Roster
+            </button>
 
-    <h1 style={{ color: "#222" }}>
-      {selectedStudent.name} — {selectedStudent.archetype}
-    </h1>
+            <h1 style={{ color: "#222" }}>
+              {selectedStudent.name} — {selectedStudent.archetype}
+            </h1>
 
-    {/* Information Box */}
-    <div style={{
-      backgroundColor: "#f8f9fa",
-      border: "1px solid #ddd",
-      borderRadius: "8px",
-      padding: "20px",
-      marginBottom: "20px",
-      color: "#222"
-    }}>
-      <h3>Information</h3>
-      <p><strong>Weight:</strong> {selectedStudent.lbs} lbs</p>
-      <p><strong>Height:</strong> {Math.floor(selectedStudent.height / 12)}'{selectedStudent.height % 12}"</p>
-      <p><strong>BMI:</strong> {(selectedStudent.lbs / 2.205 / Math.pow(selectedStudent.height * 0.0254, 2)).toFixed(1)}</p>
-    </div>
+            {/* Information Box */}
+            <div style={{
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "20px",
+              marginBottom: "20px",
+              color: "#222"
+            }}>
+              <h3>Information</h3>
+              <p><strong>Weight:</strong> {selectedStudent.lbs} lbs</p>
+              <p><strong>Height:</strong> {Math.floor(selectedStudent.height / 12)}'{selectedStudent.height % 12}"</p>
+              <p><strong>BMI:</strong> {(selectedStudent.lbs / 2.205 / Math.pow(selectedStudent.height * 0.0254, 2)).toFixed(1)}</p>
+            </div>
 
-    {/* Physical Description Box */}
-    <div style={{
-      backgroundColor: "#f8f9fa",
-      border: "1px solid #ddd",
-      borderRadius: "8px",
-      padding: "20px",
-      marginBottom: "20px",
-      color: "#222"
-    }}>
-      <h3>Physical Description</h3>
-      <p>[Physical description will go here later]</p>
-    </div>
+            {/* Physical Description Box */}
+            <div style={{
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "20px",
+              marginBottom: "20px",
+              color: "#222"
+            }}>
+              <h3>Physical Description</h3>
+              <p>[Physical description will go here later]</p>
+            </div>
 
-    {/* Diary Box */}
-    <div style={{
-      backgroundColor: "#f8f9fa",
-      border: "1px solid #ddd",
-      borderRadius: "8px",
-      padding: "20px",
-      marginBottom: "20px",
-      color: "#222"
-    }}>
-      <h3>Diary</h3>
-      <p style={{ color: "#555" }}>[Diary entries will appear here]</p>
-    </div>
+            {/* Diary Box */}
+            <div style={{
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "20px",
+              marginBottom: "20px",
+              color: "#222"
+            }}>
+              <h3>Diary</h3>
+              <div style={{ 
+                maxHeight: "300px", 
+                overflowY: "auto", 
+                paddingRight: "10px",
+                color: "#444",
+                lineHeight: "1.6"
+              }}>
+                {getCurrentDiary(selectedStudent).length > 0 ? (
+                  getCurrentDiary(selectedStudent).map((entry, index) => (
+                    <p key={index} style={{ marginBottom: "16px" }}>{entry}</p>
+                  ))
+                ) : (
+                  <p style={{ color: "#999" }}>No diary entries yet.</p>
+                )}
+              </div>
+            </div>
 
-    {/* Inner Thoughts (Locked) */}
-    <div style={{
-      backgroundColor: "#f8f9fa",
-      border: "1px solid #ddd",
-      borderRadius: "8px",
-      padding: "20px",
-      marginBottom: "20px",
-      color: "#222"
-    }}>
-      <h3>Inner Thoughts <span style={{ fontSize: "0.8em", color: "#888" }}>(Locked)</span></h3>
-      <p style={{ color: "#999" }}>
-        This section will unlock when you gain the ability to hear her thoughts.
-      </p>
-    </div>
+            {/* Inner Thoughts (Locked) */}
+            <div style={{
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              padding: "20px",
+              marginBottom: "20px",
+              color: "#222"
+            }}>
+              <h3>Inner Thoughts <span style={{ fontSize: "0.8em", color: "#888" }}>(Locked)</span></h3>
+              <p style={{ color: "#999" }}>
+                This section will unlock when you gain the ability to hear her thoughts.
+              </p>
+            </div>
 
-    {/* Action Buttons */}
-    <div style={{ marginTop: "30px" }}>
-      <h3>Actions</h3>
-      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-        <button>Feed Her</button>
-        <button>Talk</button>
-        <button>Take to Dinner</button>
-        <button>Observe</button>
+            {/* Action Buttons */}
+            <div style={{ marginTop: "30px" }}>
+              <h3>Actions</h3>
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                <button>Feed Her</button>
+                <button>Talk</button>
+                <button>Take to Dinner</button>
+                <button>Observe</button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
-  </div>
-) }
+  )
+}
+
 export default ProfessorSim
