@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
-import { diaries } from '../data/diaries'
+import { baseDiaries } from '../data/baseDiaries'
+import { evolvedDiaries } from '../data/evolvedDiaries'
 
 const ProfessorSim = () => {
   const [students] = useState([
@@ -22,8 +23,12 @@ const ProfessorSim = () => {
     setShowRoster(true)
   }
 
-  const currentDiary = selectedStudent ? diaries[selectedStudent.formId] || [] : []
-
+const getCurrentDiary = (student) => {
+  if (student.formId && evolvedDiaries[student.formId]) {
+    return evolvedDiaries[student.formId]
+  }
+  return baseDiaries[student.archetype.toLowerCase()] || []
+}
   return (
     <div style={{ fontFamily: "system-ui", backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
       {/* Menu Bar */}
