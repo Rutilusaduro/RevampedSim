@@ -6,9 +6,23 @@ import { studentContent } from '../../data/studentContent'
 
 const ProfessorSim = () => {
   const [students, setStudents] = useState([
-    { id: 1, name: "Brittany", lbs: 145, relationship: 45, height: 66, archetype: "Cheerleader", formId: null },
-    { id: 9, name: "Maya", lbs: 128, relationship: 60, height: 65, archetype: "Quiet", formId: null },
-  ])
+  { id: 1,  name: "Brittany",  lbs: 145, relationship: 45, height: 66, archetype: "Cheerleader",   bodyType: "Hourglass",    formId: null },
+  { id: 2,  name: "Madeline",  lbs: 118, relationship: 50, height: 64, archetype: "Bookworm",     bodyType: "Soft",        formId: null },
+  { id: 3,  name: "Kylie",     lbs: 132, relationship: 55, height: 65, archetype: "Influencer",   bodyType: "Pear",        formId: null },
+  { id: 4,  name: "Serena",    lbs: 155, relationship: 40, height: 68, archetype: "Athlete",      bodyType: "Athletic",    formId: null },
+  { id: 5,  name: "Fiona",     lbs: 125, relationship: 48, height: 63, archetype: "Artsy",        bodyType: "Soft",        formId: null },
+  { id: 6,  name: "Destiny",   lbs: 140, relationship: 52, height: 67, archetype: "Gamer",        bodyType: "Thick",       formId: null },
+  { id: 7,  name: "Tiffany",   lbs: 168, relationship: 60, height: 66, archetype: "Sorority",     bodyType: "Curvy",       formId: null },
+  { id: 8,  name: "Priya",     lbs: 122, relationship: 45, height: 62, archetype: "Overachiever", bodyType: "Pear",        formId: null },
+  { id: 9,  name: "Maya",      lbs: 128, relationship: 60, height: 65, archetype: "Quiet",        bodyType: "Bottom Heavy",formId: null },
+  { id: 10, name: "Chloe",     lbs: 135, relationship: 50, height: 64, archetype: "Transfer",     bodyType: "Curvy",       formId: null },
+  { id: 11, name: "Reneé",     lbs: 150, relationship: 55, height: 66, archetype: "Culinary",     bodyType: "Thick",       formId: null },
+  { id: 12, name: "Kaylee",    lbs: 138, relationship: 40, height: 63, archetype: "Nursing",      bodyType: "Bottom Heavy",formId: null },
+  { id: 13, name: "Nadia",     lbs: 115, relationship: 48, height: 61, archetype: "Psych",        bodyType: "Soft",        formId: null },
+  { id: 14, name: "Daisy",     lbs: 158, relationship: 65, height: 67, archetype: "ECED",         bodyType: "Curvy",       formId: null },
+  { id: 15, name: "Mary Jane", lbs: 162, relationship: 55, height: 65, archetype: "Farm Girl",    bodyType: "Thick",       formId: null },
+  { id: 16, name: "Lilith",    lbs: 98,  relationship: 35, height: 71, archetype: "Predator",     bodyType: "Athletic",    formId: null },
+])
 
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [showRoster, setShowRoster] = useState(true)
@@ -78,6 +92,30 @@ const ProfessorSim = () => {
       setSelectedStudent(newStudents[studentIndex])
     }
   }
+  const getObserveVignette = (student) => {
+  if (!observeVignettes[student.id]) {
+    return "You watch her quietly going about her day."
+  }
+
+  const isEvolved = !!student.formId
+  const entries = isEvolved 
+    ? observeVignettes[student.id].evolved 
+    : observeVignettes[student.id].base
+
+  if (!entries || entries.length === 0) {
+    return "Nothing particularly interesting is happening right now."
+  }
+
+  // Dynamically find the most relevant entry based on current weight
+  let bestEntry = entries[0]
+  for (let entry of entries) {
+    if (student.lbs >= entry.minLbs) {
+      bestEntry = entry
+    }
+  }
+
+  return bestEntry.text
+}
 
   // Weigh-In feature
   const handleWeighIn = () => {
@@ -227,15 +265,24 @@ const ProfessorSim = () => {
       )}
 
       {/* Observe Pop-up */}
-      {showObservePopup && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-          <div style={{ backgroundColor: "white", padding: "30px", borderRadius: "10px", maxWidth: "400px", textAlign: "center" }}>
-            <h3>Observe {selectedStudent?.name}</h3>
-            <p>{getDynamicText(selectedStudent, 'observe')}</p>
-            <button onClick={() => setShowObservePopup(false)}>Close</button>
-          </div>
-        </div>
-      )}
+      {showObservePopup && selectedStudent && (
+  <div style={{ 
+    position: "fixed", top: 0, left: 0, right: 0, bottom: 0, 
+    backgroundColor: "rgba(0,0,0,0.5)", 
+    display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 
+  }}>
+    <div style={{ 
+      backgroundColor: "white", padding: "30px", borderRadius: "10px", 
+      maxWidth: "450px", textAlign: "center" 
+    }}>
+      <h3>Observing {selectedStudent.name}</h3>
+      <p style={{ fontSize: "1.05rem", lineHeight: "1.6", margin: "20px 0" }}>
+        {getObserveVignette(selectedStudent)}
+      </p>
+      <button onClick={() => setShowObservePopup(false)}>Close</button>
+    </div>
+  </div>
+)}
 
       {/* Weigh-In Scale Modal */}
       {showWeighInModal && selectedStudent && (
