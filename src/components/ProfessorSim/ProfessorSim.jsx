@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
-import { baseDiaries } from '../data/baseDiaries'
-import { evolvedDiaries } from '../data/evolvedDiaries'
+import { baseDiaries } from '../../data/baseDiaries'
+import { evolvedDiaries } from '../../data/evolvedDiaries'
 
 const ProfessorSim = () => {
   const [students] = useState([
