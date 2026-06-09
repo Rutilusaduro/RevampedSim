@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
 
 const ProfessorSim = () => {
-  const [students, setStudents] = useState([
+  const [students] = useState([
     { id: 1, name: "Brittany", lbs: 145, relationship: 45 },
     { id: 2, name: "Madeline", lbs: 118, relationship: 50 },
     { id: 3, name: "Kylie", lbs: 132, relationship: 55 },
@@ -21,16 +21,17 @@ const ProfessorSim = () => {
     { id: 16, name: "Lilith", lbs: 98, relationship: 35 },
   ])
 
+  const [selectedStudent, setSelectedStudent] = useState(null)
   const [showRoster, setShowRoster] = useState(true)
 
-  const feedStudent = (id) => {
-    setStudents(prev =>
-      prev.map(student =>
-        student.id === id
-          ? { ...student, lbs: student.lbs + 8 }
-          : student
-      )
-    )
+  const handleCardClick = (student) => {
+    setSelectedStudent(student)
+    setShowRoster(false)
+  }
+
+  const goBackToRoster = () => {
+    setSelectedStudent(null)
+    setShowRoster(true)
   }
 
   return (
@@ -45,12 +46,7 @@ const ProfessorSim = () => {
         alignItems: "center"
       }}>
         <h2 style={{ margin: 0, flex: 1 }}>Professor Sim</h2>
-        <button 
-          onClick={() => setShowRoster(true)}
-          style={{ backgroundColor: showRoster ? "#0d6efd" : "#555" }}
-        >
-          Class Roster
-        </button>
+        <button onClick={goBackToRoster}>Class Roster</button>
       </div>
 
       {/* Main Content */}
@@ -63,11 +59,23 @@ const ProfessorSim = () => {
                 <StudentCard
                   key={student.id}
                   student={student}
-                  onFeed={() => feedStudent(student.id)}
+                  onClick={() => handleCardClick(student)}
                 />
               ))}
             </div>
           </>
+        )}
+
+        {selectedStudent && (
+          <div>
+            <button onClick={goBackToRoster} style={{ marginBottom: "20px" }}>
+              ← Back to Roster
+            </button>
+            <h1>{selectedStudent.name}'s Profile</h1>
+            <p><strong>Weight:</strong> {selectedStudent.lbs} lbs</p>
+            <p><strong>Relationship:</strong> {selectedStudent.relationship}</p>
+            {/* We'll expand this profile page later */}
+          </div>
         )}
       </div>
     </div>
