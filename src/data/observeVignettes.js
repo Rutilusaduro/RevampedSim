@@ -29,7 +29,7 @@ export const observeVignettes = {
       //Stage 10 - Blob 820lbs
       { minLbs: 820, text: "Brittany has become a true living monument. She’s almost entirely immobile, a vast, soft expanse of flesh that dominates the center of the gym. Her squad moves around her like attendants, many of them now heavily overweight themselves — bellies hanging over waistbands, thighs rubbing, breathing labored as they continue the brutal gorging sessions she demands. Every so often she pulls one of them close with surprising strength to demonstrate proper technique."},  
     ]
-""},
+},
 //Madeline
 2: {
   Base: [
