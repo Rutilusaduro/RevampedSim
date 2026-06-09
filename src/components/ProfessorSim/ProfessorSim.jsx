@@ -93,34 +93,34 @@ const ProfessorSim = () => {
       setSelectedStudent(newStudents[studentIndex])
     }
   }
-const getObserveVignette = (student) => {
-  const data = observeVignettes[student.id]
-  if (!data) return "You watch her quietly."
-
-  // If not evolved, use Base
-  if (!student.formId) {
-    const entries = data.Base
+  const getObserveVignette = (student) => {
+    const data = observeVignettes[student.id]
+    if (!data) return "You watch her quietly."
+  
+    // If not evolved, use Base
+    if (!student.formId) {
+      const entries = data.Base
+      let best = entries[0]
+      for (let entry of entries) {
+        if (student.lbs >= entry.minLbs) best = entry
+      }
+      return best.text
+    }
+  
+    // If evolved, use the brand she picked
+    const brand = student.brand || "CrunchForge"
+    const entries = data.evolved?.[brand]
+  
+    if (!entries || entries.length === 0) {
+      return "You watch her quietly."
+    }
+  
     let best = entries[0]
     for (let entry of entries) {
       if (student.lbs >= entry.minLbs) best = entry
     }
     return best.text
   }
-
-  // If evolved, use the brand she picked
-  const brand = student.brand || "CrunchForge"
-  const entries = data.evolved?.[brand]
-
-  if (!entries || entries.length === 0) {
-    return "You watch her quietly."
-  }
-
-  let best = entries[0]
-  for (let entry of entries) {
-    if (student.lbs >= entry.minLbs) best = entry
-  }
-  return best.text
-}
 
   // Weigh-In feature
   const handleWeighIn = () => {
