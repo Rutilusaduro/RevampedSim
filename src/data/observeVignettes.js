@@ -495,3 +495,4 @@ export const observeVignettes = {
     { minLbs: 820, text: ""},
   ]
 }
+}
