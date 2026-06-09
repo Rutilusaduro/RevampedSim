@@ -147,5 +147,5 @@ const getCurrentDiary = (student) => {
       </div>
     </div>
   </div>
-}
+)
 export default ProfessorSim
