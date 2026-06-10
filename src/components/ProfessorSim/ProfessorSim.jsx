@@ -7,7 +7,6 @@ import { observeVignettes } from '../../data/observeVignettes'
 import DialogueModal from './components/DialogueModal'
 
 const ProfessorSim = () => {
-  // ==================== STARTING POPUP ====================
   const [showStartPopup, setShowStartPopup] = useState(true)
   const [professorGender, setProfessorGender] = useState(null)
 
@@ -46,7 +45,6 @@ const ProfessorSim = () => {
 
   const HEAVY_THRESHOLD = 238
 
-  // ==================== HANDLERS ====================
   const handleAskWhatsUp = (student) => {
     if (!evolutionDialogues[student.id]) {
       alert("No evolution dialogue for this student yet.")
@@ -196,7 +194,7 @@ const ProfessorSim = () => {
           </>
         )}
 
-        {/* STUDENT PROFILE */}
+        {/* FULL STUDENT PROFILE (restored) */}
         {selectedStudent && !showRoster && (
           <div style={{ backgroundColor: "#3d2a6e", color: "#e0d4ff", padding: "20px", borderRadius: "12px", border: "2px solid #9b6dff" }}>
             <button onClick={goBackToRoster} style={{ marginBottom: "20px", backgroundColor: "#6b4e9e" }}>
@@ -213,13 +211,60 @@ const ProfessorSim = () => {
               <p><strong>Height:</strong> {Math.floor(selectedStudent.height / 12)}'{selectedStudent.height % 12}"</p>
             </div>
 
-            {/* Other sections (Physical Description, Diary, Actions, etc.) remain the same as before */}
-            {/* ... you can paste your existing profile sections here ... */}
+            {/* Physical Description Box */}
+            <div style={{ backgroundColor: "#4a2c7a", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
+              <h3>Physical Description</h3>
+              <p>{getDynamicText(selectedStudent, 'physicalDescription')}</p>
+            </div>
+
+            {/* Diary Box with Page Flipping */}
+            <div style={{ backgroundColor: "#fffef5", border: "2px solid #9b6dff", borderRadius: "8px", padding: "30px 40px", marginBottom: "20px", color: "#2a1f4a" }}>
+              <h3 style={{ color: "#4a2c7a", borderBottom: "1px solid #9b6dff", paddingBottom: "8px" }}>Diary</h3>
+              <div style={{ minHeight: "120px", lineHeight: "1.7" }}>
+                {currentDiary.length > 0 ? (
+                  <p>{currentDiary[currentDiaryPage]?.text}</p>
+                ) : (
+                  <p style={{ color: "#666" }}>No diary entries unlocked yet.</p>
+                )}
+              </div>
+
+              {currentDiary.length > 1 && (
+                <div style={{ display: "flex", justifyContent: "space-between", marginTop: "20px", borderTop: "1px solid #9b6dff", paddingTop: "12px" }}>
+                  <button onClick={() => setCurrentDiaryPage(Math.max(0, currentDiaryPage - 1))} disabled={currentDiaryPage === 0}>← Previous</button>
+                  <span>Page {currentDiaryPage + 1} of {currentDiary.length}</span>
+                  <button onClick={() => setCurrentDiaryPage(Math.min(currentDiary.length - 1, currentDiaryPage + 1))} disabled={currentDiaryPage === currentDiary.length - 1}>Next →</button>
+                </div>
+              )}
+            </div>
+
+            {/* Inner Thoughts */}
+            <div style={{ backgroundColor: "#4a2c7a", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
+              <h3>Inner Thoughts</h3>
+              <p>{getDynamicText(selectedStudent, 'innerThoughts')}</p>
+            </div>
+
+            {/* Weigh In Button */}
+            <div style={{ marginBottom: "20px" }}>
+              <button onClick={handleWeighIn} style={{ backgroundColor: "#9b6dff", color: "white" }}>
+                ⚖️ Weigh In
+              </button>
+            </div>
+
+            {/* Actions */}
+            <div>
+              <h3>Actions</h3>
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                <button onClick={() => tryFeedStudent(selectedStudent.id)}>Feed Her</button>
+                <button>Talk</button>
+                <button>Take to Dinner</button>
+                <button onClick={() => setShowObservePopup(true)}>Observe</button>
+              </div>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Feed Popup with fixed spacing */}
+      {/* Feed Popup */}
       {showFeedPopup && selectedStudent && (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
           <div style={{ backgroundColor: "#3d2a6e", padding: "30px", borderRadius: "12px", maxWidth: "420px", textAlign: "center", border: "2px solid #9b6dff", color: "#e0d4ff" }}>
