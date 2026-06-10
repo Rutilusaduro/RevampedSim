@@ -67,8 +67,8 @@ export const evolutionDialogues = {
         ]
           }
     }
-      }
-    },
+      },
+    
     onComplete: {
       formId: "branded_glutton"
     }
