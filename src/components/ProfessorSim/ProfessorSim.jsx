@@ -465,7 +465,7 @@ const ProfessorSim = () => {
                       position: "absolute",
                       top: "50%",
                       left: "50%",
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-100px)`,
+                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-100px) translateX(-50px)',
                       fontSize: "14px",
                       fontWeight: "700",
                       color: "#c8a2ff"
@@ -484,8 +484,6 @@ const ProfessorSim = () => {
                 height: "105px",
                 backgroundColor: "#ff4444",
                 transformOrigin: "bottom center",
-                transform: `translateX(-50%) rotate(${(weighInWeight - 80) * 0.95 - 90}deg)`,
-                transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
                 boxShadow: "0 0 8px #ff4444",
                 zIndex: 10
               }} />
