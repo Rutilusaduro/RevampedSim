@@ -289,8 +289,8 @@ const ProfessorSim = () => {
             )}
           </div>
         </div>
+      </div>
       )}
-    </div>
 
       {showDialogue && currentDialogue && (
   <DialogueModal
