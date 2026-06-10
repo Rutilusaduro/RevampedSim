@@ -139,7 +139,34 @@ const ProfessorSim = () => {
       setShowNarrativePopup(true)
     }
   }
+  const getScaleNumbers = (currentWeight) => {
+  // Define different increments based on weight range
+  let increment = 30;           // default step
+  let range = 150;              // how far above/below current weight to show
 
+  if (currentWeight >= 500) {
+    increment = 50;
+    range = 200;
+  } else if (currentWeight >= 350) {
+    increment = 40;
+    range = 180;
+  } else if (currentWeight >= 200) {
+    increment = 30;
+    range = 150;
+  }
+
+  // Calculate start and end
+  const start = Math.max(80, Math.floor((currentWeight - range) / increment) * increment);
+  const end = Math.min(800, Math.ceil((currentWeight + range) / increment) * increment);
+
+  // Generate the numbers
+  const numbers = [];
+  for (let n = start; n <= end; n += increment) {
+    numbers.push(n);
+  }
+
+  return numbers;
+};
   const handleNarrativeClose = () => {
     setShowNarrativePopup(false)
 
@@ -427,13 +454,12 @@ const ProfessorSim = () => {
                 width: "230px",
                 height: "120px",
                 border: "10px solid #9b6dff",
-                borderRadius: "50%",
-                transform: `translate(-50%, -50%) rotate(${(weighInWeight - 80) * 0.95 - 90}deg)`,
-                transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+                borderRadius: "50%"
               }}>
-                {[80, 110, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440, 470, 500].map((val, i) => {
-                  const progress = i / 14
-                  const angle = 195 + (progress * 170)
+                {getScaleNumbers(weighInWeight).map((val,i) => {
+                  const numbers = getScaleNumbers(weighInWeight);
+                  const progress = i / (numbers.length - 1);
+                  const angle = 180 + (progress * 170);
                   return (
                     <div key={i} style={{
                       position: "absolute",
