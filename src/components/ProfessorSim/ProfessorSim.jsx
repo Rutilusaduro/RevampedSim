@@ -7,7 +7,7 @@ import { observeVignettes } from '../../data/observeVignettes'
 import DialogueModal from './components/DialogueModal'
 
 const ProfessorSim = () => {
-  // ==================== STARTING POPUP STATE ====================
+  // ==================== STARTING POPUP ====================
   const [showStartPopup, setShowStartPopup] = useState(true)
   const [professorGender, setProfessorGender] = useState(null)
 
@@ -34,7 +34,6 @@ const ProfessorSim = () => {
   const [showRoster, setShowRoster] = useState(true)
   const [currentDiaryPage, setCurrentDiaryPage] = useState(0)
 
-  // Pop-up states
   const [showFeedPopup, setShowFeedPopup] = useState(false)
   const [showObservePopup, setShowObservePopup] = useState(false)
   const [showWeighInModal, setShowWeighInModal] = useState(false)
@@ -114,8 +113,6 @@ const ProfessorSim = () => {
     return best.text
   }
 
-  const handleWeighIn = () => { /* keep your existing weigh-in logic */ }
-
   // ==================== STARTING POPUP ====================
   if (showStartPopup) {
     return (
@@ -129,7 +126,7 @@ const ProfessorSim = () => {
           maxWidth: "620px", color: "#e0d4ff", textAlign: "center",
           border: "2px solid #9b6dff"
         }}>
-          <h1 style={{ color: "#c8a2ff", marginBottom: "20px" }}>Welcome, Professor</h1>
+          <h1 style={{ color: "#c8a2ff", marginBottom: "20px" }}>A quiet hunger stirs...</h1>
 
           <p style={{ fontSize: "1.1rem", lineHeight: "1.7", marginBottom: "20px" }}>
             You are not the professor. You are something older. A quiet, unifying hunger that has always lived inside every living thing — the same force that makes flowers turn toward the sun and makes a starving animal keep walking. For a long time it was suppressed. Ozempic dulled it. The extinction event made people afraid of it. But it never died. It was only waiting.
@@ -163,68 +160,112 @@ const ProfessorSim = () => {
   // ==================== MAIN GAME ====================
   return (
     <div style={{ fontFamily: "system-ui", backgroundColor: "#2a1f4a", minHeight: "100vh", color: "#e0d4ff" }}>
-      {/* Menu Bar - purplish */}
+      {/* Menu Bar */}
       <div style={{
         backgroundColor: "#3d2a6e", color: "#e0d4ff", padding: "12px 20px",
         display: "flex", gap: "12px", alignItems: "center", borderBottom: "2px solid #9b6dff"
       }}>
         <h2 style={{ margin: 0, flex: 1, color: "#c8a2ff" }}>Professor Sim</h2>
-        <button onClick={goBackToRoster} style={{ backgroundColor: "#9b6dff", color: "white" }}>Class Roster</button>
+        <button 
+          onClick={goBackToRoster} 
+          style={{ backgroundColor: "#9b6dff", color: "white", padding: "8px 16px", borderRadius: "6px" }}
+        >
+          Class Roster
+        </button>
       </div>
 
       <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
-        {/* Roster + Profile code stays the same as before, just with purple accents on boxes */}
-
-        {/* Feed Popup with better spacing */}
-        {showFeedPopup && selectedStudent && (
-          <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
-            <div style={{ backgroundColor: "#3d2a6e", padding: "30px", borderRadius: "12px", maxWidth: "420px", textAlign: "center", border: "2px solid #9b6dff", color: "#e0d4ff" }}>
-              <h3 style={{ color: "#c8a2ff" }}>Feed {selectedStudent.name}</h3>
-              <p>{popupMessage}</p>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" }}>
-                <button onClick={() => setShowFeedPopup(false)} style={{ backgroundColor: "#6b4e9e" }}>Close</button>
-
-                {selectedStudent && !selectedStudent.formId && selectedStudent.lbs >= HEAVY_THRESHOLD && (
-                  <button 
-                    onClick={() => handleAskWhatsUp(selectedStudent)}
-                    style={{ backgroundColor: "#c8a2ff", color: "#2a1f4a" }}
-                  >
-                    Ask what's up
-                  </button>
-                )}
-              </div>
+        {/* CLASS ROSTER */}
+        {showRoster && (
+          <>
+            <h1 style={{ color: "#c8a2ff" }}>Class Roster</h1>
+            <div style={{ 
+              display: "grid", 
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", 
+              gap: "16px", 
+              marginTop: "20px" 
+            }}>
+              {students.map(student => (
+                <StudentCard
+                  key={student.id}
+                  student={student}
+                  onClick={() => handleCardClick(student)}
+                />
+              ))}
             </div>
+          </>
+        )}
+
+        {/* STUDENT PROFILE */}
+        {selectedStudent && !showRoster && (
+          <div style={{ backgroundColor: "#3d2a6e", color: "#e0d4ff", padding: "20px", borderRadius: "12px", border: "2px solid #9b6dff" }}>
+            <button onClick={goBackToRoster} style={{ marginBottom: "20px", backgroundColor: "#6b4e9e" }}>
+              ← Back to Roster
+            </button>
+
+            <h1 style={{ color: "#c8a2ff" }}>{selectedStudent.name} — {selectedStudent.archetype}</h1>
+
+            {/* Information Box */}
+            <div style={{ backgroundColor: "#4a2c7a", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
+              <h3>Information</h3>
+              <p><strong>Weight:</strong> {selectedStudent.lbs} lbs</p>
+              <p><strong>Stage:</strong> {getStage(selectedStudent.lbs).label}</p>
+              <p><strong>Height:</strong> {Math.floor(selectedStudent.height / 12)}'{selectedStudent.height % 12}"</p>
+            </div>
+
+            {/* Other sections (Physical Description, Diary, Actions, etc.) remain the same as before */}
+            {/* ... you can paste your existing profile sections here ... */}
           </div>
         )}
-
-        {/* Other popups stay similar, just with purple styling */}
-
-        {/* Dialogue Modal (already fixed) */}
-        {showDialogue && currentDialogue && (
-          <DialogueModal
-            dialogue={currentDialogue}
-            onComplete={(result) => {
-              const studentIndex = students.findIndex(s => s.id === currentDialogue.id)
-              if (studentIndex !== -1) {
-                const newStudents = [...students]
-                newStudents[studentIndex] = {
-                  ...newStudents[studentIndex],
-                  formId: result.formId || "branded_glutton",
-                  brand: result.brand
-                }
-                setStudents(newStudents)
-                if (selectedStudent && selectedStudent.id === currentDialogue.id) {
-                  setSelectedStudent(newStudents[studentIndex])
-                }
-              }
-              if (result.notification) alert(result.notification)
-              setShowDialogue(false)
-            }}
-            onClose={() => setShowDialogue(false)}
-          />
-        )}
       </div>
+
+      {/* Feed Popup with fixed spacing */}
+      {showFeedPopup && selectedStudent && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, backgroundColor: "rgba(0,0,0,0.6)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000 }}>
+          <div style={{ backgroundColor: "#3d2a6e", padding: "30px", borderRadius: "12px", maxWidth: "420px", textAlign: "center", border: "2px solid #9b6dff", color: "#e0d4ff" }}>
+            <h3 style={{ color: "#c8a2ff" }}>Feed {selectedStudent.name}</h3>
+            <p>{popupMessage}</p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "20px" }}>
+              <button onClick={() => setShowFeedPopup(false)} style={{ backgroundColor: "#6b4e9e" }}>Close</button>
+
+              {selectedStudent && !selectedStudent.formId && selectedStudent.lbs >= HEAVY_THRESHOLD && (
+                <button 
+                  onClick={() => handleAskWhatsUp(selectedStudent)}
+                  style={{ backgroundColor: "#c8a2ff", color: "#2a1f4a" }}
+                >
+                  Ask what's up
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Dialogue Modal */}
+      {showDialogue && currentDialogue && (
+        <DialogueModal
+          dialogue={currentDialogue}
+          onComplete={(result) => {
+            const studentIndex = students.findIndex(s => s.id === currentDialogue.id)
+            if (studentIndex !== -1) {
+              const newStudents = [...students]
+              newStudents[studentIndex] = {
+                ...newStudents[studentIndex],
+                formId: result.formId || "branded_glutton",
+                brand: result.brand
+              }
+              setStudents(newStudents)
+              if (selectedStudent && selectedStudent.id === currentDialogue.id) {
+                setSelectedStudent(newStudents[studentIndex])
+              }
+            }
+            if (result.notification) alert(result.notification)
+            setShowDialogue(false)
+          }}
+          onClose={() => setShowDialogue(false)}
+        />
+      )}
     </div>
   )
 }
