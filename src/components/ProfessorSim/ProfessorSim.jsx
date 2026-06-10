@@ -465,7 +465,7 @@ const ProfessorSim = () => {
                       position: "absolute",
                       top: "50%",
                       left: "50%",
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-100px) translateX(-50px)',
+                      transform: "translate(-50%, -50%) rotate(${angle}deg) translateY(-100px)",
                       fontSize: "14px",
                       fontWeight: "700",
                       color: "#c8a2ff"
