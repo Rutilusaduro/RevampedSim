@@ -4,6 +4,7 @@ import { baseDiaries } from '../../data/baseDiaries'
 import { evolvedDiaries } from '../../data/evolvedDiaries'
 import { studentContent } from '../../data/studentContent'
 import { observeVignettes } from '../../data/observeVignettes'
+import { evolutionDialogues } from '../../data/evolutionDialogues'
 import DialogueModal from './components/DialogueModal';
 
 const ProfessorSim = () => {
@@ -277,7 +278,7 @@ const ProfessorSim = () => {
             <h3>Feed {selectedStudent?.name}</h3>
             <p>{popupMessage}</p>
             <button onClick={() => setShowFeedPopup(false)}>Close</button>
-            {!student.formId && student.lbs >= 238 && (
+            {!selectedStudent.formId && selectedStudent.lbs >= 238 && (
               <button 
                 onClick={() => handleAskWhatsUp(student)}
                 style={{ marginTop: "15px", backgroundColor: "#5c4636", color: "white" }}
