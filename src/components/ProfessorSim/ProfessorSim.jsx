@@ -282,7 +282,7 @@ const ProfessorSim = () => {
             {!selectedStudent.formId && selectedStudent.lbs >= 238 && (
               <button 
                 onClick={() => handleAskWhatsUp(selectedStudent)}
-                style={{ marginTop: "50px", backgroundColor: "#5c4636", color: "white" }}
+                style={{ marginTop: "30px", backgroundColor: "#5c4636", color: "white" }}
               >
                 Ask what's up
               </button>
