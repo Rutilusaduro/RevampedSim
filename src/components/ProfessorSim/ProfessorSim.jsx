@@ -299,11 +299,11 @@ const ProfessorSim = () => {
       const studentIndex = students.findIndex(s => s.id == currentDialog);
 
       if (studentIndex !== -1) {
-      const newStudents = [...students];
-      newStudents[studentIndex] = {
-        ...newStudents[studentIndex],
-        formId: result.formId
-        brand: result.brand
+        const newStudents = [...students];
+        newStudents[studentIndex] = {
+          ...newStudents[studentIndex],
+          formId: result.formId,
+          brand: result.brand
       };
       setStudents(newStudents);
       if (selectedStudent && selectedStudent.id == currentDialog.id)
