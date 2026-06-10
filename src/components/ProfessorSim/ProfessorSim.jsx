@@ -5,9 +5,9 @@ import { evolvedDiaries } from '../../data/evolvedDiaries'
 import { studentContent } from '../../data/studentContent'
 import { observeVignettes } from '../../data/observeVignettes'
 import DialogueModal from './components/DialogueModal'
+import { evolutionDialogues } from '../../data/evolutionDialogues'
 
 const ProfessorSim = () => {
-  // ==================== STARTING POPUP STATE ====================
   const [showStartPopup, setShowStartPopup] = useState(true)
   const [professorGender, setProfessorGender] = useState(null)
 
@@ -63,9 +63,7 @@ const ProfessorSim = () => {
 
   const getDynamicText = (student, type) => {
     if (!studentContent[student.id]) return "[Content not available yet]"
-    const contentSet = student.formId 
-      ? studentContent[student.id].evolved 
-      : studentContent[student.id].base
+    const contentSet = student.formId ? studentContent[student.id].evolved : studentContent[student.id].base
     if (!contentSet || !contentSet[type]) return "[Content not available yet]"
     const entries = contentSet[type]
     let bestEntry = entries[0]
@@ -217,10 +215,7 @@ const ProfessorSim = () => {
         display: "flex", gap: "12px", alignItems: "center", borderBottom: "2px solid #9b6dff"
       }}>
         <h2 style={{ margin: 0, flex: 1, color: "#c8a2ff" }}>Professor Sim</h2>
-        <button 
-          onClick={goBackToRoster} 
-          style={{ backgroundColor: "#9b6dff", color: "white", padding: "8px 16px", borderRadius: "6px" }}
-        >
+        <button onClick={goBackToRoster} style={{ backgroundColor: "#9b6dff", color: "white", padding: "8px 16px", borderRadius: "6px" }}>
           Class Roster
         </button>
       </div>
