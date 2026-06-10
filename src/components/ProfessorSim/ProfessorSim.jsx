@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
-import { diaries } from '../../data/diaries'
+import { baseDiaries } from '../../data/baseDiaries'
+import { evolvedDiaries } from '../../data/evolvedDiaries'
 import { studentContent } from '../../data/studentContent'
 import { observeVignettes } from '../../data/observeVignettes'
 import DialogueModal from './components/DialogueModal'
@@ -72,11 +73,9 @@ const ProfessorSim = () => {
     return bestEntry.text
   }
 
-  // NEW DIARY SYSTEM - mirrors observe exactly + supports brand-specific evolved diaries
   const getCurrentDiary = (student) => {
-    const data = diaries[student.id] // structure: diaries.js with per-ID + base/evolved[formId][brand]
+    const data = diaries[student.id]
     if (!data) {
-      // Safe fallback
       return [
         { minLbs: 0, text: "I’ve been thinking about food more than usual lately." },
         { minLbs: 135, text: "My clothes are starting to feel different. Tighter in some places." },
@@ -87,7 +86,6 @@ const ProfessorSim = () => {
     }
 
     if (!student.formId) {
-      // BASE - weight progressive per student ID
       const entries = data.base || []
       let best = entries[0]
       for (let entry of entries) {
@@ -96,18 +94,10 @@ const ProfessorSim = () => {
       return best ? [best] : []
     }
 
-    // EVOLVED - formId + brand + weight progressive
     const evolvedData = data.evolved?.[student.formId]
     if (!evolvedData) return []
 
-    // Try brand-specific first (e.g. branded_glutton.GlazeCo)
     let entries = evolvedData[student.brand] || evolvedData.default || []
-    if (entries.length === 0 && typeof evolvedData === 'object') {
-      // fallback to any available brand if specific one missing
-      const firstKey = Object.keys(evolvedData)[0]
-      entries = evolvedData[firstKey] || []
-    }
-
     let best = entries[0]
     for (let entry of entries) {
       if (student.lbs >= entry.minLbs) best = entry
@@ -286,7 +276,6 @@ const ProfessorSim = () => {
 
             <h1 style={{ color: "#c8a2ff" }}>{selectedStudent.name} — {selectedStudent.archetype}</h1>
 
-            {/* Information Box */}
             <div style={{ backgroundColor: "#4a2c7a", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
               <h3>Information</h3>
               <p><strong>Weight:</strong> {selectedStudent.lbs} lbs</p>
@@ -294,13 +283,11 @@ const ProfessorSim = () => {
               <p><strong>Height:</strong> {Math.floor(selectedStudent.height / 12)}'{selectedStudent.height % 12}"</p>
             </div>
 
-            {/* Physical Description Box */}
             <div style={{ backgroundColor: "#4a2c7a", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
               <h3>Physical Description</h3>
               <p>{getDynamicText(selectedStudent, 'physicalDescription')}</p>
             </div>
 
-            {/* Diary Box with Page Flipping (now weight + ID + brand aware) */}
             <div style={{ backgroundColor: "#fffef5", border: "2px solid #9b6dff", borderRadius: "8px", padding: "30px 40px", marginBottom: "20px", color: "#2a1f4a" }}>
               <h3 style={{ color: "#4a2c7a", borderBottom: "1px solid #9b6dff", paddingBottom: "8px" }}>Diary</h3>
               <div style={{ minHeight: "120px", lineHeight: "1.7" }}>
@@ -320,20 +307,17 @@ const ProfessorSim = () => {
               )}
             </div>
 
-            {/* Inner Thoughts */}
             <div style={{ backgroundColor: "#4a2c7a", padding: "20px", borderRadius: "8px", marginBottom: "20px" }}>
               <h3>Inner Thoughts</h3>
               <p>{getDynamicText(selectedStudent, 'innerThoughts')}</p>
             </div>
 
-            {/* Weigh In Button */}
             <div style={{ marginBottom: "20px" }}>
               <button onClick={handleWeighIn} style={{ backgroundColor: "#9b6dff", color: "white" }}>
                 ⚖️ Weigh In
               </button>
             </div>
 
-            {/* Actions */}
             <div>
               <h3>Actions</h3>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
@@ -443,6 +427,7 @@ const ProfessorSim = () => {
                 setSelectedStudent(newStudents[studentIndex])
               }
             }
+            setShowFeedPopup(false)   // ← closes the blocked feed popup after evolution
             if (result.notification) alert(result.notification)
             setShowDialogue(false)
           }}
