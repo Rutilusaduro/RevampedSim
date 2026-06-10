@@ -4,7 +4,8 @@ import { studentContent } from '../../data/studentContent'
 import { observeVignettes } from '../../data/observeVignettes'
 import DialogueModal from './components/DialogueModal'
 import { evolutionDialogues } from '../../data/evolutionDialogues'
-import { diaries } from '../../data/diaries'   // ← Correct import for the new system
+import { diaries } from '../../data/diaries'
+import { weighInVignettes } from '../../data/weighInVignettes'
 
 const ProfessorSim = () => {
   const [showStartPopup, setShowStartPopup] = useState(true)
@@ -72,7 +73,6 @@ const ProfessorSim = () => {
     return bestEntry.text
   }
 
-  // Diary system - works exactly like observe + supports brand-specific evolved diaries
   const getCurrentDiary = (student) => {
     const data = diaries[student.id]
     if (!data) {
@@ -115,7 +115,7 @@ const ProfessorSim = () => {
     setTimeout(() => {
       setShowWeighInModal(false)
       setPopupMessage(
-        `${selectedStudent.name} stepped onto the scale. It creaked loudly as the plastic buckled beneath her. The red needle spun wildly before slowly settling on ${selectedStudent.lbs} lbs.`
+        `${selectedStudent.name} stepped onto the scale. It reads ${selectedStudent.lbs} lbs.`
       )
       setShowNarrativePopup(true)
     }, 1800)
@@ -377,7 +377,7 @@ const ProfessorSim = () => {
                 width: "4px", height: "90px", backgroundColor: "#c8a2ff",
                 transformOrigin: "bottom center",
                 transform: `translate(-50%, -100%) rotate(${(weighInWeight - 80) * 1.2}deg)`,
-                transition: "transform 1.5s cubic-bezier(0.23, 1.0, 0.32, 1)"
+                transition: "transform 1.6s cubic-bezier(0.23, 1.0, 0.32, 1)"
               }} />
               <div style={{
                 position: "absolute", top: "50%", left: "50%",
