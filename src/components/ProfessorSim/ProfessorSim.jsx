@@ -399,7 +399,7 @@ const ProfessorSim = () => {
         </div>
       )}
 
-      {/* Weigh-In Modal (Curved top style like your reference image) */}
+      {/* Weigh-In Modal - Improved Gauge Style */}
       {showWeighInModal && selectedStudent && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
@@ -407,47 +407,48 @@ const ProfessorSim = () => {
           alignItems: "center", justifyContent: "center", zIndex: 1100
         }}>
           <div style={{
-            backgroundColor: "#f0f0f0",
-            border: "12px solid #c8c8c8",
-            borderRadius: "20px",
-            padding: "20px 25px 30px",
-            width: "340px",
+            backgroundColor: "#f8f8f8",
+            border: "10px solid #d0d0d0",
+            borderRadius: "18px",
+            padding: "25px 30px",
+            width: "360px",
             boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
           }}>
-            {/* Curved Dial Window */}
+            {/* Semicircle Gauge */}
             <div style={{
-              width: "290px",
-              height: "145px",
-              margin: "0 auto 15px",
-              borderRadius: "145px 145px 0 0",
-              border: "8px solid #9b6dff",
-              backgroundColor: "#2a1f4a",
+              width: "300px",
+              height: "160px",
+              margin: "0 auto",
               position: "relative",
               overflow: "hidden"
             }}>
-              {/* Rotating Dial */}
+              {/* Rotating Arc Container */}
               <div style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "260px",
-                height: "260px",
-                transform: `translate(-50%, -50%) rotate(${(weighInWeight - 80) * 0.95 - 90}deg)`,
+                width: "300px",
+                height: "300px",
+                border: "12px solid #9b6dff",
+                borderRadius: "50%",
+                transform: `translate(-50%, -50%) rotate(${(weighInWeight - 80) * 0.92 - 90}deg)`,
                 transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
               }}>
-                {[80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360, 380, 400].map((val, i) => {
-                  const progress = i / 16
-                  const angle = 200 + (progress * 140)
+                {/* Numbers - Better spaced along the arc */}
+                {[80, 110, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440, 470, 500].map((val, i) => {
+                  const progress = i / 14
+                  const angle = 200 + (progress * 160) // wider visible arc
 
                   return (
                     <div key={i} style={{
                       position: "absolute",
                       top: "50%",
                       left: "50%",
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-105px)`,
-                      fontSize: "13px",
+                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-118px)`,
+                      fontSize: "14px",
                       fontWeight: "700",
-                      color: "#c8a2ff"
+                      color: "#c8a2ff",
+                      textShadow: "0 0 4px #000"
                     }}>
                       {val}
                     </div>
@@ -455,40 +456,44 @@ const ProfessorSim = () => {
                 })}
               </div>
 
-              {/* Fixed Red Needle */}
+              {/* Needle - Starts from bottom center */}
               <div style={{
                 position: "absolute",
-                top: "50%",
+                bottom: "0%",
                 left: "50%",
-                width: "4px",
-                height: "95px",
+                width: "5px",
+                height: "115px",
                 backgroundColor: "#ff4444",
                 transformOrigin: "bottom center",
-                transform: "translate(-50%, -100%)",
+                transform: `translateX(-50%) rotate(${(weighInWeight - 80) * 0.92 - 90}deg)`,
+                transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
+                boxShadow: "0 0 10px #ff4444",
                 zIndex: 10
               }} />
 
+              {/* Center Pivot */}
               <div style={{
                 position: "absolute",
-                top: "50%",
+                bottom: "0%",
                 left: "50%",
-                width: "16px",
-                height: "16px",
+                width: "18px",
+                height: "18px",
                 backgroundColor: "#ff4444",
                 borderRadius: "50%",
-                transform: "translate(-50%, -50%)",
+                transform: "translate(-50%, 50%)",
                 zIndex: 20
               }} />
             </div>
 
+            {/* Weight Display */}
             <div style={{
               textAlign: "center",
-              fontSize: "2rem",
+              fontSize: "2.1rem",
               fontWeight: "700",
               color: "#222",
-              marginTop: "10px"
+              marginTop: "15px"
             }}>
-              {Math.round(weighInWeight)} <span style={{ fontSize: "1.2rem" }}>lbs</span>
+              {Math.round(weighInWeight)} <span style={{ fontSize: "1.3rem" }}>lbs</span>
             </div>
           </div>
         </div>
