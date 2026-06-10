@@ -296,29 +296,27 @@ const ProfessorSim = () => {
   <DialogueModal
     dialogue={currentDialogue}
     onComplete={(result) => {
-      const studentIndex = students.findIndex(s => s.id == currentDialog);
+  const studentIndex = students.findIndex(s => s.id === currentDialogue.id);
 
-      if (studentIndex !== -1) {
-        const newStudents = [...students];
-        newStudents[studentIndex] = {
-          ...newStudents[studentIndex],
-          formId: result.formId,
-          brand: result.brand
-      };
-      setStudents(newStudents);
-      if (selectedStudent && selectedStudent.id == currentDialog.id)
-        setSelectedStudent(newStudents[studentIndex]);
+  if (studentIndex !== -1) {
+    const newStudents = [...students];
+    newStudents[studentIndex] = {
+      ...newStudents[studentIndex],
+      formId: result.formId || "branded_glutton",
+      brand: result.brand
+    };
+    setStudents(newStudents);
+
+    if (selectedStudent && selectedStudent.id === currentDialogue.id) {
+      setSelectedStudent(newStudents[studentIndex]);
     }
-    }
-    
-      
-      if (result.notification) {
-        alert(result.notification);
-      }
-      setShowDialogue(false);
-    }}
-    onClose={() => setShowDialogue(false)}
-  />
+  }
+
+  if (result.notification) {
+    alert(result.notification);
+  }
+
+  setShowDialogue(false);
 )}
       {/* Observe Pop-up */}
       {showObservePopup && selectedStudent && (
