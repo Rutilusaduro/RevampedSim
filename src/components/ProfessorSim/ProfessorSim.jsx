@@ -107,18 +107,40 @@ const ProfessorSim = () => {
 
   const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
 
+  // ==================== WEIGH-IN SYSTEM ====================
+  const getWeighInVignette = (student) => {
+    const data = weighInVignettes[student.id]
+    if (!data) {
+      return `${student.name} steps onto the scale. It reads...`
+    }
+
+    const stage = getStage(student.lbs).label
+    const entries = data[stage] || data.default || []
+
+    if (entries.length === 0) {
+      return `${student.name} steps onto the scale. It reads...`
+    }
+
+    const randomIndex = Math.floor(Math.random() * entries.length)
+    return entries[randomIndex]
+  }
+
   const handleWeighIn = () => {
     if (!selectedStudent) return
-    setWeighInWeight(selectedStudent.lbs)
-    setShowWeighInModal(true)
 
-    setTimeout(() => {
-      setShowWeighInModal(false)
-      setPopupMessage(
-        `${selectedStudent.name} stepped onto the scale. It reads ${selectedStudent.lbs} lbs.`
-      )
+    const stage = getStage(selectedStudent.lbs).label
+    const earlyStages = ["Slight", "Slim", "Soft", "Chubby", "Plump", "Heavy"]
+
+    if (earlyStages.includes(stage)) {
+      // Early stages — simple direct reading, no animation
+      setPopupMessage(`${selectedStudent.name} steps on the scale. It reads ${selectedStudent.lbs} lbs.`)
       setShowNarrativePopup(true)
-    }, 1800)
+    } else {
+      // Fat and above — special vignette first
+      const vignette = getWeighInVignette(selectedStudent)
+      setPopupMessage(vignette)
+      setShowNarrativePopup(true)
+    }
   }
 
   const handleAskWhatsUp = (student) => {
@@ -354,7 +376,7 @@ const ProfessorSim = () => {
         </div>
       )}
 
-      {/* Weigh-In Modal */}
+      {/* Weigh-In Modal (with numbers) */}
       {showWeighInModal && selectedStudent && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
@@ -363,34 +385,50 @@ const ProfessorSim = () => {
         }}>
           <div style={{
             backgroundColor: "#3d2a6e", padding: "40px", borderRadius: "16px",
-            textAlign: "center", width: "320px", border: "2px solid #9b6dff", color: "#e0d4ff"
+            textAlign: "center", width: "340px", border: "2px solid #9b6dff", color: "#e0d4ff"
           }}>
             <h3 style={{ color: "#c8a2ff" }}>Weigh-In</h3>
             <div style={{
-              width: "220px", height: "220px",
-              border: "12px solid #9b6dff", borderRadius: "50%",
+              width: "240px", height: "240px",
+              border: "14px solid #9b6dff", borderRadius: "50%",
               margin: "20px auto", position: "relative",
               background: "linear-gradient(#4a2c7a, #3d2a6e)"
             }}>
+              {[80, 150, 220, 290, 360, 430, 500, 570, 640, 710, 780].map((val, i) => {
+                const angle = (val - 80) * 1.2
+                return (
+                  <div key={i} style={{
+                    position: "absolute",
+                    top: "50%", left: "50%",
+                    transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-108px)`,
+                    fontSize: "11px",
+                    color: "#c8a2ff"
+                  }}>
+                    {val}
+                  </div>
+                )
+              })}
+
               <div style={{
                 position: "absolute", top: "50%", left: "50%",
-                width: "4px", height: "90px", backgroundColor: "#c8a2ff",
+                width: "5px", height: "108px", backgroundColor: "#c8a2ff",
                 transformOrigin: "bottom center",
                 transform: `translate(-50%, -100%) rotate(${(weighInWeight - 80) * 1.2}deg)`,
-                transition: "transform 1.6s cubic-bezier(0.23, 1.0, 0.32, 1)"
+                transition: "transform 1.6s cubic-bezier(0.23, 1.0, 0.32, 1)",
+                boxShadow: "0 0 10px #c8a2ff"
               }} />
               <div style={{
                 position: "absolute", top: "50%", left: "50%",
-                width: "16px", height: "16px", backgroundColor: "#c8a2ff",
+                width: "18px", height: "18px", backgroundColor: "#c8a2ff",
                 borderRadius: "50%", transform: "translate(-50%, -50%)"
               }} />
             </div>
-            <p style={{ fontSize: "1.2rem", marginTop: "10px" }}>{weighInWeight} lbs</p>
+            <p style={{ fontSize: "1.3rem", marginTop: "10px", color: "#c8a2ff" }}>{weighInWeight} lbs</p>
           </div>
         </div>
       )}
 
-      {/* Narrative Popup */}
+      {/* Narrative Popup (now handles weigh-in flow) */}
       {showNarrativePopup && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
@@ -399,10 +437,23 @@ const ProfessorSim = () => {
         }}>
           <div style={{
             backgroundColor: "#3d2a6e", padding: "30px", borderRadius: "12px",
-            maxWidth: "420px", textAlign: "center", border: "2px solid #9b6dff", color: "#e0d4ff"
+            maxWidth: "440px", textAlign: "center", border: "2px solid #9b6dff", color: "#e0d4ff"
           }}>
             <p style={{ fontSize: "1.05rem", lineHeight: "1.6" }}>{popupMessage}</p>
-            <button onClick={() => setShowNarrativePopup(false)} style={{ marginTop: "20px", backgroundColor: "#9b6dff" }}>
+            <button 
+              onClick={() => {
+                setShowNarrativePopup(false)
+
+                const stage = getStage(selectedStudent?.lbs || 0).label
+                const highStages = ["Fat", "Very Fat", "Enormous", "Colossal", "Blob"]
+
+                if (highStages.includes(stage)) {
+                  setWeighInWeight(selectedStudent.lbs)
+                  setShowWeighInModal(true)
+                }
+              }} 
+              style={{ marginTop: "20px", backgroundColor: "#9b6dff" }}
+            >
               Close
             </button>
           </div>
