@@ -1,27 +1,21 @@
 import React, { useState } from 'react';
 
 const DialogueModal = ({ dialogue, onComplete, onClose }) => {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedChoice, setSelectedChoice] = useState(null);
+  const [currentNodeKey, setCurrentNodeKey] = useState(dialogue.start || 'start');
 
-  const step = dialogue.steps[currentStep];
-
-  const handleNext = () => {
-    if (currentStep < dialogue.steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      setSelectedChoice(true);
-    }
-  };
+  const currentNode = dialogue.nodes?.[currentNodeKey] || dialogue.steps?.[0];
 
   const handleChoice = (choice) => {
-    const result = {
-      formId: dialogue.onComplete?.formId || "branded_glutton",
-      brand: choice.brand,
-      notification: choice.result
-    };
-    onComplete(result);
-    onClose();
+    if (choice.next) {
+      setCurrentNodeKey(choice.next);
+    } else {
+      // End of tree — complete the evolution
+      onComplete({
+        formId: dialogue.onComplete?.formId || "branded_glutton",
+        brand: choice.brand,
+        notification: choice.result || "She accepted the offer."
+      });
+    }
   };
 
   return (
@@ -36,81 +30,41 @@ const DialogueModal = ({ dialogue, onComplete, onClose }) => {
         width: "90%",
         borderRadius: "12px",
         padding: "25px",
-        boxShadow: "0 10px 30px rgba(0,0,0,0.3)",
         color: "#e0d4ff",
         border: "2px solid #9b6dff"
       }}>
         <h2 style={{ marginTop: 0, color: "#c8a2ff" }}>{dialogue.title}</h2>
 
-        {!selectedChoice ? (
-          <>
-            <div style={{ 
-              backgroundColor: "#4a2c7a", 
-              padding: "18px", 
-              borderRadius: "8px", 
-              margin: "20px 0",
-              minHeight: "80px",
-              lineHeight: "1.6"
-            }}>
-              <strong style={{ color: "#c8a2ff" }}>{step.speaker}:</strong> {step.text}
-            </div>
+        <div style={{ 
+          backgroundColor: "#4a2c7a", 
+          padding: "18px", 
+          borderRadius: "8px", 
+          margin: "20px 0",
+          minHeight: "80px",
+          lineHeight: "1.6"
+        }}>
+          <strong style={{ color: "#c8a2ff" }}>{currentNode.speaker}:</strong> {currentNode.text}
+        </div>
 
-            <button 
-              onClick={handleNext} 
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "15px" }}>
+          {currentNode.choices?.map((choice, index) => (
+            <button
+              key={index}
+              onClick={() => handleChoice(choice)}
               style={{ 
-                padding: "12px 24px", 
+                padding: "14px 20px", 
                 backgroundColor: "#9b6dff", 
                 color: "white",
                 border: "none",
                 borderRadius: "8px",
-                fontSize: "1rem"
+                fontSize: "1rem",
+                textAlign: "left"
               }}
             >
-              {currentStep < dialogue.steps.length - 1 ? "Continue" : "What do you say?"}
+              {choice.text}
             </button>
-          </>
-        ) : (
-          <div>
-            <h3 style={{ color: "#c8a2ff", marginBottom: "15px" }}>Choose a brand:</h3>
-            <div style={{ 
-              display: "flex", 
-              flexDirection: "column", 
-              gap: "12px", 
-              marginTop: "10px" 
-            }}>
-              {dialogue.choices.map((choice, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleChoice(choice)}
-                  style={{ 
-                    padding: "14px 20px", 
-                    backgroundColor: "#9b6dff", 
-                    color: "white",
-                    border: "none",
-                    borderRadius: "8px",
-                    fontSize: "1rem",
-                    textAlign: "left"
-                  }}
-                >
-                  {choice.text}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <button 
-          onClick={onClose} 
-          style={{ 
-            marginTop: "25px", 
-            color: "#c8a2ff", 
-            background: "none", 
-            border: "none",
-            fontSize: "0.95rem"
-          }}
-        >
-          Close
-        </button>
+          ))}
+        </div>
       </div>
     </div>
   );
