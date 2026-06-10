@@ -399,7 +399,7 @@ const ProfessorSim = () => {
         </div>
       )}
 
-      {/* Weigh-In Modal - Improved Gauge Style */}
+      {/* Clean Weigh-In Gauge (closer to your reference image) */}
       {showWeighInModal && selectedStudent && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
@@ -408,47 +408,46 @@ const ProfessorSim = () => {
         }}>
           <div style={{
             backgroundColor: "#f8f8f8",
-            border: "10px solid #d0d0d0",
+            border: "12px solid #d0d0d0",
             borderRadius: "18px",
-            padding: "25px 30px",
-            width: "360px",
+            padding: "25px",
+            width: "340px",
             boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
           }}>
-            {/* Semicircle Gauge */}
+            {/* Gauge Container */}
             <div style={{
-              width: "300px",
-              height: "160px",
+              width: "290px",
+              height: "155px",
               margin: "0 auto",
               position: "relative",
               overflow: "hidden"
             }}>
-              {/* Rotating Arc Container */}
+              {/* Rotating Dial */}
               <div style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "300px",
-                height: "300px",
-                border: "12px solid #9b6dff",
+                width: "290px",
+                height: "290px",
+                border: "10px solid #9b6dff",
                 borderRadius: "50%",
-                transform: `translate(-50%, -50%) rotate(${(weighInWeight - 80) * 0.92 - 90}deg)`,
+                transform: `translate(-50%, -50%) rotate(${(weighInWeight - 80) * 0.95 - 90}deg)`,
                 transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
               }}>
-                {/* Numbers - Better spaced along the arc */}
+                {/* Numbers - Cleaner spacing */}
                 {[80, 110, 140, 170, 200, 230, 260, 290, 320, 350, 380, 410, 440, 470, 500].map((val, i) => {
                   const progress = i / 14
-                  const angle = 200 + (progress * 160) // wider visible arc
+                  const angle = 195 + (progress * 170)
 
                   return (
                     <div key={i} style={{
                       position: "absolute",
                       top: "50%",
                       left: "50%",
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-118px)`,
+                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-115px)`,
                       fontSize: "14px",
                       fontWeight: "700",
-                      color: "#c8a2ff",
-                      textShadow: "0 0 4px #000"
+                      color: "#c8a2ff"
                     }}>
                       {val}
                     </div>
@@ -456,28 +455,28 @@ const ProfessorSim = () => {
                 })}
               </div>
 
-              {/* Needle - Starts from bottom center */}
+              {/* Fixed Needle */}
               <div style={{
                 position: "absolute",
-                bottom: "0%",
+                bottom: "8%",
                 left: "50%",
                 width: "5px",
-                height: "115px",
+                height: "105px",
                 backgroundColor: "#ff4444",
                 transformOrigin: "bottom center",
-                transform: `translateX(-50%) rotate(${(weighInWeight - 80) * 0.92 - 90}deg)`,
+                transform: `translateX(-50%) rotate(${(weighInWeight - 80) * 0.95 - 90}deg)`,
                 transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-                boxShadow: "0 0 10px #ff4444",
+                boxShadow: "0 0 8px #ff4444",
                 zIndex: 10
               }} />
 
-              {/* Center Pivot */}
+              {/* Center Dot */}
               <div style={{
                 position: "absolute",
-                bottom: "0%",
+                bottom: "8%",
                 left: "50%",
-                width: "18px",
-                height: "18px",
+                width: "16px",
+                height: "16px",
                 backgroundColor: "#ff4444",
                 borderRadius: "50%",
                 transform: "translate(-50%, 50%)",
@@ -485,10 +484,9 @@ const ProfessorSim = () => {
               }} />
             </div>
 
-            {/* Weight Display */}
             <div style={{
               textAlign: "center",
-              fontSize: "2.1rem",
+              fontSize: "2rem",
               fontWeight: "700",
               color: "#222",
               marginTop: "15px"
