@@ -1,76 +1,61 @@
 export const evolutionDialogues = {
-  6: { // Destiny
+  6: {
     id: 6,
-    name: "Destiny",
-    title: "Destiny seems distracted...",
-    steps: [
-      {
-        id: 1,
-        speaker: "You",
-        text: "Hey Destiny, you've been really quiet lately. Is everything okay? You seem hesitant to eat more."
-      },
-      {
-        id: 2,
+    title: "Destiny's Brand Offer",
+    start: "intro",
+    nodes: {
+      intro: {
         speaker: "Destiny",
-        text: "...Yeah. I've been thinking about it a lot. I've already gained so much weight. I don't know if I should keep going."
+        text: "So... I got this email. A snack company wants to sponsor me. They want me to do big eating challenges on stream. I don’t know... it feels like if I do this, I’m basically signing up to get way bigger, doesn’t it?",
+        choices: [
+          { text: "It could be a good opportunity. You’ve been wanting to grow your channel.", next: "push_back" },
+          { text: "You’re worried it’ll make you gain weight faster?", next: "worried" }
+        ]
       },
-      {
-        id: 3,
-        speaker: "You",
-        text: "What's holding you back?"
-      },
-      {
-        id: 4,
+      worried: {
         speaker: "Destiny",
-        text: "It's not that I'm scared exactly... It's just that if I keep going, there's no turning back. But lately I've been getting all these emails from snack companies."
+        text: "Yeah... exactly. Like, I already feel like I’m getting soft. If I start doing these huge challenges every week... I don’t know if I’ll be able to stop. What if I just keep getting bigger and bigger?",
+        choices: [
+          { text: "That’s not necessarily a bad thing. A lot of your viewers would love to see that.", next: "push_back" },
+          { text: "You don’t have to decide everything at once. You can try one challenge and see how it feels.", next: "try_one" }
+        ]
       },
-      {
-        id: 5,
-        speaker: "You",
-        text: "Snack companies?"
-      },
-      {
-        id: 6,
+      push_back: {
         speaker: "Destiny",
-        text: "Yeah. CrunchForge, FizzPeak, VelvetMelt, GlazeCo... They all want to sponsor me if I go full send on the gaining content. Like, officially become their 'Branded Glutton'."
+        text: "I guess... but it still feels like I’m choosing to get fatter on purpose. Like I’m giving up control. Doesn’t that sound kind of scary?",
+        choices: [
+          { text: "You’re not giving up control. You’re choosing to lean into something you already enjoy.", next: "lean_in" },
+          { text: "Scary can be exciting too. Especially when it’s something you secretly want.", next: "lean_in" }
+        ]
       },
-      {
-        id: 7,
-        speaker: "You",
-        text: "And what do you think about that?"
-      },
-      {
-        id: 8,
+      try_one: {
         speaker: "Destiny",
-        text: "I think... I kind of want it. I want to see how big I can really get. For the content. For the brands. For me."
+        text: "...Maybe. One challenge doesn’t mean I have to keep doing it forever, right? I could always say no later if it gets too much.",
+        choices: [
+          { text: "Exactly. You’re allowed to explore it without committing to it forever.", next: "accept" }
+        ]
       },
-      {
-        id: 9,
-        speaker: "You",
-        text: "Then let's do it. Which brand feels right to you?"
+      lean_in: {
+        speaker: "Destiny",
+        text: "...When you put it like that, it doesn’t sound as bad. Maybe I’ve been overthinking it. If I’m already gaining, maybe I should just... see how far it goes.",
+        choices: [
+          { text: "That’s the spirit. You deserve to enjoy this.", next: "accept" }
+        ]
+      },
+      accept: {
+        speaker: "Destiny",
+        text: "...Okay. I think I’m gonna do it. I’ll reply to them tonight.",
+        choices: [
+          { 
+            text: "Good. I think this is going to be good for you.", 
+            brand: "CrunchForge",
+            result: "Destiny has taken a sponsorship with CrunchForge."
+          }
+        ]
       }
-    ],
-    choices: [
-      { 
-        text: "CrunchForge", 
-        brand: "CrunchForge",
-        result: "Destiny has signed a sponsorship deal with CrunchForge."
-      },
-      { 
-        text: "FizzPeak", 
-        brand: "FizzPeak",
-        result: "Destiny has signed a sponsorship deal with FizzPeak."
-      },
-      { 
-        text: "VelvetMelt", 
-        brand: "VelvetMelt",
-        result: "Destiny has signed a sponsorship deal with VelvetMelt."
-      },
-      { 
-        text: "GlazeCo", 
-        brand: "GlazeCo",
-        result: "Destiny has signed a sponsorship deal with GlazeCo."
-      }
-    ]
+    },
+    onComplete: {
+      formId: "branded_glutton"
+    }
   }
 }
