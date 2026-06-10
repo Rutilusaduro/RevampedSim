@@ -10,7 +10,7 @@ const StudentCard = ({ student, onClick }) => {
         padding: "18px 20px",
         maxWidth: "340px",
         cursor: "pointer",
-        backgroundColor: "white",
+        backgroundColor: "red",
         transition: "all 0.2s ease",
         boxShadow: "0 2px 4px rgba(0, 0, 0, 0.05)"
       }}
