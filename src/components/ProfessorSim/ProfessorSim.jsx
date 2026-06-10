@@ -4,6 +4,7 @@ import { baseDiaries } from '../../data/baseDiaries'
 import { evolvedDiaries } from '../../data/evolvedDiaries'
 import { studentContent } from '../../data/studentContent'
 import { observeVignettes } from '../../data/observeVignettes'
+import DialogueModal from './components/DialogueModal';
 
 const ProfessorSim = () => {
   const [students, setStudents] = useState([
@@ -28,6 +29,8 @@ const ProfessorSim = () => {
   const [selectedStudent, setSelectedStudent] = useState(null)
   const [showRoster, setShowRoster] = useState(true)
   const [currentDiaryPage, setCurrentDiaryPage] = useState(0)
+  const [showDialogue, setShowDialogue] = useState(false);
+  const [currentDialogue, setCurrentDialogue] = useState(null);
 
   // Pop-up states
   const [showFeedPopup, setShowFeedPopup] = useState(false)
@@ -39,6 +42,14 @@ const ProfessorSim = () => {
 
   const HEAVY_THRESHOLD = 238
 
+  const handleAskWhatsUp = (student) => {
+  if (!evolutionDialogues[student.id]) {
+    alert("No evolution dialogue for this student yet.");
+    return;
+  }
+  setCurrentDialogue(evolutionDialogues[student.id]);
+  setShowDialogue(true);
+};
   const handleCardClick = (student) => {
     setSelectedStudent(student)
     setShowRoster(false)
@@ -84,6 +95,14 @@ const ProfessorSim = () => {
       setShowFeedPopup(true)
       return
     }
+    {!student.formId && student.lbs >= 238 && (
+  <button 
+    onClick={() => handleAskWhatsUp(student)}
+    style={{ marginTop: "15px", backgroundColor: "#5c4636", color: "white" }}
+  >
+    Ask what's up
+  </button>
+)}
 
     const newStudents = [...students]
     newStudents[studentIndex] = { ...student, lbs: student.lbs + 8 }
@@ -269,6 +288,17 @@ const ProfessorSim = () => {
         </div>
       )}
 
+      {showDialogue && currentDialogue && (
+  <DialogueModal
+    dialogue={currentDialogue}
+    onComplete={(result) => {
+      // Handle evolution here
+      console.log("Evolution result:", result);
+      setShowDialogue(false);
+    }}
+    onClose={() => setShowDialogue(false)}
+  />
+)}
       {/* Observe Pop-up */}
       {showObservePopup && selectedStudent && (
   <div style={{ 
