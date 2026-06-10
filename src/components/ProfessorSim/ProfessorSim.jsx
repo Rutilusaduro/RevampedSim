@@ -309,14 +309,14 @@ const ProfessorSim = () => {
       if (selectedStudent && selectedStudent.id == currentDialog.id)
         setSelectedStudent(newStudents[studentIndex]);
     }
-  }
+    }
     
       
       if (result.notification) {
         alert(result.notification);
       }
       setShowDialogue(false);
-    }
+    }}
     onClose={() => setShowDialogue(false)}
   />
 )}
