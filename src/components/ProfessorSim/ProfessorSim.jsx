@@ -296,8 +296,24 @@ const ProfessorSim = () => {
   <DialogueModal
     dialogue={currentDialogue}
     onComplete={(result) => {
-      // Handle evolution here
-      console.log("Evolution result:", result);
+      const studentIndex = students.findIndex(s => s.id == currentDialog);
+
+      if (studentIndex !== -1) {
+      const newStudents = [...students];
+      newStudents[studentIndex] = {
+        ...newStudents[studentIndex],
+        formId: result.formId
+        brand: result.brand
+      };
+      setStudents(newStudents);
+      if (selectedStudent && selectedStudent.id == currentDialog.id)
+        setSelectedStudent(newStudents[studentIndex]);
+    }
+    }
+      
+      if (result.notification) {
+        alert(result.notification);
+      }
       setShowDialogue(false);
     }}
     onClose={() => setShowDialogue(false)}
