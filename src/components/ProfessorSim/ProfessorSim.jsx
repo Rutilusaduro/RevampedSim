@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import StudentCard from './components/StudentCard'
-import { baseDiaries } from '../../data/baseDiaries'
-import { evolvedDiaries } from '../../data/evolvedDiaries'
 import { studentContent } from '../../data/studentContent'
 import { observeVignettes } from '../../data/observeVignettes'
 import DialogueModal from './components/DialogueModal'
 import { evolutionDialogues } from '../../data/evolutionDialogues'
+import { diaries } from '../../data/diaries'   // ← Correct import for the new system
 
 const ProfessorSim = () => {
   const [showStartPopup, setShowStartPopup] = useState(true)
@@ -73,6 +72,7 @@ const ProfessorSim = () => {
     return bestEntry.text
   }
 
+  // Diary system - works exactly like observe + supports brand-specific evolved diaries
   const getCurrentDiary = (student) => {
     const data = diaries[student.id]
     if (!data) {
@@ -427,7 +427,7 @@ const ProfessorSim = () => {
                 setSelectedStudent(newStudents[studentIndex])
               }
             }
-            setShowFeedPopup(false)   // ← closes the blocked feed popup after evolution
+            setShowFeedPopup(false)
             if (result.notification) alert(result.notification)
             setShowDialogue(false)
           }}
