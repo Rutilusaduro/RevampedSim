@@ -46,10 +46,26 @@ export const evolutionDialogues = {
         speaker: "Destiny",
         text: "...Okay. I think I’m gonna do it. I’ll reply to them tonight.",
         choices: [
-          { 
-            text: "Good. I think this is going to be good for you.", 
-            brand: "CrunchForge",
-            result: "Destiny has taken a sponsorship with CrunchForge."
+          { text: "Good. I think this is going to be good for you.", next: "sponsor_pick",} 
+           ]
+      },
+        sponsor_pick: {
+          speaker: "Destiny",
+          text: "Oh no....there's more e-mails, I don't know who to pick!",
+          choices: [
+            { text: "That's okay, let me help, it's the last I can do, after all", next: "sponsor_options"}
+            ]
+        },
+      sponsor_options: {
+        Speaker: "Destiny",
+        text: "okay, these are the four that have e-mailed me:",
+        choices: [
+          { text: "There's CrunchForge. They do, like… really crunchy stuff. Chips, crackers, those super thick kettle chips. They want me to do these big, loud challenge videos where I just power through massive bags. I dunno… it feels kind of aggressive? Like I’d be making a whole show out of how much I can stuff myself", brand: "Crunchforge", result: "Destiny has taken the sponsorship with CrunchForge!"},
+          { text: "There's FizzPeak. They’re the soda and energy drink people. They want me to do chugging challenges and ‘try every flavor’ streams. I’d probably be burping a lot on camera… and I know how bloated I get when I drink too much fizzy stuff. It kinda makes me nervous thinking about how big my stomach would look after.",  brand: "FizzPeak", result: "Destiny has taken the sponsorship with FizzPeak!"},
+          { text: "There's VelvetMelt. They specialize in chocolate and caramel stuff. Really rich, melty desserts. Their whole thing is ‘slow indulgence’ — like they want me to take my time and really savor everything. It sounds… kinda nice? But also dangerous. I feel like I’d end up eating way more than I meant to if I went with them",  brand: "VelvetMelt", result: "Destiny has taken the sponsorship with VelvetMelt!"},
+          { text: "There's GlazeCo. They make donuts and pastries. Everything’s super soft and glazed. They said they want this cozy, ‘treat yourself’ vibe where I just keep eating these warm, fluffy donuts on stream. It sounds the least intense out of all of them… but I already know how easy it is for me to lose track when I’m eating soft stuff.",  brand: "GlazeCo", result: "Destiny has taken the sponsorship with GlazeCo!"},
+          },
+        ]
           }
         ]
       }
