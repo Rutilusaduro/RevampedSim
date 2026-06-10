@@ -149,7 +149,6 @@ const ProfessorSim = () => {
     if (highStages.includes(stage) && selectedStudent) {
       const target = selectedStudent.lbs
 
-      // Realistic bounce animation (dial rotates)
       const startOffset = Math.random() * 28 + 12
       const peakOffset = Math.random() * 22 + 10
       const bounceBackOffset = Math.random() * 12 + 6
@@ -400,7 +399,7 @@ const ProfessorSim = () => {
         </div>
       )}
 
-      {/* NEW WEIGH-IN MODAL (Dial rotates, needle is fixed, with cover) */}
+      {/* Weigh-In Modal (Curved top style like your reference image) */}
       {showWeighInModal && selectedStudent && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
@@ -408,43 +407,45 @@ const ProfessorSim = () => {
           alignItems: "center", justifyContent: "center", zIndex: 1100
         }}>
           <div style={{
-            backgroundColor: "#3d2a6e", padding: "40px", borderRadius: "16px",
-            textAlign: "center", width: "380px", border: "2px solid #9b6dff", color: "#e0d4ff"
+            backgroundColor: "#f0f0f0",
+            border: "12px solid #c8c8c8",
+            borderRadius: "20px",
+            padding: "20px 25px 30px",
+            width: "340px",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
           }}>
-            <h3 style={{ color: "#c8a2ff" }}>Weigh-In</h3>
-
-            {/* Scale Container */}
+            {/* Curved Dial Window */}
             <div style={{
-              width: "280px",
-              height: "280px",
-              margin: "20px auto",
+              width: "290px",
+              height: "145px",
+              margin: "0 auto 15px",
+              borderRadius: "145px 145px 0 0",
+              border: "8px solid #9b6dff",
+              backgroundColor: "#2a1f4a",
               position: "relative",
-              borderRadius: "50%",
               overflow: "hidden"
             }}>
               {/* Rotating Dial */}
               <div style={{
-                width: "280px",
-                height: "280px",
-                border: "14px solid #9b6dff",
-                borderRadius: "50%",
-                background: "linear-gradient(#4a2c7a, #3d2a6e)",
                 position: "absolute",
-                top: 0,
-                left: 0,
-                transform: `rotate(${(weighInWeight - 80) * 1.12}deg)`,
+                top: "50%",
+                left: "50%",
+                width: "260px",
+                height: "260px",
+                transform: `translate(-50%, -50%) rotate(${(weighInWeight - 80) * 0.95 - 90}deg)`,
                 transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
               }}>
-                {/* Numbers */}
-                {[80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480, 520, 560, 600].map((val, i) => {
-                  const angle = (val - 80) * 1.12
+                {[80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300, 320, 340, 360, 380, 400].map((val, i) => {
+                  const progress = i / 16
+                  const angle = 200 + (progress * 140)
+
                   return (
                     <div key={i} style={{
                       position: "absolute",
                       top: "50%",
                       left: "50%",
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-125px)`,
-                      fontSize: "14px",
+                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-105px)`,
+                      fontSize: "13px",
                       fontWeight: "700",
                       color: "#c8a2ff"
                     }}>
@@ -454,51 +455,41 @@ const ProfessorSim = () => {
                 })}
               </div>
 
-              {/* Fixed Needle (stays at top) */}
+              {/* Fixed Red Needle */}
               <div style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "6px",
-                height: "130px",
-                backgroundColor: "#c8a2ff",
+                width: "4px",
+                height: "95px",
+                backgroundColor: "#ff4444",
                 transformOrigin: "bottom center",
                 transform: "translate(-50%, -100%)",
-                boxShadow: "0 0 12px #c8a2ff",
                 zIndex: 10
               }} />
 
-              {/* Center cap */}
               <div style={{
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "22px",
-                height: "22px",
-                backgroundColor: "#c8a2ff",
+                width: "16px",
+                height: "16px",
+                backgroundColor: "#ff4444",
                 borderRadius: "50%",
                 transform: "translate(-50%, -50%)",
                 zIndex: 20
               }} />
-
-              {/* Rounded Rectangle Cover (hides top of dial) */}
-              <div style={{
-                position: "absolute",
-                top: "-20px",
-                left: "50%",
-                transform: "translateX(-50%)",
-                width: "220px",
-                height: "130px",
-                backgroundColor: "#3d2a6e",
-                borderRadius: "999px",
-                border: "14px solid #9b6dff",
-                zIndex: 15
-              }} />
             </div>
 
-            <p style={{ fontSize: "1.4rem", marginTop: "10px", color: "#c8a2ff", fontWeight: "600" }}>
-              {Math.round(weighInWeight)} lbs
-            </p>
+            <div style={{
+              textAlign: "center",
+              fontSize: "2rem",
+              fontWeight: "700",
+              color: "#222",
+              marginTop: "10px"
+            }}>
+              {Math.round(weighInWeight)} <span style={{ fontSize: "1.2rem" }}>lbs</span>
+            </div>
           </div>
         </div>
       )}
