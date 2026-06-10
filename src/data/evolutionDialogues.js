@@ -66,7 +66,7 @@ export const evolutionDialogues = {
           { text: "There's GlazeCo. They make donuts and pastries. Everything’s super soft and glazed. They said they want this cozy, ‘treat yourself’ vibe where I just keep eating these warm, fluffy donuts on stream. It sounds the least intense out of all of them… but I already know how easy it is for me to lose track when I’m eating soft stuff.",  brand: "GlazeCo", result: "Destiny has taken the sponsorship with GlazeCo!"},
         ]
           }
-        ]
+    }
       }
     },
     onComplete: {
