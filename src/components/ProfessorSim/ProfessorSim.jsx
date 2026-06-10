@@ -277,10 +277,11 @@ const ProfessorSim = () => {
           <div style={{ backgroundColor: "white", padding: "30px", borderRadius: "10px", maxWidth: "400px", textAlign: "center" }}>
             <h3>Feed {selectedStudent?.name}</h3>
             <p>{popupMessage}</p>
+          <div style={{ display: flex, flexDirection: "row", gap: "20px"}}>
             <button onClick={() => setShowFeedPopup(false)}>Close</button>
             {!selectedStudent.formId && selectedStudent.lbs >= 238 && (
               <button 
-                onClick={() => handleAskWhatsUp(student)}
+                onClick={() => handleAskWhatsUp(selectedStudent)}
                 style={{ marginTop: "50px", backgroundColor: "#5c4636", color: "white" }}
               >
                 Ask what's up
