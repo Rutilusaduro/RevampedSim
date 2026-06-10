@@ -107,7 +107,6 @@ const ProfessorSim = () => {
 
   const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
 
-  // ==================== WEIGH-IN SYSTEM ====================
   const getWeighInVignette = (student) => {
     const data = weighInVignettes[student.id]
     if (!data) {
@@ -150,7 +149,7 @@ const ProfessorSim = () => {
     if (highStages.includes(stage) && selectedStudent) {
       const target = selectedStudent.lbs
 
-      // Realistic bounce animation
+      // Realistic bounce animation (dial rotates)
       const startOffset = Math.random() * 28 + 12
       const peakOffset = Math.random() * 22 + 10
       const bounceBackOffset = Math.random() * 12 + 6
@@ -162,20 +161,9 @@ const ProfessorSim = () => {
       setWeighInWeight(startWeight)
       setShowWeighInModal(true)
 
-      // Go to peak
-      setTimeout(() => {
-        setWeighInWeight(peakWeight)
-      }, 650)
-
-      // Bounce back
-      setTimeout(() => {
-        setWeighInWeight(bounceWeight)
-      }, 1650)
-
-      // Settle at final weight
-      setTimeout(() => {
-        setWeighInWeight(target)
-      }, 2400)
+      setTimeout(() => setWeighInWeight(peakWeight), 650)
+      setTimeout(() => setWeighInWeight(bounceWeight), 1650)
+      setTimeout(() => setWeighInWeight(target), 2400)
     }
   }
 
@@ -412,7 +400,7 @@ const ProfessorSim = () => {
         </div>
       )}
 
-      {/* Weigh-In Modal with Bounce Animation */}
+      {/* NEW WEIGH-IN MODAL (Dial rotates, needle is fixed, with cover) */}
       {showWeighInModal && selectedStudent && (
         <div style={{
           position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
@@ -421,46 +409,90 @@ const ProfessorSim = () => {
         }}>
           <div style={{
             backgroundColor: "#3d2a6e", padding: "40px", borderRadius: "16px",
-            textAlign: "center", width: "360px", border: "2px solid #9b6dff", color: "#e0d4ff"
+            textAlign: "center", width: "380px", border: "2px solid #9b6dff", color: "#e0d4ff"
           }}>
             <h3 style={{ color: "#c8a2ff" }}>Weigh-In</h3>
 
+            {/* Scale Container */}
             <div style={{
-              width: "260px", height: "260px",
-              border: "16px solid #9b6dff", borderRadius: "50%",
-              margin: "20px auto", position: "relative",
-              background: "linear-gradient(#4a2c7a, #3d2a6e)"
+              width: "280px",
+              height: "280px",
+              margin: "20px auto",
+              position: "relative",
+              borderRadius: "50%",
+              overflow: "hidden"
             }}>
-              {[80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480, 520, 560, 600].map((val, i) => {
-                const angle = (val - 80) * 1.15
-                return (
-                  <div key={i} style={{
-                    position: "absolute",
-                    top: "50%", left: "50%",
-                    transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-118px)`,
-                    fontSize: "13px",
-                    fontWeight: "600",
-                    color: "#c8a2ff"
-                  }}>
-                    {val}
-                  </div>
-                )
-              })}
-
-              {/* Needle with bounce animation */}
+              {/* Rotating Dial */}
               <div style={{
-                position: "absolute", top: "50%", left: "50%",
-                width: "6px", height: "118px", backgroundColor: "#c8a2ff",
+                width: "280px",
+                height: "280px",
+                border: "14px solid #9b6dff",
+                borderRadius: "50%",
+                background: "linear-gradient(#4a2c7a, #3d2a6e)",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                transform: `rotate(${(weighInWeight - 80) * 1.12}deg)`,
+                transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)"
+              }}>
+                {/* Numbers */}
+                {[80, 120, 160, 200, 240, 280, 320, 360, 400, 440, 480, 520, 560, 600].map((val, i) => {
+                  const angle = (val - 80) * 1.12
+                  return (
+                    <div key={i} style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-125px)`,
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      color: "#c8a2ff"
+                    }}>
+                      {val}
+                    </div>
+                  )
+                })}
+              </div>
+
+              {/* Fixed Needle (stays at top) */}
+              <div style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                width: "6px",
+                height: "130px",
+                backgroundColor: "#c8a2ff",
                 transformOrigin: "bottom center",
-                transform: `translate(-50%, -100%) rotate(${(weighInWeight - 80) * 1.15}deg)`,
-                transition: "transform 1.0s cubic-bezier(0.68, -0.55, 0.265, 1.55)",
-                boxShadow: "0 0 14px #c8a2ff"
+                transform: "translate(-50%, -100%)",
+                boxShadow: "0 0 12px #c8a2ff",
+                zIndex: 10
               }} />
 
+              {/* Center cap */}
               <div style={{
-                position: "absolute", top: "50%", left: "50%",
-                width: "20px", height: "20px", backgroundColor: "#c8a2ff",
-                borderRadius: "50%", transform: "translate(-50%, -50%)"
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                width: "22px",
+                height: "22px",
+                backgroundColor: "#c8a2ff",
+                borderRadius: "50%",
+                transform: "translate(-50%, -50%)",
+                zIndex: 20
+              }} />
+
+              {/* Rounded Rectangle Cover (hides top of dial) */}
+              <div style={{
+                position: "absolute",
+                top: "-20px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "220px",
+                height: "130px",
+                backgroundColor: "#3d2a6e",
+                borderRadius: "999px",
+                border: "14px solid #9b6dff",
+                zIndex: 15
               }} />
             </div>
 
