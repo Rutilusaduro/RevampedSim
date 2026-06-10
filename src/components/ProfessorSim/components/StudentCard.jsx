@@ -31,7 +31,7 @@ const StudentCard = ({ student, onClick }) => {
       }}>
         <h3 style={{ margin: 0 }}>{student.name}</h3>
         <span style={{ 
-          backgroundColor: "#f1f3f5", 
+          backgroundColor: "#4a2c7a", 
           padding: "2px 8px", 
           borderRadius: "12px",
           fontSize: "0.85rem"
