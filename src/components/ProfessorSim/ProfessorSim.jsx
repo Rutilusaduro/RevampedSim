@@ -95,14 +95,7 @@ const ProfessorSim = () => {
       setShowFeedPopup(true)
       return
     }
-    {!student.formId && student.lbs >= 238 && (
-  <button 
-    onClick={() => handleAskWhatsUp(student)}
-    style={{ marginTop: "15px", backgroundColor: "#5c4636", color: "white" }}
-  >
-    Ask what's up
-  </button>
-)}
+    
 
     const newStudents = [...students]
     newStudents[studentIndex] = { ...student, lbs: student.lbs + 8 }
@@ -284,6 +277,14 @@ const ProfessorSim = () => {
             <h3>Feed {selectedStudent?.name}</h3>
             <p>{popupMessage}</p>
             <button onClick={() => setShowFeedPopup(false)}>Close</button>
+            {!student.formId && student.lbs >= 238 && (
+  <button 
+    onClick={() => handleAskWhatsUp(student)}
+    style={{ marginTop: "15px", backgroundColor: "#5c4636", color: "white" }}
+  >
+    Ask what's up
+  </button>
+)}
           </div>
         </div>
       )}
