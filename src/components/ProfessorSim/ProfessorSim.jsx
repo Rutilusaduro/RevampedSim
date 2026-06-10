@@ -7,6 +7,7 @@ import { observeVignettes } from '../../data/observeVignettes'
 import DialogueModal from './components/DialogueModal'
 
 const ProfessorSim = () => {
+  // ==================== STARTING POPUP STATE ====================
   const [showStartPopup, setShowStartPopup] = useState(true)
   const [professorGender, setProfessorGender] = useState(null)
 
@@ -44,45 +45,58 @@ const ProfessorSim = () => {
   const [currentDialogue, setCurrentDialogue] = useState(null)
 
   const HEAVY_THRESHOLD = 238
+
   // ==================== HELPER FUNCTIONS ====================
-const getStage = (lbs) => {
-  if (lbs >= 820) return { label: "Blob" }
-  if (lbs >= 595) return { label: "Colossal" }
-  if (lbs >= 465) return { label: "Enormous" }
-  if (lbs >= 360) return { label: "Very Fat" }
-  if (lbs >= 285) return { label: "Fat" }
-  if (lbs >= 238) return { label: "Heavy" }
-  if (lbs >= 195) return { label: "Plump" }
-  if (lbs >= 162) return { label: "Chubby" }
-  if (lbs >= 135) return { label: "Soft" }
-  if (lbs >= 100) return { label: "Slim" }
-  return { label: "Slight" }
-}
-
-const getDynamicText = (student, type) => {
-  if (!studentContent[student.id]) return "[Content not available yet]"
-  const contentSet = student.formId 
-    ? studentContent[student.id].evolved 
-    : studentContent[student.id].base
-
-  if (!contentSet || !contentSet[type]) return "[Content not available yet]"
-
-  const entries = contentSet[type]
-  let bestEntry = entries[0]
-  for (let entry of entries) {
-    if (student.lbs >= entry.minLbs) bestEntry = entry
+  const getStage = (lbs) => {
+    if (lbs >= 820) return { label: "Blob" }
+    if (lbs >= 595) return { label: "Colossal" }
+    if (lbs >= 465) return { label: "Enormous" }
+    if (lbs >= 360) return { label: "Very Fat" }
+    if (lbs >= 285) return { label: "Fat" }
+    if (lbs >= 238) return { label: "Heavy" }
+    if (lbs >= 195) return { label: "Plump" }
+    if (lbs >= 162) return { label: "Chubby" }
+    if (lbs >= 135) return { label: "Soft" }
+    if (lbs >= 100) return { label: "Slim" }
+    return { label: "Slight" }
   }
-  return bestEntry.text
-}
 
-const getCurrentDiary = (student) => {
-  if (student.formId && evolvedDiaries[student.formId]) {
-    return evolvedDiaries[student.formId]
+  const getDynamicText = (student, type) => {
+    if (!studentContent[student.id]) return "[Content not available yet]"
+    const contentSet = student.formId 
+      ? studentContent[student.id].evolved 
+      : studentContent[student.id].base
+    if (!contentSet || !contentSet[type]) return "[Content not available yet]"
+    const entries = contentSet[type]
+    let bestEntry = entries[0]
+    for (let entry of entries) {
+      if (student.lbs >= entry.minLbs) bestEntry = entry
+    }
+    return bestEntry.text
   }
-  return baseDiaries[student.archetype.toLowerCase()] || []
-}
 
-const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
+  const getCurrentDiary = (student) => {
+    if (student.formId && evolvedDiaries[student.formId]) {
+      return evolvedDiaries[student.formId]
+    }
+    return baseDiaries[student.archetype.toLowerCase()] || []
+  }
+
+  const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
+
+  const handleWeighIn = () => {
+    if (!selectedStudent) return
+    setWeighInWeight(selectedStudent.lbs)
+    setShowWeighInModal(true)
+
+    setTimeout(() => {
+      setShowWeighInModal(false)
+      setPopupMessage(
+        `${selectedStudent.name} stepped onto the scale. It creaked loudly as the plastic buckled beneath her. The red needle spun wildly before slowly settling on ${selectedStudent.lbs} lbs.`
+      )
+      setShowNarrativePopup(true)
+    }, 1800)
+  }
 
   const handleAskWhatsUp = (student) => {
     if (!evolutionDialogues[student.id]) {
@@ -233,7 +247,7 @@ const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
           </>
         )}
 
-        {/* FULL STUDENT PROFILE (restored) */}
+        {/* FULL STUDENT PROFILE */}
         {selectedStudent && !showRoster && (
           <div style={{ backgroundColor: "#3d2a6e", color: "#e0d4ff", padding: "20px", borderRadius: "12px", border: "2px solid #9b6dff" }}>
             <button onClick={goBackToRoster} style={{ marginBottom: "20px", backgroundColor: "#6b4e9e" }}>
@@ -322,6 +336,61 @@ const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
                 </button>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Weigh-In Modal */}
+      {showWeighInModal && selectedStudent && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.6)", display: "flex",
+          alignItems: "center", justifyContent: "center", zIndex: 1100
+        }}>
+          <div style={{
+            backgroundColor: "#3d2a6e", padding: "40px", borderRadius: "16px",
+            textAlign: "center", width: "320px", border: "2px solid #9b6dff", color: "#e0d4ff"
+          }}>
+            <h3 style={{ color: "#c8a2ff" }}>Weigh-In</h3>
+            <div style={{
+              width: "220px", height: "220px",
+              border: "12px solid #9b6dff", borderRadius: "50%",
+              margin: "20px auto", position: "relative",
+              background: "linear-gradient(#4a2c7a, #3d2a6e)"
+            }}>
+              <div style={{
+                position: "absolute", top: "50%", left: "50%",
+                width: "4px", height: "90px", backgroundColor: "#c8a2ff",
+                transformOrigin: "bottom center",
+                transform: `translate(-50%, -100%) rotate(${(weighInWeight - 80) * 1.2}deg)`,
+                transition: "transform 1.5s cubic-bezier(0.23, 1.0, 0.32, 1)"
+              }} />
+              <div style={{
+                position: "absolute", top: "50%", left: "50%",
+                width: "16px", height: "16px", backgroundColor: "#c8a2ff",
+                borderRadius: "50%", transform: "translate(-50%, -50%)"
+              }} />
+            </div>
+            <p style={{ fontSize: "1.2rem", marginTop: "10px" }}>{weighInWeight} lbs</p>
+          </div>
+        </div>
+      )}
+
+      {/* Narrative Popup */}
+      {showNarrativePopup && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: "rgba(0,0,0,0.6)", display: "flex",
+          alignItems: "center", justifyContent: "center", zIndex: 1200
+        }}>
+          <div style={{
+            backgroundColor: "#3d2a6e", padding: "30px", borderRadius: "12px",
+            maxWidth: "420px", textAlign: "center", border: "2px solid #9b6dff", color: "#e0d4ff"
+          }}>
+            <p style={{ fontSize: "1.05rem", lineHeight: "1.6" }}>{popupMessage}</p>
+            <button onClick={() => setShowNarrativePopup(false)} style={{ marginTop: "20px", backgroundColor: "#9b6dff" }}>
+              Close
+            </button>
           </div>
         </div>
       )}
