@@ -310,13 +310,13 @@ const ProfessorSim = () => {
         setSelectedStudent(newStudents[studentIndex]);
     }
   }
-    }
+    
       
       if (result.notification) {
         alert(result.notification);
       }
       setShowDialogue(false);
-    }}
+    }
     onClose={() => setShowDialogue(false)}
   />
 )}
