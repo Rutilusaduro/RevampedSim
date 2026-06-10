@@ -414,8 +414,8 @@ const ProfessorSim = () => {
             boxShadow: "0 10px 30px rgba(0,0,0,0.3)"
           }}>
             <div style={{
-              width: "290px",
-              height: "155px",
+              width: "230px",
+              height: "120px",
               margin: "0 auto",
               position: "relative",
               overflow: "hidden"
@@ -424,8 +424,8 @@ const ProfessorSim = () => {
                 position: "absolute",
                 top: "50%",
                 left: "50%",
-                width: "290px",
-                height: "290px",
+                width: "230px",
+                height: "120px",
                 border: "10px solid #9b6dff",
                 borderRadius: "50%",
                 transform: `translate(-50%, -50%) rotate(${(weighInWeight - 80) * 0.95 - 90}deg)`,
@@ -439,7 +439,7 @@ const ProfessorSim = () => {
                       position: "absolute",
                       top: "50%",
                       left: "50%",
-                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-115px)`,
+                      transform: `translate(-50%, -50%) rotate(${angle}deg) translateY(-100px)`,
                       fontSize: "14px",
                       fontWeight: "700",
                       color: "#c8a2ff"
