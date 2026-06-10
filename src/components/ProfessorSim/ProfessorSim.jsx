@@ -44,6 +44,45 @@ const ProfessorSim = () => {
   const [currentDialogue, setCurrentDialogue] = useState(null)
 
   const HEAVY_THRESHOLD = 238
+  // ==================== HELPER FUNCTIONS ====================
+const getStage = (lbs) => {
+  if (lbs >= 820) return { label: "Blob" }
+  if (lbs >= 595) return { label: "Colossal" }
+  if (lbs >= 465) return { label: "Enormous" }
+  if (lbs >= 360) return { label: "Very Fat" }
+  if (lbs >= 285) return { label: "Fat" }
+  if (lbs >= 238) return { label: "Heavy" }
+  if (lbs >= 195) return { label: "Plump" }
+  if (lbs >= 162) return { label: "Chubby" }
+  if (lbs >= 135) return { label: "Soft" }
+  if (lbs >= 100) return { label: "Slim" }
+  return { label: "Slight" }
+}
+
+const getDynamicText = (student, type) => {
+  if (!studentContent[student.id]) return "[Content not available yet]"
+  const contentSet = student.formId 
+    ? studentContent[student.id].evolved 
+    : studentContent[student.id].base
+
+  if (!contentSet || !contentSet[type]) return "[Content not available yet]"
+
+  const entries = contentSet[type]
+  let bestEntry = entries[0]
+  for (let entry of entries) {
+    if (student.lbs >= entry.minLbs) bestEntry = entry
+  }
+  return bestEntry.text
+}
+
+const getCurrentDiary = (student) => {
+  if (student.formId && evolvedDiaries[student.formId]) {
+    return evolvedDiaries[student.formId]
+  }
+  return baseDiaries[student.archetype.toLowerCase()] || []
+}
+
+const currentDiary = selectedStudent ? getCurrentDiary(selectedStudent) : []
 
   const handleAskWhatsUp = (student) => {
     if (!evolutionDialogues[student.id]) {
