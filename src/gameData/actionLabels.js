@@ -6,9 +6,17 @@ export const ACTION_CATEGORIES = {
   'scheme-pastry': 'food',
   'breakfast-pastry': 'food',
   'breakfast-hearty': 'food',
+  'bring-donut': 'food',
+  'bring-pizza': 'food',
+  'order-dessert': 'food',
+  'all-you-can-eat': 'food',
+  'inhabit-binge': 'food',
   'refeed-together': 'food',
   'gym-date': 'food',
   'bakery-run': 'food',
+  'offer-seconds': 'interact',
+  'rub-belly': 'interact',
+  'say-she-looks-good': 'interact',
   'visit-diner': 'hangout',
   'work-shift': 'hangout',
   'walk': 'hangout',
@@ -33,6 +41,14 @@ export function getActionLabel(actionId, state) {
 
   const labels = {
     'scheme-pastry': inhabit ? 'Buy a box of donuts for yourself' : `Bring ${n} a box of donuts`,
+    'bring-donut': inhabit ? 'Get a donut for yourself' : `Bring ${n} a donut`,
+    'bring-pizza': inhabit ? 'Order a pizza for yourself' : `Bring ${n} a pizza`,
+    'order-dessert': inhabit ? 'Get dessert for yourself' : `Order ${n} dessert`,
+    'all-you-can-eat': inhabit ? 'Hit the buffet' : `Take ${n} to the all-you-can-eat`,
+    'offer-seconds': inhabit ? 'Get yourself seconds' : `Ask ${n} if she wants seconds`,
+    'rub-belly': inhabit ? 'Rub your stomach' : `Rub ${n}'s belly`,
+    'say-she-looks-good': inhabit ? 'Tell yourself you look good' : `Tell ${n} she looks good`,
+    'inhabit-binge': 'Order too much takeout and eat it all',
     'breakfast-pastry': inhabit ? 'Pick up pastries on the way in' : `Bring ${n} pastries from the bakery`,
     'breakfast-hearty': inhabit ? 'Make yourself a big breakfast' : `Cook ${n} a big breakfast`,
     'visit-diner': arc === 'priya' ? `Meet ${n} at the gym` : `Meet ${n} at the diner`,
@@ -115,4 +131,10 @@ export function garmentLinePlainInhabit(woman) {
   if (fit < 1.05) return `Your ${name} still fit.`;
   if (fit < 1.2) return `Your ${name} are getting tight.`;
   return `Your ${name} are way too small.`;
+}
+
+export function weighLine(woman, inhabit) {
+  if (!woman.lastWeigh) return null;
+  const lbs = woman.lastWeigh.lbs.toFixed(1);
+  return inhabit ? `Last weigh-in: ${lbs} lbs` : `Last weighed: ${lbs} lbs`;
 }

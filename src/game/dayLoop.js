@@ -1,4 +1,4 @@
-import { seededRandom, setRandomSource, createContext, createFacts, createSessionUsed, render } from '../textEngine/engine.js';
+import { seededRandom, setRandomSource, createContext, createFacts, createSessionUsed, render, hasModule } from '../textEngine/engine.js';
 import '../scenes/index.js';
 import { rungFromLbs } from '../gameData/ladders.js';
 import { applyMeal, decayFullness, decayAppetite, mealCost } from './appetite.js';
@@ -17,6 +17,31 @@ import { beginArc, nextArcId, snapshotWoman } from './arcs.js';
 
 function tpl(state) {
   return arcTemplates(state.arc.id);
+}
+
+function renderParagraphSequence(state, baseKey, maxParts = 12) {
+  const parts = [];
+  for (let i = 1; i <= maxParts; i++) {
+    const key = `${baseKey}.p${i}`;
+    if (!hasModule(key)) break;
+    const t = renderBeat(state, `{${key}}`);
+    if (t) parts.push(t);
+  }
+  return parts.join('\n\n');
+}
+
+function crownSequenceKey(state) {
+  const arc = state.arc.id;
+  if (arc === 'mara') return 'crown.mara.booth';
+  if (arc === 'priya') return 'priya.crown.bench';
+  return 'crown.sofie.chair';
+}
+
+function renderCrownScene(state) {
+  const base = crownSequenceKey(state);
+  const seq = renderParagraphSequence(state, base, 14);
+  if (seq) return seq;
+  return renderBeat(state, tpl(state).crown, { spurtActive: true, crownNear: true, witnesses: 'many' });
 }
 
 function makeRng(state) {
@@ -96,7 +121,9 @@ function processWindowRolls(state, action, rng) {
         if (slot && state.woman.wardrobe[slot]) state.woman.wardrobe[slot].integrity = 0;
       }
       onPublicWindowFire(state.arc, state.town);
-      const text = renderBeat(state, fireTpl(w, state), { spurtActive: true });
+      const text = w.crown
+        ? renderCrownScene(state)
+        : renderBeat(state, fireTpl(w, state), { spurtActive: true });
       results.push({ type: 'fire', window: w, text });
       if (w.crown) state.arc.stage = 'crown';
     }
@@ -149,8 +176,19 @@ export function renderActionMenu(state) {
 export function executeLook(state) {
   const arc = state.arc.id;
   state._eventScopes = null;
-  const parts = [1, 2, 3].map((n) => renderBeat(state, `{look.${arc}.p${n}}`));
-  const text = parts.join('\n\n');
+  const text = renderParagraphSequence(state, `look.${arc}`, 3);
+  const base = state.ui.sceneHistory.length
+    ? state.ui.sceneHistory.join('\n\n')
+    : state.ui.morningText;
+  state.ui.sceneText = `${base}\n\n${text}`;
+  return text;
+}
+
+export function executeWeigh(state) {
+  const arc = state.arc.id;
+  state._eventScopes = null;
+  const text = renderParagraphSequence(state, `weigh.${arc}`, 4);
+  state.woman.lastWeigh = { day: state.town.day, lbs: state.woman.lbs };
   const base = state.ui.sceneHistory.length
     ? state.ui.sceneHistory.join('\n\n')
     : state.ui.morningText;
@@ -161,11 +199,16 @@ export function executeLook(state) {
 export function executeTalk(state, topicId) {
   if (state.ui.slotsUsed >= 3) return { ok: false };
   state._eventScopes = null;
-  const text = renderBeat(state, `{talk.${state.arc.id}.${topicId}}`);
+  const base = `talk.${state.arc.id}.${topicId}`;
+  const text = renderParagraphSequence(state, base, 6);
+  if (!text) return { ok: false, error: 'missing dialogue' };
   bumpArgPressure(state.arc, 1);
   advanceArgStage(state.arc);
   updateArcStage(state);
   state.ui.slotsUsed += 1;
+  if (state.ui.sceneHistory.length === 0) {
+    state.ui.sceneHistory.push(state.ui.morningText);
+  }
   state.ui.sceneHistory.push(text);
   state.ui.sceneText = state.ui.sceneHistory.join('\n\n');
   state.ui.actionMenu = renderActionMenu(state);
@@ -188,8 +231,15 @@ export function executeAction(state, actionId) {
 
   if (action.effects?.meal) {
     lbsGained += applyMeal(state.woman, action.effects.meal);
-    texts.push(renderBeat(state, t.meal));
+    if (action.effects.feedTpl) {
+      texts.push(renderParagraphSequence(state, action.effects.feedTpl, action.effects.feedParts ?? 3));
+    } else {
+      texts.push(renderBeat(state, t.meal));
+    }
     tickGravity(state.woman, state.npcs, { sharedMeal: true });
+  } else if (action.effects?.intimate) {
+    state.woman.appetite = Math.min(2.5, state.woman.appetite + 0.06);
+    texts.push(renderParagraphSequence(state, action.effects.intimate, action.effects.feedParts ?? 3));
   } else if (action.effects?.observe) {
     texts.push(renderBeat(state, t.morning));
   } else if (action.effects?.work) {
@@ -224,6 +274,9 @@ export function executeAction(state, actionId) {
   updateArcStage(state);
   decayFullness(state.woman, action.slotCost);
   state.ui.slotsUsed += action.slotCost;
+  if (state.ui.sceneHistory.length === 0 && texts.length) {
+    state.ui.sceneHistory.push(state.ui.morningText);
+  }
   state.ui.sceneHistory.push(...texts);
   state.ui.sceneText = texts.join('\n\n');
   state.ui.actionMenu = renderActionMenu(state);
@@ -378,7 +431,7 @@ export function triggerCrown(state) {
   });
   state.woman.fixture = { location: t.crownLocation, overdrive: state.toggles?.overdrive ?? false, odLbsPerDay: 0.5 };
   state.arc.stage = 'settling';
-  const crownText = renderBeat(state, t.crown, { spurtActive: true, crownNear: true, witnesses: 'many' });
+  const crownText = renderCrownScene(state);
   state.ui.sceneText = crownText;
   finalizeSettling(state);
   return state.ui.sceneText;

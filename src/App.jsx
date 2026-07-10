@@ -2,12 +2,12 @@ import { useCallback, useState } from 'react';
 import { createInitialGameState } from './game/state.js';
 import {
   startDay, executeAction, executeVisit, runEvening, runNightLedger, advanceDay, triggerCrown,
-  transitionToArc, executeLook, executeTalk,
+  transitionToArc, executeLook, executeTalk, executeWeigh,
 } from './game/dayLoop.js';
 import { saveToSlot, loadFromSlot, serializeGameState, deserializeGameState } from './game/save.js';
 import { rungFromLbs, rungDescriptor } from './gameData/ladders.js';
 import {
-  moodLine, moodLineInhabit, garmentLinePlain, garmentLinePlainInhabit,
+  moodLine, moodLineInhabit, garmentLinePlain, garmentLinePlainInhabit, weighLine,
 } from './gameData/actionLabels.js';
 import { TownMap } from './components/TownMap.jsx';
 import { RecordGallery } from './components/RecordGallery.jsx';
@@ -24,6 +24,7 @@ function HerCard({ woman, town, inhabit }) {
   const fullnessPct = Math.min(100, Math.round((woman.fullness / 1.3) * 100));
   const mood = inhabit ? moodLineInhabit(woman) : moodLine(woman);
   const garment = inhabit ? garmentLinePlainInhabit(woman) : garmentLinePlain(woman);
+  const weighed = weighLine(woman, inhabit);
 
   return (
     <aside className="panel her-card">
@@ -35,6 +36,7 @@ function HerCard({ woman, town, inhabit }) {
         <div className="bar-track warm"><div className="bar-fill" style={{ width: `${fullnessPct}%` }} /></div>
       </div>
       <p className="garment-line">{garment}</p>
+      {weighed && <p className="meta-line">{weighed}</p>}
       <p className="meta-line">Cash: ${town.economy.cash}</p>
     </aside>
   );
@@ -88,6 +90,10 @@ export default function App() {
 
   const handleLook = useCallback(() => {
     mutate((next) => executeLook(next));
+  }, [mutate]);
+
+  const handleWeigh = useCallback(() => {
+    mutate((next) => executeWeigh(next));
   }, [mutate]);
 
   const handleVisit = useCallback((locationId) => {
@@ -171,6 +177,7 @@ export default function App() {
                 onAction={handleAction}
                 onTalk={handleTalk}
                 onLook={handleLook}
+                onWeigh={handleWeigh}
                 onEvening={handleEvening}
               />
             )}
