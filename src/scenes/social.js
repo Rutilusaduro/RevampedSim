@@ -92,7 +92,10 @@ registerPool('weigh.sofie.p4', [{ when: {}, text: ['You step off. Your face is w
 // look paragraphs (unchanged structure - keep existing lookParagraphs)
 function lookParagraphs(arc, paragraphs) {
   paragraphs.forEach((texts, i) => {
-    registerPool(`look.${arc}.p${i + 1}`, texts.map((t) => ({ when: {}, text: [t] })));
+    registerPool(`look.${arc}.p${i + 1}`, texts.map((t) => {
+      if (typeof t === 'string') return { when: {}, text: [t] };
+      return { when: t.when ?? {}, text: t.text };
+    }));
   });
 }
 
@@ -103,9 +106,15 @@ lookParagraphs('mara', [
     'Mara is eating cereal from the box, standing in the kitchen light.',
   ],
   [
-    'She has put on weight — it shows in her face and the way her clothes fit.',
-    'Her thighs spread a bit wider on the cushion than they used to.',
-    'She looks heavier and happier than you have seen her in months.',
+    { when: {}, text: ['She has put on weight — it shows in her face and the way her clothes fit.'] },
+    { when: { rungMax: 7 }, text: ['Her thighs spread a bit wider on the cushion than they used to.'] },
+    { when: { rungMax: 7 }, text: ['She looks heavier and happier than you have seen her in months.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['She is noticeably heavy now — her shirt rides up when she reaches.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['Her hips spread wide on the couch. The cushions flatten under her.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['She looks soft and big and comfortable in her own skin.'] },
+    { when: { rungMin: 11 }, text: ['She is massive compared to when you met — belly, thighs, face all rounder.'] },
+    { when: { rungMin: 11 }, text: ['She fills the couch. She fills the doorway when she stands.'] },
+    { when: { rungMin: 11 }, text: ['She looks close to five hundred pounds of woman and she knows it.'] },
   ],
   [
     'She catches you looking and raises an eyebrow. "What?"',
@@ -121,9 +130,15 @@ lookParagraphs('priya', [
     'Priya is sitting on a bench eating from a takeout container.',
   ],
   [
-    'She looks fit, but softer than the photos on the gym website.',
-    'Her leggings strain at the thigh when she finishes the set.',
-    'GAIN is written on the board behind her. She has clearly put on weight.',
+    { when: {}, text: ['She looks fit, but softer than the photos on the gym website.'] },
+    { when: { rungMax: 7 }, text: ['Her leggings strain at the thigh when she finishes the set.'] },
+    { when: { rungMax: 7 }, text: ['GAIN is written on the board behind her. She has clearly put on weight.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['Her compression top is tight across her belly. She keeps teaching.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['She looks thick and strong and soft at the same time.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['The bench dips when she sits. She does not get up.'] },
+    { when: { rungMin: 11 }, text: ['She is huge by gym standards — belly, hips, thighs all straining her leggings.'] },
+    { when: { rungMin: 11 }, text: ['She takes up half the demonstration bench without trying.'] },
+    { when: { rungMin: 11 }, text: ['She looks close to five hundred pounds of coach and she owns it.'] },
   ],
   [
     'She waves you over. "Morning. You eating after this?"',
@@ -139,9 +154,15 @@ lookParagraphs('sofie', [
     'You look down at yourself in the break room, pastry in hand.',
   ],
   [
-    'Your cardigan gaps at the buttons. Your face looks rounder than last semester.',
-    'Your skirt is tight. Your thighs press together when you stand still.',
-    'You are noticeably heavier and the chair creaks when you shift.',
+    { when: {}, text: ['Your cardigan gaps at the buttons. Your face looks rounder than last semester.'] },
+    { when: { rungMax: 7 }, text: ['Your skirt is tight. Your thighs press together when you stand still.'] },
+    { when: { rungMax: 7 }, text: ['You are noticeably heavier and the chair creaks when you shift.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['Your cardigan will not close. Your belly pushes at the fabric.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['You look soft and wide in the mirror. You keep looking.'] },
+    { when: { rungMin: 8, rungMax: 10 }, text: ['Your thighs rub when you walk. You have stopped minding.'] },
+    { when: { rungMin: 11 }, text: ['You are massive now — belly, hips, thighs filling the frame.'] },
+    { when: { rungMin: 11 }, text: ['You fill the elevator. You fill the reading chair.'] },
+    { when: { rungMin: 11 }, text: ['You look close to five hundred pounds and you are not hiding.'] },
   ],
   [
     'You adjust the collar and head out anyway.',

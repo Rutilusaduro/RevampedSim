@@ -12,8 +12,13 @@ registerPool('sofie.win.near.garment', [
   { when: { rungMin: 6 }, weight: 3, text: [
     'The cardigan will not close. You keep it on your shoulders anyway.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
-    'Fabric gives when you bend for a dropped pen. You stand slower. You stand anyway.',
+  { when: { rungMin: 9 }, weight: 3, text: [
+    'Fabric strains when you bend for a dropped pen. You stand slower.',
+    'Your belt is on the last hole. You need a new belt.',
+  ] },
+  { when: { rungMin: 11 }, weight: 3, text: [
+    'The cardigan gaps from neck to belly. You wear it open.',
+    'Your skirt seam pulls at the hip. You keep shelving.',
   ] },
 ]);
 

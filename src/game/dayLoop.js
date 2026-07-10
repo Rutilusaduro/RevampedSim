@@ -1,7 +1,7 @@
 import { seededRandom, setRandomSource, createContext, createFacts, createSessionUsed, render, hasModule } from '../textEngine/engine.js';
 import '../scenes/index.js';
-import { rungFromLbs } from '../gameData/ladders.js';
-import { applyMeal, decayFullness, decayAppetite, mealCost } from './appetite.js';
+import { rungFromLbs, rungDescriptor } from '../gameData/ladders.js';
+import { applyMeal, decayFullness, decayAppetite, mealCost, eveningMealSize } from './appetite.js';
 import { updateWindowStates, rollWindow, getOpenWindows } from './windows.js';
 import { recordRatchet, failObject } from './ratchet.js';
 import { tickGravity, applySofteningFromDrift } from './gravity.js';
@@ -138,6 +138,12 @@ function checkRungCross(state) {
   state._lastRung = now;
   if (now > prev) {
     onRungCross(state.arc, state.town);
+    state.ui.rungMilestone = {
+      id: now,
+      label: rungDescriptor(now),
+      lbs: state.woman.lbs,
+      day: state.town.day,
+    };
     return true;
   }
   return false;
@@ -147,12 +153,12 @@ function updateArcStage(state) {
   if (state.arc.stage === 'settling' || state.arc.stage === 'crown') return;
   const rung = rungFromLbs(state.woman.frameLbs, state.woman.lbs).id;
   const crown = state.windows.find((w) => w.crown && w.state !== 'fired');
-  if (state.woman.flipped && rung >= 4 && state.arc.stage !== 'crown-ready') {
+  if (state.woman.flipped && rung >= 6 && state.arc.stage !== 'crown-ready') {
     state.arc.stage = 'convergence';
   }
   if (crown && state.woman.flipped) {
     updateWindowStates(state.windows, state.woman);
-    if (crown.state === 'open' || crown.state === 'imminent' || state.woman.lbs >= crown.openLbs) {
+    if (crown.state === 'open' || crown.state === 'imminent' || state.woman.lbs >= crown.openLbs || rung >= 12) {
       state.arc.stage = 'crown-ready';
     }
   }
@@ -288,7 +294,7 @@ export function executeAction(state, actionId) {
 export function runEvening(state) {
   const t = tpl(state);
   state._eventScopes = null;
-  applyMeal(state.woman, state.woman.flipped ? 3 : 2);
+  applyMeal(state.woman, eveningMealSize(state.woman, state.town.day));
   let text = renderBeat(state, t.evening);
   const stage = currentArgStage(state.arc);
   let flippedNow = false;
@@ -319,9 +325,13 @@ export function runNightLedger(state) {
   const lines = [
     `Day ${state.town.day}`,
     `She gained ${delta >= 0 ? '+' : ''}${delta.toFixed(1)} lbs today`,
+    `Weight: ${state.woman.lbs.toFixed(1)} lbs`,
     `Cash: $${state.town.economy.cash}`,
     renderBeat(state, '{town.ledger}'),
   ];
+  if (state.ui.rungMilestone?.day === state.town.day) {
+    lines.splice(2, 0, `Milestone: she looks ${state.ui.rungMilestone.label}`);
+  }
   if (state.woman.ratchetLog.length) {
     const last = state.woman.ratchetLog[state.woman.ratchetLog.length - 1];
     lines.push(`Ratchet: ${last.summary}`);
@@ -409,7 +419,7 @@ export function triggerCrown(state) {
   const crown = state.windows.find((w) => w.crown);
   if (!crown) return null;
   const t = tpl(state);
-  state.woman.lbs += 8;
+  state.woman.lbs += 12;
   crown.state = 'fired';
   crown.firedOn = { day: state.town.day, sceneRef: 'crown' };
   failObject(state.town, crown.objectId, state.town.day, crown.label);

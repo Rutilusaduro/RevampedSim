@@ -15,6 +15,18 @@ registerPool('meal.beat', [
     'She slides into the booth. The table edge is closer to her stomach than last month.',
     'She flinches, then laughs and claims she was reaching for a napkin.',
   ] },
+  { when: { rungMin: 5, rungMax: 7 }, weight: 3, text: [
+    'She orders without looking at the menu. The booth seat dips when she sits.',
+    'She eats fast, then slower, then fast again. The plate is empty.',
+  ] },
+  { when: { rungMin: 8, rungMax: 10 }, weight: 3, text: [
+    'She needs both hands to steady the tray. She eats anyway, leaning back into the booth.',
+    'The table is too close. She pushes it with her stomach and does not stop eating.',
+  ] },
+  { when: { rungMin: 11 }, weight: 3, text: [
+    'She eats like the diner is watching. It is. She does not care.',
+    'She finishes one plate and reaches for yours without asking.',
+  ] },
   { when: { seatType: 'enabler', rungMax: 5 }, weight: 3, text: [
     'You slide the pastry box toward her. She opens it.',
     'Her eyes go to the box. Away. Back. Her hand finds the lid.',

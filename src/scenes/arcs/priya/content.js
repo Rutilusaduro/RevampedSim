@@ -35,14 +35,24 @@ registerPool('priya.port.morning', [
     'Clients arrive early. Priya is already eating between sets.',
   ] },
   { when: { rungMin: 6, rungMax: 7 }, weight: 3, text: [
+    'Morning class is fuller than it used to be. Priya demos slower between bites.',
+    'She eats at the front desk before the clients arrive.',
+  ] },
+  { when: { rungMin: 8, rungMax: 9 }, weight: 3, text: [
     'Morning class is standing room only. Priya takes the widest bench without asking.',
     'She has to turn sideways at the turnstile now. She does it without breaking stride.',
     'She crosses the gym with a sway that was not there in spring.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
-    'Morning is logistics now — which bench, which jacket, which refeed first.',
-    'Priya chooses the reinforced demonstration bench without being asked.',
+  { when: { rungMin: 10, rungMax: 11 }, weight: 3, text: [
     'The mezzanine stairs wind her. She takes them slow and does not apologize.',
+    'Clients stare when she demos. She stares back while chewing.',
+    'GAIN is on the board in permanent marker now.',
+  ] },
+  { when: { rungMin: 12 }, weight: 3, text: [
+    'Morning is logistics: which bench, which jacket, which refeed first.',
+    'Priya chooses the reinforced demonstration bench without being asked.',
+    'She eats between sets like it is part of the warmup.',
+    'Dev watches from the office. She waves at him with a fork.',
   ] },
   { when: { stance: 'opposed', flipped: false }, weight: 3, text: [
     'She measures her oatmeal. Mara\'s booth story is still all anyone talks about.',

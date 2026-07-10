@@ -22,9 +22,18 @@ registerPool('port.morning', [
     'She walks to the bathroom with a sway she did not have last spring.',
     'She turns sideways to fit through the bathroom door. She does it without thinking now.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
+  { when: { rungMin: 8, rungMax: 9 }, weight: 3, text: [
     'She picks the sturdier kitchen chair without being asked.',
     'Half her old shirts do not button. She wears the ones that still do.',
+  ] },
+  { when: { rungMin: 10, rungMax: 11 }, weight: 3, text: [
+    'She has to turn sideways in the hallway now. She does it without sighing.',
+    'The bathroom scale groans. She steps on anyway and reads the number out loud.',
+  ] },
+  { when: { rungMin: 12 }, weight: 3, text: [
+    'Morning is a list: which chair, which route, which shirt still closes.',
+    'She eats standing at the counter because the kitchen chair is done.',
+    'She catches her reflection and does not look away. She looks bigger. She looks fine.',
   ] },
   { when: { flipped: true }, priority: 1, text: [
     '{subject.first} hums while she eats cereal straight from the box.',
@@ -40,6 +49,12 @@ registerPool('port.evening', [
   ] },
   { when: { rungMin: 3 }, weight: 2, text: [
     'The couch dips when she sits. She notices. She does not get up.',
+  ] },
+  { when: { rungMin: 8 }, weight: 2, text: [
+    'The couch dips deep when she sits. She has stopped apologizing for it.',
+  ] },
+  { when: { rungMin: 11 }, weight: 2, text: [
+    'She needs both hands to push off the couch. She gets up anyway.',
   ] },
   { when: { flipped: true }, priority: 1, weight: 3, text: [
     'She goes back to the fridge after dinner. The day is not over for her yet.',

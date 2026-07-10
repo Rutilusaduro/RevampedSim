@@ -1,5 +1,5 @@
 /**
- * P3 gate — three playthrough strategies must reach crown-ready within 70 days.
+ * P3 gate — three playthrough strategies must reach crown-ready within 110 days.
  * rush: feed aggressively · savor: observe/rest · hostile: minimal engagement
  */
 import { createInitialGameState } from '../src/game/state.js';
@@ -11,7 +11,7 @@ const STRATEGIES = {
   hostile: ['rest', 'rest', 'walk'],
 };
 
-function playArc(strategyName, actions, maxDays = 70) {
+function playArc(strategyName, actions, maxDays = 110) {
   const state = startDay(createInitialGameState());
   let day = 0;
   const done = (s) => ['crown-ready', 'crown', 'settling'].includes(s.arc.stage);

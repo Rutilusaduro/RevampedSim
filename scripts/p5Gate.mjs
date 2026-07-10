@@ -1,5 +1,5 @@
 /**
- * P5 per-arc gates — Priya and Sofie must reach crown-ready within 70 days.
+ * P5 per-arc gates — Priya and Sofie must reach crown-ready within 110 days.
  */
 import { createInitialGameState } from '../src/game/state.js';
 import { loadArcIntoState } from '../src/game/arcs.js';
@@ -9,7 +9,7 @@ import {
 
 const DONE = new Set(['crown-ready', 'crown', 'settling']);
 
-function playArc(arcId, actions, maxDays = 70, prep = null) {
+function playArc(arcId, actions, maxDays = 110, prep = null) {
   const state = startDay(createInitialGameState({ firstPersonArcs: true }));
   if (prep) prep(state);
   loadArcIntoState(state, arcId, { carryDriftFrom: prep?.carry });

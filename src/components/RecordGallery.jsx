@@ -1,11 +1,7 @@
-import { rungFromLbs, rungDescriptor } from '../gameData/ladders.js';
+import { rungFromLbs, rungDescriptor, GRAVITY_RUNGS } from '../gameData/ladders.js';
 
 function WomanRecord({ woman, title }) {
-  const rungs = [];
-  for (let i = 0; i <= 10; i++) {
-    const offset = [0, 25, 50, 80, 110, 145, 180, 220, 265, 310, 355][i];
-    if (woman.lbs >= woman.frameLbs + offset) rungs.push(i);
-  }
+  const rungs = GRAVITY_RUNGS.filter((r) => woman.lbs >= woman.frameLbs + r.offset).map((r) => r.id);
 
   return (
     <section className="woman-record">

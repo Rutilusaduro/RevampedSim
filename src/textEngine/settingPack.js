@@ -97,7 +97,8 @@ registerPool('word.size', [
   { when: { rung: 1 }, weight: 2, text: ['curved', 'a little softer', 'noticeable'] },
   { when: { rungMin: 2, rungMax: 4 }, weight: 2, text: ['curved', 'generous', 'noticeable'] },
   { when: { rungMin: 5, rungMax: 7 }, weight: 2, text: ['heavy', 'ample', 'undeniable'] },
-  { when: { rungMin: 8 }, weight: 2, text: ['heavy', 'wide', 'hard to miss'] },
+  { when: { rungMin: 8, rungMax: 10 }, weight: 2, text: ['heavy', 'wide', 'hard to miss'] },
+  { when: { rungMin: 11 }, weight: 2, text: ['massive', 'room-filling', 'impossible to ignore'] },
   { when: { indulgenceMin: 2 }, weight: 2, text: ['indulged', 'well-fed', 'satisfied'] },
 ]);
 
@@ -105,4 +106,5 @@ registerPool('word.moveVerb', [
   { when: {}, text: ['walks', 'moves', 'crosses'] },
   { when: { rungMin: 4 }, weight: 2, text: ['sways', 'rolls', 'takes her time'] },
   { when: { rungMin: 7 }, weight: 2, text: ['sidesteps', 'turns sideways', 'takes up space'] },
+  { when: { rungMin: 10 }, weight: 2, text: ['rolls', 'sways', 'moves slow and heavy'] },
 ]);

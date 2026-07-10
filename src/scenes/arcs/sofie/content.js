@@ -34,14 +34,21 @@ registerPool('inhabit.morning', [
     'You pour coffee into a mug that feels smaller. You fill it twice.',
   ] },
   { when: { rungMin: 6, rungMax: 7 }, weight: 3, text: [
-    'Morning is logistics now — which chair, which belt, which pastry first.',
     'You choose the reinforced reading chair without being asked.',
     'You cross the stacks with a sway that was not there in spring.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
+  { when: { rungMin: 8, rungMax: 9 }, weight: 3, text: [
+    'Morning is logistics now — which chair, which belt, which pastry first.',
+    'You shelve by feel — you know where your hips clear the aisles.',
+  ] },
+  { when: { rungMin: 10, rungMax: 11 }, weight: 3, text: [
     'You are at the rotunda before the doors open. Coworkers act like that was always true.',
-    'You shelve by feel now — you know where your hips clear the aisles.',
+    'The elevator groans on your floor. You take the stairs. Slowly.',
+  ] },
+  { when: { rungMin: 12 }, weight: 3, text: [
     'Morning is appetite first, catalog second. You do not apologize for the order.',
+    'Your cardigan will not close. You wear it open and eat at the desk.',
+    'Jordan watches you shelve. You shelve slower on purpose.',
   ] },
   { when: { flipped: true }, priority: 1, text: [
     'You hum while you eat — not hiding, not apologizing.',
@@ -64,8 +71,12 @@ registerPool('inhabit.meal', [
   { when: { rungMin: 6 }, weight: 2, text: [
     'You eat between stacks the way you breathe — often, without thinking about it.',
   ] },
-  { when: { rungMin: 8 }, weight: 2, text: [
+  { when: { rungMin: 8, rungMax: 10 }, weight: 2, text: [
     'You eat in the rotunda because you can. The staff stop commenting.',
+  ] },
+  { when: { rungMin: 11 }, weight: 2, text: [
+    'You eat at the desk, in the break room, in the rotunda — wherever you want.',
+    'You order two pastries and eat both walking to the stacks.',
   ] },
   { when: { flipped: true }, priority: 1, text: [
     'You order two. You eat both. The pleasure is private and complete.',

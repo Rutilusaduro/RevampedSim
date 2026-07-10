@@ -18,9 +18,13 @@ registerPool('priya.meal.beat', [
     'She eats while programming tomorrow\'s class. The whiteboard fills with food notes, not reps.',
     'Post-class refeed becomes a sermon. The class stays for dessert.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
+  { when: { rungMin: 8, rungMax: 10 }, weight: 3, text: [
     'She eats between demonstrations without stopping. Nobody asks her to.',
     'Seconds are not a question anymore. They are part of the program.',
+  ] },
+  { when: { rungMin: 11 }, weight: 3, text: [
+    'She eats on the gym floor between classes. Clients bring her food now.',
+    'The whiteboard is all food notes. She finishes every plate.',
   ] },
   { when: { seatType: 'partner', rungMax: 5 }, weight: 3, text: [
     'You slide the refeed bowl two inches toward her hand. Not a word.',

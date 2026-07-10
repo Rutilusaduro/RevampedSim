@@ -12,8 +12,13 @@ registerPool('priya.win.near.garment', [
   { when: { rungMin: 6 }, weight: 3, text: [
     'Leggings go sheer at the stress point. She keeps teaching.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
-    'The compression top has given up pretending. Priya teaches in what still closes.',
+  { when: { rungMin: 9 }, weight: 3, text: [
+    'Leggings go sheer at the stress point. She keeps teaching.',
+    'The compression top rides up when she reaches. She does not pull it down.',
+  ] },
+  { when: { rungMin: 11 }, weight: 3, text: [
+    'The compression top has given up. Priya teaches in what still closes — barely.',
+    'Her leggings split at the thigh mid-squat. She finishes the set.',
   ] },
 ]);
 

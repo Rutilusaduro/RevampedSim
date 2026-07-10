@@ -2,7 +2,7 @@ import { TUNING } from '../gameData/tuning.js';
 
 export function tickGravity(woman, npcs, { sharedMeal = false } = {}) {
   const rung = woman.lbs - woman.frameLbs;
-  if (rung < 110) return [];
+  if (rung < 120) return [];
   const beats = [];
   for (const npc of npcs) {
     let rate = npc.driftRate ?? 0.05;

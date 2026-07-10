@@ -33,8 +33,13 @@ registerPool('win.near.booth', [
     'The booth vinyl squeaks under her. She runs a finger down the menu.',
     'The booth cushion compresses flat. {subject.first} does not get up.',
   ] },
-  { when: { rungMin: 5 }, weight: 2, text: [
-    'The corner booth pinches her hips. She laughs, surprised.',
+  { when: { rungMin: 9 }, weight: 2, text: [
+    'The corner booth vinyl is flat under her before she orders.',
+    'She has to squeeze into the booth. She squeezes anyway.',
+  ] },
+  { when: { rungMin: 11 }, weight: 2, text: [
+    'The booth frame groans when she sits. The whole diner hears it.',
+    'She takes both sides of the booth now. Nobody sits with her. Nobody minds.',
   ] },
 ]);
 

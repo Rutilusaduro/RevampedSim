@@ -1,8 +1,8 @@
 /** Named constants — expect flag-batch tuning. */
 export const TUNING = {
-  mealGainFactor: 0.4,
-  appetiteGrowthPerMeal: 0.02,
-  appetiteDecayPerDay: 0.01,
+  mealGainFactor: 0.28,
+  appetiteGrowthPerMeal: 0.015,
+  appetiteDecayPerDay: 0.008,
   fullnessPerMeal: 0.25,
   fullnessDecayPerSlot: 0.15,
   capacityGrowthThreshold: 1.1,
@@ -24,9 +24,9 @@ export const TUNING = {
   softeningPerDriftT2: 1,
   softeningPerDriftT3: 2,
   argPressurePerPublicFire: 8,
-  argPressurePerRung: 5,
+  argPressurePerRung: 4,
   slotsPerDay: 3,
-  arcTargetDaysMin: 40,
-  arcTargetDaysMax: 70,
+  arcTargetDaysMin: 55,
+  arcTargetDaysMax: 110,
   saveVersion: 1,
 };

@@ -1,4 +1,5 @@
 import { TUNING } from '../gameData/tuning.js';
+import { rungFromLbs } from '../gameData/ladders.js';
 
 export function applyMeal(woman, mealSize) {
   const lbsGained = mealSize * woman.appetite * TUNING.mealGainFactor;
@@ -27,4 +28,13 @@ export function decayAppetite(woman) {
 
 export function mealCost(town, woman, mealSize) {
   return Math.round(town.economy.mealCostBase * mealSize * woman.appetite);
+}
+
+/** Evening meal scales with rung and day so passive play still climbs the ladder. */
+export function eveningMealSize(woman, day = 1) {
+  const rung = rungFromLbs(woman.frameLbs, woman.lbs).id;
+  const base = woman.flipped ? 3 : 2;
+  const rungBoost = Math.floor(rung / 2);
+  const dayBoost = Math.floor(day / 12);
+  return Math.min(10, base + rungBoost + dayBoost);
 }
