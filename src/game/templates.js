@@ -8,6 +8,7 @@ const ARC_TPL = {
     scheme: '{seat.schemeBeat}',
     crown: '{crown.mara.booth}',
     settling: '{end.settling}',
+    look: '{look.mara}',
     interstitial: '{end.interstitial}',
     flip: '{mind.flip}',
     arg: {
@@ -29,6 +30,7 @@ const ARC_TPL = {
     scheme: '{seat.defendHer}',
     crown: '{priya.crown.bench}',
     settling: '{priya.end.settling}',
+    look: '{look.priya}',
     interstitial: '{priya.end.interstitial}',
     flip: '{priya.mind.flip}',
     arg: {
@@ -50,6 +52,7 @@ const ARC_TPL = {
     scheme: '{inhabit.mind.secret}',
     crown: '{crown.sofie.chair}',
     settling: '{sofie.end.settling}',
+    look: '{look.sofie}',
     interstitial: '{sofie.end.interstitial}',
     flip: '{inhabit.mind.secret}',
     arg: {

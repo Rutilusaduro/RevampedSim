@@ -2,6 +2,7 @@ export const ACTIONS = [
   {
     id: 'observe',
     labelTpl: '{seat.observe}',
+    menuHidden: true,
     slotCost: 1,
     seatTypes: ['partner', 'enabler', 'influenced', 'inhabit'],
     stageGate: null,

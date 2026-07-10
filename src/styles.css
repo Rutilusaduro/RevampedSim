@@ -58,7 +58,7 @@ body {
 
 .day-screen {
   display: grid;
-  grid-template-columns: 220px 1fr 220px;
+  grid-template-columns: 1fr 240px;
   gap: 1rem;
   min-height: 70vh;
 }
@@ -154,7 +154,38 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1rem;
 }
+.menu-prompt {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+.menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+}
+.menu-primary { font-weight: bold; }
+.menu-free {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.free-tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+.back-btn { color: var(--muted) !important; font-size: 0.9rem; }
+.slots-hint { margin: 0.25rem 0 0; font-size: 0.8rem; color: var(--muted); }
+.submenu { padding-top: 0.5rem; }
 .action-menu button,
 .ledger button,
 .settling button {

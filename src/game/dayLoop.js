@@ -9,6 +9,7 @@ import {
   advanceArgStage, currentArgStage, onPublicWindowFire, onRungCross, tryFlip, bumpArgPressure,
 } from './argument.js';
 import { getAvailableActions, actionRelevantWindows } from '../gameData/actions.js';
+import { getActionLabel, getActionCategory } from '../gameData/actionLabels.js';
 import { nearMissTemplate, fireTemplate } from './windowTemplates.js';
 import { LOCATIONS } from '../gameData/town.js';
 import { arcTemplates } from './templates.js';
@@ -136,15 +137,40 @@ export function renderMorning(state) {
 }
 
 export function renderActionMenu(state) {
-  const actions = getAvailableActions(state);
-  return actions.map((a) => ({
-    ...a,
-    label: render(a.labelTpl, createContext({
-      subject: state.woman,
-      globals: buildGlobals(state),
-      skillEffects: { seatType: state.player.seatType },
-    })),
-  }));
+  return getAvailableActions(state)
+    .filter((a) => !a.menuHidden)
+    .map((a) => ({
+      ...a,
+      label: getActionLabel(a.id, state),
+      category: getActionCategory(a.id),
+    }));
+}
+
+export function executeLook(state) {
+  const arc = state.arc.id;
+  state._eventScopes = null;
+  const parts = [1, 2, 3].map((n) => renderBeat(state, `{look.${arc}.p${n}}`));
+  const text = parts.join('\n\n');
+  const base = state.ui.sceneHistory.length
+    ? state.ui.sceneHistory.join('\n\n')
+    : state.ui.morningText;
+  state.ui.sceneText = `${base}\n\n${text}`;
+  return text;
+}
+
+export function executeTalk(state, topicId) {
+  if (state.ui.slotsUsed >= 3) return { ok: false };
+  state._eventScopes = null;
+  const text = renderBeat(state, `{talk.${state.arc.id}.${topicId}}`);
+  bumpArgPressure(state.arc, 1);
+  advanceArgStage(state.arc);
+  updateArcStage(state);
+  state.ui.slotsUsed += 1;
+  state.ui.sceneHistory.push(text);
+  state.ui.sceneText = state.ui.sceneHistory.join('\n\n');
+  state.ui.actionMenu = renderActionMenu(state);
+  if (state.ui.slotsUsed >= 3) state.ui.phase = 'evening-ready';
+  return { ok: true, text };
 }
 
 export function executeAction(state, actionId) {
@@ -236,14 +262,11 @@ export function runEvening(state) {
 }
 
 export function runNightLedger(state) {
-  const open = getOpenWindows(state.windows, state.woman);
   const delta = state.woman.lbs - (state._dayStartLbs ?? state.woman.lbs);
   const lines = [
-    `Day ${state.town.day} — ${state.arc.title}`,
-    `Weight: heavier than yesterday (${delta >= 0 ? '+' : ''}${delta.toFixed(1)} lbs today)`,
+    `Day ${state.town.day}`,
+    `She gained ${delta >= 0 ? '+' : ''}${delta.toFixed(1)} lbs today`,
     `Cash: $${state.town.economy.cash}`,
-    `Softening: ${state.town.softening}`,
-    `Open windows: ${open.length ? open.map((w) => `${w.label} (${w.stateWord})`).join(', ') : 'none yet'}`,
     renderBeat(state, '{town.ledger}'),
   ];
   if (state.woman.ratchetLog.length) {

@@ -9,7 +9,7 @@ export function TownMap({ town, slotsUsed, onVisit }) {
   return (
     <div className="panel town-map">
       <h2>Halcyon</h2>
-      <p className="panel-sub">Softening {town.softening} — scars stay</p>
+      <p className="panel-sub">Places you can visit today</p>
       <ul className="location-list">
         {LOCATIONS.map((loc) => {
           const scar = scarByLocation[loc.id];
