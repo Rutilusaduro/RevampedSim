@@ -2,25 +2,25 @@ import { registerPool } from '../../../textEngine/engine.js';
 
 registerPool('priya.meal.beat', [
   { when: {}, text: [
-    'She eats like she is auditing herself. Then she stops auditing.',
+    'She eats carefully at first. Then she stops counting and finishes the plate.',
     'Refeed becomes feast when the door locks.',
   ] },
   { when: { stance: 'opposed', flipped: false }, weight: 4, text: [
     '"Maintenance calories," she says, already over them.',
     'She protests once, precisely, then clears the plate.',
-    'Her fork pauses over the last bite — metrics theater, and you both enjoy the show.',
+    'Her fork pauses over the last bite — a show for the room, and you both know it.',
   ] },
   { when: { rungMin: 2, rungMax: 4 }, weight: 3, text: [
     'Protein shake, then something that is not a protein shake. Priya calls both "recovery."',
     'She sits on the bench and the table is closer than it was last month.',
   ] },
   { when: { rungMin: 5, rungMax: 7 }, weight: 3, text: [
-    'She eats while programming tomorrow\'s class. The whiteboard fills with calories, not reps.',
+    'She eats while programming tomorrow\'s class. The whiteboard fills with food notes, not reps.',
     'Post-class refeed becomes a sermon. The class stays for dessert.',
   ] },
   { when: { rungMin: 8 }, weight: 3, text: [
-    'She eats between demonstrations like breathing. Nobody asks her to stop.',
-    'Seconds are not a question anymore. They are programming.',
+    'She eats between demonstrations without stopping. Nobody asks her to.',
+    'Seconds are not a question anymore. They are part of the program.',
   ] },
   { when: { seatType: 'partner', rungMax: 5 }, weight: 3, text: [
     'You slide the refeed bowl two inches toward her hand. Not a word.',
@@ -30,10 +30,10 @@ registerPool('priya.meal.beat', [
     'She tracks refeed on a gym napkin, then eats past the napkin\'s numbers while GAIN dries on the board.',
     'GAIN is still on the whiteboard. She eats like the morning class is watching — because it is.',
     'Refeed protocol becomes sermon. Priya finishes every bite on the demonstration bench.',
-    'She savors every bite the way she used to savor form cues — publicly, on the gym floor, hungry.',
+    'She savors every bite the way she used to demo form — out loud, on the gym floor, hungry.',
   ] },
   { when: { fullnessBand: 'full' }, weight: 2, text: [
-    'She sits back and the bench receives more of her than she offered it.',
+    'She sits back and the bench dips under her. She does not move.',
     'Her hand rests on her middle — present, unhurried, unapologetic.',
   ] },
   { when: { fullnessBand: 'stuffed' }, weight: 3, text: [

@@ -1,5 +1,95 @@
 import { registerPool } from '../textEngine/engine.js';
 
+function talkLines(arc, topic, lines) {
+  lines.forEach((text, i) => {
+    registerPool(`talk.${arc}.${topic}.p${i + 1}`, [{ when: {}, text: [text] }]);
+  });
+}
+
+talkLines('mara', 'how_are_you', [
+  '"Fine," Mara says, too fast. She is at the kitchen counter and will not quite meet your eyes.',
+  'You ask again. She sighs. "Tired. The diner was nuts yesterday."',
+  'She opens the fridge, closes it, opens it again. "I am gonna eat something before my shift."',
+  'You nod. She relaxes a little. "Thanks for checking on me."',
+]);
+
+talkLines('mara', 'work', [
+  'Mara leans against the counter and tells you about her double shift.',
+  '"Sal says the corner booth is wobbling again. Like that is my fault."',
+  'She laughs, but it sounds worn out. "I swear half the town comes in just to watch me work."',
+  'You offer to bring her coffee at the diner. Her face softens. "Yeah. Do that."',
+]);
+
+talkLines('mara', 'sister', [
+  'You bring up Elena. Mara\'s jaw tightens.',
+  '"She called last night. Asked if I was okay. You know how she asks."',
+  'Mara picks at her nail polish. "She thinks I am eating my feelings. Maybe I am. Maybe the feelings are hungry."',
+  'She looks at you. "Do not tell her I said that."',
+]);
+
+talkLines('priya', 'how_are_you', [
+  '"Busy," Priya says, bouncing on her heels. "Class at nine, then paperwork, then more class."',
+  'She looks you up and down. "You eating enough? You look thin."',
+  'You laugh. She does not. "I am serious. We can grab something after the morning block."',
+  'She kisses your cheek and goes back to the whiteboard.',
+]);
+
+talkLines('priya', 'gym', [
+  'Priya walks you through the gym floor — membership renewals, a cracked bench, a client complaint.',
+  '"Dev wants every incident in a spreadsheet," she says. "I want people to show up and eat after."',
+  'She points at the mirrors. "Half these people stare at themselves. I would rather they stare at lunch."',
+  'You squeeze her hand. She squeezes back. "Stay for the morning class?"',
+]);
+
+talkLines('priya', 'dev', [
+  'Priya\'s voice drops when you mention Dev.',
+  '"He cornered me about liability again. A waiver for the refeed program."',
+  'She rolls her eyes. "I told him love is not a lawsuit. He did not laugh."',
+  '"Just— back me up if he brings it up tonight. Okay?"',
+]);
+
+talkLines('sofie', 'mother', [
+  'Your phone rings. Mom.',
+  '"Are you eating?" she asks before hello. "You sound different."',
+  'You insist you are fine. She does not believe you, but she lets it go.',
+  '"Call me Sunday," she says. You promise.',
+]);
+
+talkLines('sofie', 'coworker', [
+  'Jordan is at the front desk sorting holds.',
+  '"Rough morning?" they ask, nodding at the pastry bag in your hand.',
+  'You shrug. They grin. "No judgment. The good muffins sell out by nine."',
+  'You head to the stacks feeling oddly seen.',
+]);
+
+talkLines('sofie', 'feelings', [
+  'You sit in the break room longer than you need to.',
+  'You have been thinking about food constantly. That used to scare you.',
+  'It scares you less now. That might be the scariest part.',
+  'You finish your pastry, lick your fingers, and go back to work.',
+]);
+
+// Weigh scenes
+registerPool('weigh.mara.p1', [{ when: {}, text: ['You find the old bathroom scale. Mara kicks off her shoes like she has been dreading this.'] }]);
+registerPool('weigh.mara.p2', [{ when: {}, text: ['She steps on. The dial spins, clicks, settles.'] }]);
+registerPool('weigh.mara.p3', [{ when: {}, text: [(ctx) => `You both look: ${(ctx.subject?.lbs ?? 0).toFixed(1)} lbs.`] }]);
+registerPool('weigh.mara.p4', [
+  { when: { flipped: false }, text: ['"Huh," she says. She steps off fast. "Do not tell Elena."'] },
+  { when: { flipped: true }, text: ['She grins at the number. "Still going up. Good."'] },
+  { when: {}, text: ['She steps off the scale without another word.'] },
+]);
+
+registerPool('weigh.priya.p1', [{ when: {}, text: ['Priya pulls the gym scale into the office and locks the door.'] }]);
+registerPool('weigh.priya.p2', [{ when: {}, text: ['She steps on in leggings. The digital display thinks about it.'] }]);
+registerPool('weigh.priya.p3', [{ when: {}, text: [(ctx) => `${(ctx.subject?.lbs ?? 0).toFixed(1)} lbs. She writes it on her hand.`] }]);
+registerPool('weigh.priya.p4', [{ when: {}, text: ['"Numbers are just data," she says. She does not sound convinced.'] }]);
+
+registerPool('weigh.sofie.p1', [{ when: {}, text: ['You drag the scale out from under the sink.'] }]);
+registerPool('weigh.sofie.p2', [{ when: {}, text: ['You step on. The floor creaks with you.'] }]);
+registerPool('weigh.sofie.p3', [{ when: {}, text: [(ctx) => `${(ctx.subject?.lbs ?? 0).toFixed(1)} lbs. You stare a long second.`] }]);
+registerPool('weigh.sofie.p4', [{ when: {}, text: ['You step off. Your face is warm. You are not sure if that is shame or excitement.'] }]);
+
+// look paragraphs (unchanged structure - keep existing lookParagraphs)
 function lookParagraphs(arc, paragraphs) {
   paragraphs.forEach((texts, i) => {
     registerPool(`look.${arc}.p${i + 1}`, texts.map((t) => ({ when: {}, text: [t] })));
@@ -58,78 +148,4 @@ lookParagraphs('sofie', [
     'You take a breath and walk to the desk.',
     'You take another bite. It tastes good.',
   ],
-]);
-
-// Talk — costs a slot
-registerPool('talk.mara.how-are-you', [
-  { when: {}, text: [
-    '"Fine," Mara says, too fast. She looks at the fridge instead of you.',
-    '"I slept okay. I might grab something at the diner later."',
-  ] },
-  { when: { flipped: true }, weight: 2, text: [
-    '"Great," Mara says. "I was gonna get pancakes. You in?"',
-  ] },
-]);
-
-registerPool('talk.mara.work', [
-  { when: {}, text: [
-    'Mara complains about a double shift and a wobbly booth at the diner.',
-    '"Sal says fix it or lose the section," she says. She laughs, but she sounds tired.',
-  ] },
-]);
-
-registerPool('talk.mara.sister', [
-  { when: {}, text: [
-    'Mara\'s face tightens when you mention Elena.',
-    '"She asked if I was eating my feelings again. I told her I was eating breakfast."',
-  ] },
-]);
-
-registerPool('talk.priya.how-are-you', [
-  { when: {}, text: [
-    '"Busy," Priya says. "Class at nine, meetings all afternoon."',
-    'She looks you over. "You eating enough?" It sounds like a coach question.',
-  ] },
-  { when: { flipped: true }, weight: 2, text: [
-    '"Hungry," Priya says cheerfully. "We\'ll eat after the morning block."',
-  ] },
-]);
-
-registerPool('talk.priya.gym', [
-  { when: {}, text: [
-    'Priya walks you through membership numbers and a broken bench.',
-    '"Dev wants everything documented. I want everyone fed," she says.',
-  ] },
-]);
-
-registerPool('talk.priya.dev', [
-  { when: {}, text: [
-    'Priya sighs when you bring up Dev.',
-    '"He worries about lawsuits. I worry about people skipping meals."',
-  ] },
-]);
-
-registerPool('talk.sofie.mother', [
-  { when: {}, text: [
-    'Your mom picks up on the second ring.',
-    '"Are you eating? Are you sleeping?" You promise to call Sunday.',
-  ] },
-]);
-
-registerPool('talk.sofie.coworker', [
-  { when: {}, text: [
-    'Jordan at the front desk asks how your semester is going.',
-    'They nod at your pastry. You laugh it off and go shelve returns.',
-  ] },
-]);
-
-registerPool('talk.sofie.feelings', [
-  { when: {}, text: [
-    'You have been thinking about food more than usual lately.',
-    'You are not sure if that worries you. You get a snack anyway.',
-  ] },
-  { when: { flipped: true }, weight: 2, text: [
-    'You are tired of pretending you are not hungry.',
-    'The cardigan does not close. You head to the bakery before work.',
-  ] },
 ]);

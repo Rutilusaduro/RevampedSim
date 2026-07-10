@@ -2,11 +2,12 @@ import { useState } from 'react';
 import { dayPrompt } from '../gameData/actionLabels.js';
 import { getTalkTopics } from '../gameData/talkTopics.js';
 
-export function ActionMenu({ state, onAction, onTalk, onLook, onEvening }) {
+export function ActionMenu({ state, onAction, onTalk, onLook, onWeigh, onEvening }) {
   const [view, setView] = useState('main');
   const actions = state.ui.actionMenu ?? [];
   const food = actions.filter((a) => a.category === 'food');
   const hangout = actions.filter((a) => a.category === 'hangout');
+  const interact = actions.filter((a) => a.category === 'interact');
   const talkTopics = getTalkTopics(state);
   const first = state.woman.name.split(' ')[0];
   const inhabit = state.player.seatType === 'inhabit';
@@ -49,6 +50,20 @@ export function ActionMenu({ state, onAction, onTalk, onLook, onEvening }) {
     );
   }
 
+  if (view === 'interact') {
+    return (
+      <nav className="action-menu submenu">
+        <p className="menu-prompt">{inhabit ? 'What do you want to do?' : `Something more with ${first}?`}</p>
+        {interact.map((a) => (
+          <button key={a.id} type="button" onClick={() => { onAction(a.id); setView('main'); }}>
+            {a.label}
+          </button>
+        ))}
+        <button type="button" className="back-btn" onClick={() => setView('main')}>← Back</button>
+      </nav>
+    );
+  }
+
   if (view === 'hangout') {
     return (
       <nav className="action-menu submenu">
@@ -74,11 +89,20 @@ export function ActionMenu({ state, onAction, onTalk, onLook, onEvening }) {
           {inhabit ? 'Look at yourself' : `Look at ${first}`}
           <span className="free-tag">free</span>
         </button>
+        <button type="button" className="menu-free" onClick={onWeigh}>
+          {inhabit ? 'Weigh yourself' : `Weigh ${first}`}
+          <span className="free-tag">free</span>
+        </button>
       </div>
       <div className="menu-group">
         <button type="button" disabled={!canAct || food.length === 0} onClick={() => setView('food')}>
-          {inhabit ? 'Get something to eat' : `Get ${first} something to eat`}
+          {inhabit ? 'Get something to eat' : `Feed ${first}`}
         </button>
+        {interact.length > 0 && (
+          <button type="button" disabled={!canAct} onClick={() => setView('interact')}>
+            {inhabit ? 'Do something indulgent' : `Get close with ${first}`}
+          </button>
+        )}
         <button type="button" disabled={!canAct || hangout.length === 0} onClick={() => setView('hangout')}>
           {inhabit ? 'Go out' : `Hang out with ${first}`}
         </button>

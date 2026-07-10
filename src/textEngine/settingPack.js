@@ -89,7 +89,7 @@ registerPool('word.adv.pace', [
   { when: {}, text: ['', '', 'without hurry'] },
   { when: { rung: 1 }, text: ['', 'a little slower than she meant to'] },
   { when: { rungMin: 4 }, weight: 2, text: ['with a sway that arrives before she does', 'slower than yesterday'] },
-  { when: { flipped: true }, weight: 2, text: ['like the room already made room'] },
+  { when: { flipped: true }, weight: 2, text: ['like she already cleared a path'] },
 ]);
 
 registerPool('word.size', [
@@ -97,12 +97,12 @@ registerPool('word.size', [
   { when: { rung: 1 }, weight: 2, text: ['curved', 'a little softer', 'noticeable'] },
   { when: { rungMin: 2, rungMax: 4 }, weight: 2, text: ['curved', 'generous', 'noticeable'] },
   { when: { rungMin: 5, rungMax: 7 }, weight: 2, text: ['heavy', 'ample', 'undeniable'] },
-  { when: { rungMin: 8 }, weight: 2, text: ['monumental', 'room-filling', 'sovereign'] },
+  { when: { rungMin: 8 }, weight: 2, text: ['heavy', 'wide', 'hard to miss'] },
   { when: { indulgenceMin: 2 }, weight: 2, text: ['indulged', 'well-fed', 'satisfied'] },
 ]);
 
 registerPool('word.moveVerb', [
   { when: {}, text: ['walks', 'moves', 'crosses'] },
-  { when: { rungMin: 4 }, weight: 2, text: ['sways', 'rolls', 'settles forward'] },
-  { when: { rungMin: 7 }, weight: 2, text: ['navigates', 'negotiates', 'claims space'] },
+  { when: { rungMin: 4 }, weight: 2, text: ['sways', 'rolls', 'takes her time'] },
+  { when: { rungMin: 7 }, weight: 2, text: ['sidesteps', 'turns sideways', 'takes up space'] },
 ]);

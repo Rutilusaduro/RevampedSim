@@ -7,10 +7,10 @@ registerPool('sofie.win.near.garment', [
     'A button on the cardigan strains. Holds. Your hand drifts to it, then away.',
   ] },
   { when: { rungMin: 3 }, weight: 2, text: [
-    'The soft belt will not find its old hole. You wear it where it wants to live.',
+    'The soft belt will not find its old hole. You use the next one down.',
   ] },
   { when: { rungMin: 6 }, weight: 3, text: [
-    'The cardigan will not close. You keep it on your shoulders like a flag.',
+    'The cardigan will not close. You keep it on your shoulders anyway.',
   ] },
   { when: { rungMin: 8 }, weight: 3, text: [
     'Fabric gives when you bend for a dropped pen. You stand slower. You stand anyway.',
@@ -20,20 +20,20 @@ registerPool('sofie.win.near.garment', [
 registerPool('sofie.win.near.chair', [
   { when: {}, text: [
     'The desk chair groans when you settle in for cataloging. You shift your weight and the sound stops — for now.',
-    'Wood complains under you at the reading desk. You pretend you did not hear it.',
+    'Wood creaks under you at the reading desk. You act like you did not hear it.',
   ] },
   { when: { rungMin: 4 }, weight: 2, text: [
-    'The desk chair creaks twice when you sit. You stay seated like you earned the noise.',
+    'The desk chair creaks twice when you sit. You stay seated.',
   ] },
   { when: { rungMin: 7 }, weight: 2, text: [
-    'The rotunda chair sighs before you even sit. You sit anyway.',
+    'The rotunda chair creaks before you even sit. You sit anyway.',
   ] },
 ]);
 
 registerPool('sofie.win.near.cart', [
   { when: {}, text: [
     'The book cart lists when you lean across it. You redistribute the stacks and lean again.',
-    'A wheel complains. You push through the stacks like nothing shifted.',
+    'A wheel squeaks. You push through the stacks like nothing changed.',
   ] },
 ]);
 
@@ -50,7 +50,7 @@ registerPool('sofie.win.near.door', [
 registerPool('sofie.win.near.generic', [
   { when: {}, text: [
     'Something in the stacks creaks when you pass. You freeze, then keep walking — slower.',
-    'A shelf bracket complains. You pretend not to notice. The quiet notices.',
+    'A shelf bracket groans. You keep shelving.',
   ] },
 ]);
 
@@ -58,10 +58,10 @@ registerPool('sofie.win.fire.garment', [
   { when: {}, text: [
     'A button on the cardigan pops — small sound, huge punctuation.',
     'You look down at the gap, then up at the empty desk, cheeks warm.',
-    'The skirt seam surrenders. Fabric parts like it was always going to.',
+    'The skirt seam splits. Fabric parts along the thigh.',
   ] },
   { when: { flipped: true }, weight: 2, text: [
-    'The cardigan gives up. You keep it on your lap like a pet.',
+    'The cardigan gives up. You keep it on your lap and keep eating.',
   ] },
 ]);
 
@@ -72,14 +72,14 @@ registerPool('sofie.win.fire.chair', [
     'Wood splinters. The chair is done. You are not.',
   ] },
   { when: { flipped: true }, weight: 2, text: [
-    'The chair fails. You look at the wreckage, then at your pastry, serene.',
+    'The chair fails. You look at the wreckage, then at your pastry, calm.',
   ] },
 ]);
 
 registerPool('sofie.win.fire.cart', [
   { when: {}, text: [
     'The book cart buckles when you lean. Volumes slide. You laugh — surprised, not offended.',
-    'A wheel cracks. You finish the shift dragging beauty like penance.',
+    'A wheel cracks. You finish the shift dragging the cart one-handed.',
   ] },
 ]);
 
@@ -87,13 +87,13 @@ registerPool('sofie.win.fire.door', [
   { when: {}, text: [
     'You turn sideways. The bakery doorframe still wins.',
     'You are laughing before you are free.',
-    'The door and your hips disagree. The door is learning.',
+    'Your hip catches the frame. You suck in and squeeze through.',
   ] },
 ]);
 
 registerPool('sofie.win.fire.stairs', [
   { when: {}, text: [
-    'Halfway up the mezzanine you stop to breathe. The stairs are not cruel — just honest.',
+    'Halfway up the mezzanine you stop to breathe. The stairs are steep.',
     'You take the landing sitting down. The elevator can wait.',
   ] },
 ]);
