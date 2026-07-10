@@ -45,6 +45,7 @@ registerDimension('softening', (ctx) => ctx.globals?.softening ?? ctx.d.softenin
 registerDimension('argPressure', (ctx) => ctx.globals?.argPressure ?? ctx.d.argPressure ?? 0);
 registerDimension('witnesses', (ctx) => ctx.globals?.witnesses ?? 'none');
 registerDimension('driftTier', (ctx) => ctx.globals?.driftTier ?? 0);
+registerDimension('location', (ctx) => ctx.globals?.location ?? null);
 registerDimension('relSize', (ctx) => {
   const s = ctx.subject?.lbs;
   const r = ctx.ref?.lbs;

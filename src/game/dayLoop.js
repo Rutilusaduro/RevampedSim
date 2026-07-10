@@ -9,6 +9,8 @@ import {
   advanceArgStage, currentArgStage, onPublicWindowFire, onRungCross, tryFlip,
 } from './argument.js';
 import { getAvailableActions, actionRelevantWindows } from '../gameData/actions.js';
+import { NEAR_MISS_TEMPLATES, FIRE_TEMPLATES } from '../scenes/arcs/mara/windows.js';
+import { LOCATIONS } from '../gameData/town.js';
 
 function makeRng(state) {
   const seed = state.rngSeed >>> 0;
@@ -51,16 +53,17 @@ function renderBeat(state, tpl, extraGlobals = {}) {
   return render(tpl, ctx);
 }
 
+function nearMissTemplate(window) {
+  return NEAR_MISS_TEMPLATES[window.eventClass]
+    ?? (window.target === 'garment' ? '{win.near.garment}' : '{win.near.generic}');
+}
+
 function fireTemplateFor(window, state) {
-  if (window.eventClass.includes('chair') || window.eventClass === 'boothPinch') {
-    if (window.crown && ['crown-ready', 'crown', 'convergence'].includes(state.arc.stage)) {
-      return '{crown.mara.booth}';
-    }
-    return '{win.fire.booth}';
+  if (window.crown && ['crown-ready', 'crown', 'convergence'].includes(state.arc.stage)) {
+    return '{crown.mara.booth}';
   }
-  if (window.eventClass.includes('door')) return '{win.fire.door}';
-  if (window.target === 'garment') return '{win.fire.garment}';
-  return '{win.fire.chair}';
+  return FIRE_TEMPLATES[window.eventClass]
+    ?? (window.target === 'garment' ? '{win.fire.garment}' : '{win.fire.chair}');
 }
 
 function processWindowRolls(state, action, rng) {
@@ -70,7 +73,7 @@ function processWindowRolls(state, action, rng) {
     const outcome = rollWindow(w, state.woman, rng.next);
     if (outcome.nearMiss) {
       w.wear = (w.wear ?? 0) + 0.05;
-      results.push({ type: 'nearMiss', window: w, text: renderBeat(state, '{win.near.generic}') });
+      results.push({ type: 'nearMiss', window: w, text: renderBeat(state, nearMissTemplate(w)) });
       state.ui.lastNearMiss = w.id;
     }
     if (outcome.fired) {
@@ -161,10 +164,12 @@ export function executeAction(state, actionId) {
   const windowResults = processWindowRolls(state, action, rng);
   for (const wr of windowResults) texts.push(wr.text);
 
-  const driftBeats = tickGravity(state.woman, state.npcs);
+  const driftBeats = tickGravity(state.woman, state.npcs, { sharedMeal: !!action.effects?.meal });
   for (const db of driftBeats) {
     applySofteningFromDrift(state.town, db.tier);
-    if (db.tier >= 1) texts.push(renderBeat(state, '{grav.notice}'));
+    if (db.tier === 1) texts.push(renderBeat(state, '{grav.notice}'));
+    else if (db.tier === 2) texts.push(renderBeat(state, '{grav.undeniable}'));
+    else if (db.tier >= 3) texts.push(renderBeat(state, '{grav.candidate}'));
   }
 
   checkRungCross(state);
@@ -184,6 +189,8 @@ export function runEvening(state) {
   applyMeal(state.woman, state.woman.flipped ? 3 : 2);
   let text = renderBeat(state, '{port.evening}');
   const stage = currentArgStage(state.arc);
+  let flippedNow = false;
+
   if (stage === 'notice' && !state.arc.beatsSeen?.notice) {
     text += '\n\n' + renderBeat(state, '{arg.notice}');
     state.arc.beatsSeen = { ...state.arc.beatsSeen, notice: true };
@@ -193,11 +200,25 @@ export function runEvening(state) {
   } else if (stage === 'intervention' && !state.arc.beatsSeen?.intervention) {
     text += '\n\n' + renderBeat(state, '{arg.intervention}');
     state.arc.beatsSeen = { ...state.arc.beatsSeen, intervention: true };
-    tryFlip(state.woman, 100);
+    flippedNow = tryFlip(state.woman, 100);
+  } else if (stage === 'bargaining' && !state.arc.beatsSeen?.bargaining) {
+    text += '\n\n' + renderBeat(state, '{arg.bargaining}');
+    state.arc.beatsSeen = { ...state.arc.beatsSeen, bargaining: true };
+  } else if (stage === 'awe' && !state.arc.beatsSeen?.awe) {
+    text += '\n\n' + renderBeat(state, '{arg.awe}');
+    state.arc.beatsSeen = { ...state.arc.beatsSeen, awe: true };
   }
+
+  if (flippedNow || (state.woman.flipped && !state.arc.beatsSeen?.flip)) {
+    text += '\n\n' + renderBeat(state, '{mind.flip}');
+    state.arc.beatsSeen = { ...state.arc.beatsSeen, flip: true };
+    state.arc.stage = 'slide';
+  }
+
   state.ui.eveningText = text;
   state.ui.sceneText = text;
   decayAppetite(state.woman);
+  advanceArgStage(state.arc);
   return text;
 }
 
@@ -252,6 +273,36 @@ export function startDay(state) {
   return state;
 }
 
+export function executeVisit(state, locationId) {
+  const loc = LOCATIONS.find((l) => l.id === locationId);
+  if (!loc || state.ui.slotsUsed >= 3) return { ok: false };
+  const action = {
+    id: `visit-${locationId}`,
+    slotCost: 1,
+    windowTags: locationId === 'crescent' ? ['stairs'] : locationId === 'anchor' ? ['booth', 'sitting'] : ['transit'],
+    effects: { outing: locationId },
+  };
+  state._eventScopes = null;
+  const rng = makeRng(state);
+  const texts = [renderBeat(state, '{town.visit}', { location: locationId, locationName: loc.name })];
+  if (locationId === 'anchor') {
+    applyMeal(state.woman, 2);
+    texts.push(renderBeat(state, '{meal.beat}'));
+    tickGravity(state.woman, state.npcs, { sharedMeal: true });
+  }
+  const windowResults = processWindowRolls(state, action, rng);
+  for (const wr of windowResults) texts.push(wr.text);
+  state.ui.slotsUsed += 1;
+  state.ui.sceneText = texts.join('\n\n');
+  state.ui.sceneHistory.push(...texts);
+  state.ui.actionMenu = renderActionMenu(state);
+  if (state.ui.slotsUsed >= 3) state.ui.phase = 'evening-ready';
+  decayFullness(state.woman, 1);
+  checkRungCross(state);
+  advanceArgStage(state.arc);
+  return { ok: true, windowResults };
+}
+
 export function triggerCrown(state) {
   const crown = state.windows.find((w) => w.crown);
   if (!crown) return null;
@@ -268,9 +319,20 @@ export function triggerCrown(state) {
     eventClass: 'boothRemoval',
   });
   state.town.softening = Math.min(100, state.town.softening + 3);
+  state.town.fixtures.push({
+    id: 'mara-fixture',
+    womanId: 'mara',
+    location: 'anchor',
+    name: state.woman.name,
+    overdrive: false,
+  });
+  state.woman.fixture = { location: 'anchor', overdrive: false, odLbsPerDay: 0 };
   state.arc.stage = 'settling';
-  const text = renderBeat(state, '{crown.mara.booth}', { spurtActive: true, crownNear: true });
+  const crownText = renderBeat(state, '{crown.mara.booth}', { spurtActive: true, crownNear: true, witnesses: 'many' });
+  const settlingText = renderBeat(state, '{end.settling}');
+  const text = `${crownText}\n\n${settlingText}`;
   state.ui.sceneText = text;
+  state.ui.phase = 'settling';
   return text;
 }
 

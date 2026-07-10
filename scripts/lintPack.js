@@ -18,7 +18,9 @@ export const RENDERS_PER_CELL = 4;
 export const SWEEPS = [
   { name: 'port.morning', root: 'port.morning', tpl: '{port.morning}' },
   { name: 'meal.beat', root: 'meal.beat', tpl: '{meal.beat}' },
-  { name: 'win.near', root: 'win.near.generic', tpl: '{win.near.generic}' },
+  { name: 'win.near.garment', root: 'win.near.garment', tpl: '{win.near.garment}' },
+  { name: 'arg.intervention', root: 'arg.intervention', tpl: '{arg.intervention}' },
+  { name: 'mind.flip', root: 'mind.flip', tpl: '{mind.flip}' },
 ];
 
 export const LADDER_COVERAGE = [
@@ -34,6 +36,8 @@ export const PSYCH_REGISTER_EXEMPT_PREFIXES = ['word.moveVerb'];
 export const BANNED_PATTERNS = [
   { pattern: /\bobesity\b/i, message: 'clinical language' },
   { pattern: /\bBMI\b/i, message: 'clinical language' },
+  { pattern: /you both know/i, message: 'narrated telepathy' },
+  { pattern: /\bsuddenly\b/i, message: 'unearned' },
 ];
 
 export const CONTINUITY_SWEEPS = [];
