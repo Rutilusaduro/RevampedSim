@@ -2,76 +2,39 @@ import { useCallback, useState } from 'react';
 import { createInitialGameState } from './game/state.js';
 import {
   startDay, executeAction, executeVisit, runEvening, runNightLedger, advanceDay, triggerCrown,
-  getOpenWindows, transitionToArc,
+  transitionToArc, executeLook, executeTalk,
 } from './game/dayLoop.js';
 import { saveToSlot, loadFromSlot, serializeGameState, deserializeGameState } from './game/save.js';
 import { rungFromLbs, rungDescriptor } from './gameData/ladders.js';
-import { barFill } from './game/windows.js';
+import {
+  moodLine, moodLineInhabit, garmentLinePlain, garmentLinePlainInhabit,
+} from './gameData/actionLabels.js';
 import { TownMap } from './components/TownMap.jsx';
 import { RecordGallery } from './components/RecordGallery.jsx';
 import { OrbitPanel } from './components/OrbitPanel.jsx';
 import { StartScreen } from './components/StartScreen.jsx';
 import { DevPanel } from './components/DevPanel.jsx';
+import { ActionMenu } from './components/ActionMenu.jsx';
 import './styles.css';
 
 const TABS = ['day', 'map', 'record', 'orbit'];
 
-function WindowsPanel({ state }) {
-  const open = getOpenWindows(state.windows, state.woman);
-  const approaching = state.windows.filter((w) => w.state === 'approaching');
-  const crown = state.windows.find((w) => w.crown && w.state !== 'fired');
-
-  return (
-    <aside className="panel windows-panel">
-      <h2>Windows</h2>
-      <p className="panel-sub">What might give next</p>
-      <ul className="window-list">
-        {open.map((w) => (
-          <li key={w.id} className={`window-row state-${w.stateWord} ${state.ui.lastNearMiss === w.id ? 'pulse' : ''}`}>
-            <span className="window-label">{w.label}</span>
-            <div className="bar-track"><div className="bar-fill" style={{ width: `${barFill(w.p)}%` }} /></div>
-            <span className="window-state">{w.stateWord}</span>
-          </li>
-        ))}
-        {approaching.map((w) => (
-          <li key={w.id} className="window-row ghost">
-            <span className="window-label">{w.label}</span>
-            <span className="window-state">approaching</span>
-          </li>
-        ))}
-      </ul>
-      {crown && crown.state !== 'fired' && (
-        <div className={`crown-window ${crown.state !== 'closed' ? 'visible' : ''}`}>
-          <span className="crown-tag">something is coming</span>
-          <span>{crown.label}</span>
-        </div>
-      )}
-    </aside>
-  );
-}
-
-function garmentLine(woman) {
-  const piece = woman.wardrobe.bottom ?? woman.wardrobe.top;
-  const name = piece?.name ?? 'clothes';
-  const intact = (piece?.integrity ?? 1) > 0;
-  const verb = name.endsWith('s') ? 'are' : 'is';
-  return intact ? `The ${name} ${verb} negotiating` : `The ${name} ${verb === 'are' ? 'have' : 'has'} surrendered`;
-}
-
-function HerCard({ woman, town }) {
+function HerCard({ woman, town, inhabit }) {
   const rung = rungFromLbs(woman.frameLbs, woman.lbs);
   const fullnessPct = Math.min(100, Math.round((woman.fullness / 1.3) * 100));
+  const mood = inhabit ? moodLineInhabit(woman) : moodLine(woman);
+  const garment = inhabit ? garmentLinePlainInhabit(woman) : garmentLinePlain(woman);
+
   return (
     <aside className="panel her-card">
-      <h2>{woman.name}</h2>
-      <p className="rung-line">{rungDescriptor(rung.id)}</p>
-      <p className="mood-line">{woman.flipped ? 'Serene, unstoppable' : `${woman.stance}, porous`}</p>
+      <h2>{inhabit ? 'You' : woman.name}</h2>
+      <p className="rung-line">{inhabit ? `You look ${rungDescriptor(rung.id)}` : `She looks ${rungDescriptor(rung.id)}`}</p>
+      <p className="mood-line">{mood}</p>
       <div className="gauge">
-        <span>Fullness</span>
+        <span>{inhabit ? 'How full you feel' : 'How full she is'}</span>
         <div className="bar-track warm"><div className="bar-fill" style={{ width: `${fullnessPct}%` }} /></div>
       </div>
-      <p className="garment-line">{garmentLine(woman)}</p>
-      <p className="meta-line">Day weight: {woman.lbs.toFixed(1)} lbs (ritual only)</p>
+      <p className="garment-line">{garment}</p>
       <p className="meta-line">Cash: ${town.economy.cash}</p>
     </aside>
   );
@@ -119,6 +82,14 @@ export default function App() {
     });
   }, [mutate]);
 
+  const handleTalk = useCallback((topicId) => {
+    mutate((next) => executeTalk(next, topicId));
+  }, [mutate]);
+
+  const handleLook = useCallback(() => {
+    mutate((next) => executeLook(next));
+  }, [mutate]);
+
   const handleVisit = useCallback((locationId) => {
     mutate((next) => {
       executeVisit(next, locationId);
@@ -164,14 +135,13 @@ export default function App() {
     );
   }
 
-  const actions = state.ui.actionMenu ?? [];
+  const inhabit = state.player.seatType === 'inhabit';
 
   return (
     <div className="app">
       <header className="top-strip">
         <span>Day {state.town.day}</span>
         <span>{state.arc.title}</span>
-        <span className="softening">Halcyon · softening {state.town.softening}</span>
         <nav className="tab-nav">
           {TABS.map((t) => (
             <button
@@ -189,7 +159,6 @@ export default function App() {
 
       {tab === 'day' && (
         <main className="day-screen">
-          <WindowsPanel state={state} />
           <section className="scene-column">
             <div className="scene-text">
               {state.ui.sceneText.split('\n\n').map((p, i) => (
@@ -197,24 +166,23 @@ export default function App() {
               ))}
             </div>
             {(state.ui.phase === 'morning' || state.ui.phase === 'evening-ready') && state.arc.stage !== 'settling' && (
-              <nav className="action-menu">
-                {state.ui.slotsUsed < 3 && actions.map((a) => (
-                  <button key={a.id} type="button" onClick={() => handleAction(a.id)}>{a.label}</button>
-                ))}
-                {state.ui.slotsUsed >= 3 && (
-                  <button type="button" className="primary" onClick={handleEvening}>Evening</button>
-                )}
-              </nav>
+              <ActionMenu
+                state={state}
+                onAction={handleAction}
+                onTalk={handleTalk}
+                onLook={handleLook}
+                onEvening={handleEvening}
+              />
             )}
             {state.ui.phase === 'ledger' && state.arc.stage !== 'settling' && (
               <div className="ledger">
                 <pre>{state.ui.ledgerText}</pre>
                 {state.arc.stage === 'crown-ready' && (
                   <button type="button" className="primary crown-btn" onClick={handleCrown}>
-                    Crown Event
+                    Go to the big event
                   </button>
                 )}
-                <button type="button" className="primary" onClick={handleNextDay}>Next day</button>
+                <button type="button" className="primary" onClick={handleNextDay}>Start the next day</button>
               </div>
             )}
             {state.arc.stage === 'settling' && (
@@ -223,18 +191,18 @@ export default function App() {
                 {state.ui.candidateLine && <p className="candidate-line">{state.ui.candidateLine}</p>}
                 {state.ui.nextArcId && (
                   <button type="button" className="primary" onClick={() => handleNextArc(state.ui.nextArcId)}>
-                    Begin {state.ui.nextArcId === 'priya' ? 'Priya' : state.ui.nextArcId === 'sofie' ? 'Sofie' : state.ui.nextArcId}&apos;s arc
+                    Begin {state.ui.nextArcId === 'priya' ? 'Priya' : state.ui.nextArcId === 'sofie' ? 'Sofie' : state.ui.nextArcId}&apos;s story
                   </button>
                 )}
                 {!state.ui.nextArcId && state.arc.id !== 'sofie' && (
-                  <p className="toggle-hint">First-person arcs are off — the anthology pauses after this arc.</p>
+                  <p className="toggle-hint">First-person arcs are off — the story pauses here.</p>
                 )}
-                {!state.ui.nextArcId && <p>The anthology rests at three arcs for this build.</p>}
+                {!state.ui.nextArcId && <p>End of the anthology for now.</p>}
                 <button type="button" onClick={handleNewGame}>New game</button>
               </div>
             )}
           </section>
-          <HerCard woman={state.woman} town={state.town} />
+          <HerCard woman={state.woman} town={state.town} inhabit={inhabit} />
         </main>
       )}
 
@@ -245,7 +213,7 @@ export default function App() {
             slotsUsed={state.ui.slotsUsed}
             onVisit={handleVisit}
           />
-          <p className="map-hint">Visits cost one day slot. {3 - state.ui.slotsUsed} remaining today.</p>
+          <p className="map-hint">Visits use up one of your three actions for the day. {3 - state.ui.slotsUsed} left.</p>
         </main>
       )}
 
