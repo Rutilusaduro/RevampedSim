@@ -9,7 +9,7 @@ import {
   advanceArgStage, currentArgStage, onPublicWindowFire, onRungCross, tryFlip, bumpArgPressure,
 } from './argument.js';
 import { getAvailableActions, actionRelevantWindows } from '../gameData/actions.js';
-import { NEAR_MISS_TEMPLATES, FIRE_TEMPLATES } from '../scenes/arcs/mara/windows.js';
+import { nearMissTemplate, fireTemplate } from './windowTemplates.js';
 import { LOCATIONS } from '../gameData/town.js';
 import { arcTemplates } from './templates.js';
 import { beginArc, nextArcId, snapshotWoman } from './arcs.js';
@@ -59,18 +59,12 @@ function renderBeat(state, beatTpl, extraGlobals = {}) {
   return render(beatTpl, ctx);
 }
 
-function nearMissTemplate(window) {
-  return NEAR_MISS_TEMPLATES[window.eventClass]
-    ?? (window.target === 'garment' ? '{win.near.garment}' : '{win.near.generic}');
+function nearMissTpl(state, window) {
+  return nearMissTemplate(state.arc.id, window);
 }
 
-function fireTemplateFor(window, state) {
-  const t = tpl(state);
-  if (window.crown && ['crown-ready', 'crown', 'convergence', 'settling'].includes(state.arc.stage)) {
-    return t.crown;
-  }
-  return FIRE_TEMPLATES[window.eventClass]
-    ?? (window.target === 'garment' ? '{win.fire.garment}' : '{win.fire.chair}');
+function fireTpl(window, state) {
+  return fireTemplate(state.arc.id, window, state, tpl(state).crown);
 }
 
 function processWindowRolls(state, action, rng) {
@@ -80,7 +74,7 @@ function processWindowRolls(state, action, rng) {
     const outcome = rollWindow(w, state.woman, rng.next);
     if (outcome.nearMiss) {
       w.wear = (w.wear ?? 0) + 0.05;
-      results.push({ type: 'nearMiss', window: w, text: renderBeat(state, nearMissTemplate(w)) });
+      results.push({ type: 'nearMiss', window: w, text: renderBeat(state, nearMissTpl(state, w)) });
       state.ui.lastNearMiss = w.id;
     }
     if (outcome.fired) {
@@ -101,7 +95,7 @@ function processWindowRolls(state, action, rng) {
         if (slot && state.woman.wardrobe[slot]) state.woman.wardrobe[slot].integrity = 0;
       }
       onPublicWindowFire(state.arc, state.town);
-      const text = renderBeat(state, fireTemplateFor(w, state), { spurtActive: true });
+      const text = renderBeat(state, fireTpl(w, state), { spurtActive: true });
       results.push({ type: 'fire', window: w, text });
       if (w.crown) state.arc.stage = 'crown';
     }

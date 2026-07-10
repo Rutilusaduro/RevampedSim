@@ -56,7 +56,7 @@ const ARC_TPL = {
       notice: '{inhabit.arg.notice}',
       concern: '{inhabit.arg.concern}',
       intervention: '{inhabit.arg.intervention}',
-      bargaining: '{inhabit.arg.awe}',
+      bargaining: '{inhabit.arg.bargaining}',
       awe: '{inhabit.arg.awe}',
     },
     grav: { t1: '{grav.notice}', t2: '{grav.undeniable}', t3: '{grav.candidate}' },

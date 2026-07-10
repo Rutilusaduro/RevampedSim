@@ -25,9 +25,9 @@ registerPool('arg.concern', [
 
 registerPool('arg.intervention', [
   { when: { seatType: 'enabler' }, priority: 1, weight: 4, text: [
-    'They gather at the Crescent — Elena, Priya, Sal — and you are inside the circle, lying beautifully.',
-    'The intervention is warm and wrong. You pass the fruit tray and hide the pastries under the sink.',
-    'Elena cries without ugliness. Priya lists concerns like a syllabus. Mara listens, already eating.',
+    'They gather at the Crescent — Elena, Priya, Sal — Mara in the center, already eating.',
+    'The intervention is warm and wrong at Elena\'s apartment. Pastries hide under the sink. Mara does not stop.',
+    'Elena cries without ugliness. Mara listens, already reaching for the fruit tray\'s backup dessert.',
   ] },
   { when: {}, text: [
     'They stage it at her apartment. Concern arranged like furniture.',
