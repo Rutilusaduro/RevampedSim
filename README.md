@@ -1,16 +1,42 @@
-# React + Vite
+# GRAVITY
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Text-first life sim set in **Halcyon** — a town that keeps losing the same argument, beautifully.
 
-Currently, two official plugins are available:
+## Play
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Open the local URL Vite prints. Each day: three action slots, an evening beat, a night ledger. The **windows panel** (left) shows what physical consequences are approaching. Play Mara Voss's arc as her enabler — pastry boxes, interventions, and the corner booth crown event.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Verify
 
-## Expanding the ESLint configuration
+```bash
+npm run smoke      # engine mechanism checks
+npm run text:lint  # prose pool harness
+npm run headless   # 45-day scripted sim
+npm run build
+npm run lint
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Architecture
+
+| Layer | Path |
+|---|---|
+| Text engine | `src/textEngine/` (Manifesto Part IV) |
+| GRAVITY setting pack | `src/textEngine/settingPack.js` |
+| Game state & sim | `src/game/`, `src/gameData/` |
+| Prose pools | `src/scenes/gravityContent.js` |
+| React shell | `src/App.jsx` |
+
+Design authority: `Docs/GRAVITY_MASTER.md`. Build phases tracked in `STATE.md`.
+
+## Status (v0.1 vertical slice)
+
+- [x] P0 — engine, setting pack, lint pack, smoke
+- [x] P1 — headless day loop, windows, ratchet, saves
+- [x] P2 — React shell (day screen, windows panel, her card, dev panel)
+- [ ] P3 — Mara arc content depth + playtest to crown (in progress)
+- [ ] P4–P7 — full six-arc anthology
