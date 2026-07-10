@@ -21,6 +21,9 @@ export const SWEEPS = [
   { name: 'win.near.garment', root: 'win.near.garment', tpl: '{win.near.garment}' },
   { name: 'arg.intervention', root: 'arg.intervention', tpl: '{arg.intervention}' },
   { name: 'mind.flip', root: 'mind.flip', tpl: '{mind.flip}' },
+  { name: 'priya.morning', root: 'priya.port.morning', tpl: '{priya.port.morning}' },
+  { name: 'priya.meal', root: 'priya.meal.beat', tpl: '{priya.meal.beat}' },
+  { name: 'inhabit.evening', root: 'inhabit.evening', tpl: '{inhabit.evening}' },
 ];
 
 export const LADDER_COVERAGE = [

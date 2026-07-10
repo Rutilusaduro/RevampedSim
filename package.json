@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "smoke": "node scripts/smoke.mjs",
     "text:lint": "node scripts/textLint.mjs",
-    "headless": "node scripts/headlessRun.mjs"
+    "headless": "node scripts/headlessRun.mjs",
+    "p3:gate": "node scripts/p3Gate.mjs",
+    "p5:chain": "node scripts/p5Chain.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",

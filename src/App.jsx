@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { createInitialGameState } from './game/state.js';
 import {
   startDay, executeAction, executeVisit, runEvening, runNightLedger, advanceDay, triggerCrown,
-  getOpenWindows,
+  getOpenWindows, transitionToArc,
 } from './game/dayLoop.js';
 import { saveToSlot, loadFromSlot, serializeGameState, deserializeGameState } from './game/save.js';
 import { rungFromLbs, rungDescriptor } from './gameData/ladders.js';
@@ -50,6 +50,14 @@ function WindowsPanel({ state }) {
   );
 }
 
+function garmentLine(woman) {
+  const piece = woman.wardrobe.bottom ?? woman.wardrobe.top;
+  const name = piece?.name ?? 'clothes';
+  const intact = (piece?.integrity ?? 1) > 0;
+  const verb = name.endsWith('s') ? 'are' : 'is';
+  return intact ? `The ${name} ${verb} negotiating` : `The ${name} ${verb === 'are' ? 'have' : 'has'} surrendered`;
+}
+
 function HerCard({ woman, town }) {
   const rung = rungFromLbs(woman.frameLbs, woman.lbs);
   const fullnessPct = Math.min(100, Math.round((woman.fullness / 1.3) * 100));
@@ -62,9 +70,7 @@ function HerCard({ woman, town }) {
         <span>Fullness</span>
         <div className="bar-track warm"><div className="bar-fill" style={{ width: `${fullnessPct}%` }} /></div>
       </div>
-      <p className="garment-line">
-        {woman.wardrobe.bottom?.integrity > 0 ? 'The gray jeans are negotiating' : 'The gray jeans have surrendered'}
-      </p>
+      <p className="garment-line">{garmentLine(woman)}</p>
       <p className="meta-line">Day weight: {woman.lbs.toFixed(1)} lbs (ritual only)</p>
       <p className="meta-line">Cash: ${town.economy.cash}</p>
     </aside>
@@ -136,6 +142,11 @@ export default function App() {
     mutate((next) => triggerCrown(next));
   }, [mutate]);
 
+  const handleNextArc = useCallback((arcId) => {
+    mutate((next) => transitionToArc(next, arcId));
+    setTab('day');
+  }, [mutate]);
+
   const handleNewGame = useCallback(() => {
     localStorage.removeItem('gravity-save-autosave');
     setState(null);
@@ -199,15 +210,26 @@ export default function App() {
               <div className="ledger">
                 <pre>{state.ui.ledgerText}</pre>
                 {state.arc.stage === 'crown-ready' && (
-                  <button type="button" className="primary crown-btn" onClick={handleCrown}>Crown Event — The Booth</button>
+                  <button type="button" className="primary crown-btn" onClick={handleCrown}>
+                    Crown Event
+                  </button>
                 )}
                 <button type="button" className="primary" onClick={handleNextDay}>Next day</button>
               </div>
             )}
             {state.arc.stage === 'settling' && (
               <div className="settling">
-                <h3>Arc complete</h3>
-                <p>Mara stays. Kayla and Priya are already heavier in her orbit. Who&apos;s next?</p>
+                <h3>Arc complete — {state.woman.name}</h3>
+                {state.ui.candidateLine && <p className="candidate-line">{state.ui.candidateLine}</p>}
+                {state.ui.nextArcId && (
+                  <button type="button" className="primary" onClick={() => handleNextArc(state.ui.nextArcId)}>
+                    Begin {state.ui.nextArcId === 'priya' ? 'Priya' : state.ui.nextArcId === 'sofie' ? 'Sofie' : state.ui.nextArcId}&apos;s arc
+                  </button>
+                )}
+                {!state.ui.nextArcId && state.arc.id !== 'sofie' && (
+                  <p className="toggle-hint">First-person arcs are off — the anthology pauses after this arc.</p>
+                )}
+                {!state.ui.nextArcId && <p>The anthology rests at three arcs for this build.</p>}
                 <button type="button" onClick={handleNewGame}>New game</button>
               </div>
             )}
@@ -229,7 +251,7 @@ export default function App() {
 
       {tab === 'record' && (
         <main className="aux-screen">
-          <RecordGallery woman={state.woman} town={state.town} />
+          <RecordGallery woman={state.woman} town={state.town} anthology={state.anthology} />
         </main>
       )}
 

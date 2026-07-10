@@ -12,6 +12,7 @@ export function serializeGameState(state) {
 export function deserializeGameState(raw) {
   const state = { ...raw };
   state.woman.weekUsed = new Set(state.woman.weekUsed ?? []);
+  state.anthology = state.anthology ?? [];
   return state;
 }
 

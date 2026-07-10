@@ -25,5 +25,17 @@ export function createObjectRegistry() {
     { id: 'home-door', location: 'home', kind: 'doorway', name: 'apartment door', ratingLbs: 320, status: 'fine', history: [] },
     { id: 'motorline-seat', location: 'motorline', kind: 'carSeat', name: 'hatchback seat', ratingLbs: 240, status: 'fine', history: [] },
     { id: 'crescent-stairs', location: 'crescent', kind: 'stairs', name: 'apartment stairs', ratingLbs: 280, status: 'fine', history: [] },
+    { id: 'fitness-bench', location: 'fitness', kind: 'chair', name: 'demonstration bench', ratingLbs: 215, status: 'fine', history: [] },
+    { id: 'fitness-office-chair', location: 'fitness', kind: 'chair', name: 'office chair', ratingLbs: 205, status: 'fine', history: [] },
+    { id: 'fitness-top', location: 'fitness', kind: 'garment', name: 'compression top', ratingLbs: 180, status: 'fine', history: [], slot: 'top' },
+    { id: 'fitness-leggings', location: 'fitness', kind: 'garment', name: 'studio leggings', ratingLbs: 175, status: 'fine', history: [], slot: 'bottom' },
+    { id: 'fitness-scale', location: 'fitness', kind: 'object', name: 'gym scale', ratingLbs: 230, status: 'fine', history: [] },
+    { id: 'fitness-turnstile', location: 'fitness', kind: 'turnstile', name: 'gym turnstile', ratingLbs: 290, status: 'fine', history: [] },
+    { id: 'library-reading-chair', location: 'library', kind: 'chair', name: 'rotunda reading chair', ratingLbs: 200, status: 'fine', history: [] },
+    { id: 'library-desk-chair', location: 'library', kind: 'chair', name: 'desk chair', ratingLbs: 195, status: 'fine', history: [] },
+    { id: 'library-cardigan', location: 'library', kind: 'garment', name: 'inherited cardigan', ratingLbs: 165, status: 'fine', history: [], slot: 'top' },
+    { id: 'library-skirt', location: 'library', kind: 'garment', name: 'library skirt', ratingLbs: 170, status: 'fine', history: [], slot: 'bottom' },
+    { id: 'library-cart', location: 'library', kind: 'object', name: 'book cart', ratingLbs: 210, status: 'fine', history: [] },
+    { id: 'library-elevator', location: 'library', kind: 'elevator', name: 'slow elevator', ratingLbs: 265, status: 'fine', history: [] },
   ];
 }

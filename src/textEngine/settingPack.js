@@ -66,7 +66,13 @@ const PRONOUN_SETS = {
 
 for (const slot of ['they', 'them', 'their', 'theirs', 'themself']) {
   registerModule(`subject.${slot}`, [
-    { when: {}, text: [(ctx) => (PRONOUN_SETS[ctx.subject?.pronouns] || PRONOUN_SETS.she)[slot]] },
+    { when: {}, text: [(ctx) => {
+      if (ctx.skillEffects?.seatType === 'inhabit') {
+        const inh = { they: 'you', them: 'you', their: 'your', theirs: 'yours', themself: 'yourself' };
+        return inh[slot];
+      }
+      return (PRONOUN_SETS[ctx.subject?.pronouns] || PRONOUN_SETS.she)[slot];
+    }] },
   ]);
 }
 registerModule('subject.name', [

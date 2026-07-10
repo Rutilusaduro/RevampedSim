@@ -32,3 +32,5 @@ registerPool('seat.visit', [
 ]);
 
 import './arcs/mara/index.js';
+import './arcs/priya/index.js';
+import './arcs/sofie/index.js';

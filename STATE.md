@@ -1,16 +1,18 @@
 # STATE
 
-phase: P3–P4 (Mara slice deepening + systems UI)
-current wave: Arc 1 Mara — rung-keyed prose + argument chain + map/record/orbit
+phase: P5 (Arcs 2–3 chain — Priya partner + Sofie inhabit)
+current wave: Mara P3 complete · Priya/Sofie initial vertical slices + anthology chain
 coverage:
-  port/morning g1-g8 keyed · meal stance+flip · win.near per class · win.fire per class
-  arg notice→awe · mind.flip · grav t1-t3 · crown+settling · town.visit/ambient
-harness: smoke + text:lint clean
+  mara: port/meal/win/arg/mind/crown/settling · three-playthrough gate (rush/savor/hostile)
+  priya: partner seat actions · rung-keyed port/meal · arg chain · crown bench · interstitial
+  sofie: inhabit second-person · rung-keyed pools · early flip · crown chair · interstitial
+  systems: arc loader · template router · anthology in record tab · firstPersonArcs toggle gates Sofie
+harness: smoke + text:lint + p3:gate + p5:chain
 decisions taken, reversible:
   - text-only v1
   - strict day cycle
   - Halcyon town name
   - overdrive opt-in at settling
-  - start-screen content toggles
-awaiting owner: playtest flag batch on argument + near-miss families
-next: attribution test, three-playthrough test, Priya arc hooks
+  - start-screen content toggles (firstPersonArcs gates arc 3)
+awaiting owner: playtest flag batch on argument + near-miss families (Mara)
+next: deepen Priya/Sofie g6–g8 prose, attribution lint grid, arcs 4–6 hooks

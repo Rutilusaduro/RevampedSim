@@ -4,3 +4,4 @@ import './windows.js';
 import './argument.js';
 import './mind.js';
 import './town.js';
+import './seat.js';
