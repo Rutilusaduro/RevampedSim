@@ -3,77 +3,72 @@ import { registerPool } from '../../../textEngine/engine.js';
 registerPool('grav.notice', [
   { when: {}, text: [
     'Kayla tugs at her own waistband when she thinks no one is looking.',
-    'Priya leaves the gym early. She says it is nothing. It is not nothing.',
+    'Priya leaves the gym early. She says it is nothing. You do not believe her.',
   ] },
 ]);
 
 registerPool('grav.undeniable', [
   { when: {}, text: [
     'Kayla asks if the diner changed the uniform sizes. Mara says she has not noticed. Kayla has.',
-    'Priya stands beside Mara in a photo and does not stand quite as straight as she used to.',
+    'Priya stands next to Mara in a photo and her posture is not as straight as it used to be.',
   ] },
 ]);
 
 registerPool('grav.candidate', [
   { when: {}, text: [
-    'Kayla laughs too loud at Mara\'s joke and touches her own hip like a question.',
-    'At the crown, you catch Priya watching Mara eat. Her mouth is slightly open.',
+    'Kayla laughs too loud at Mara\'s joke and touches her own hip.',
+    'You catch Priya watching Mara eat. Her mouth is slightly open.',
   ] },
 ]);
 
 registerPool('town.ambient', [
   { when: {}, text: [
-    'Halcyon hums along, unaware it is losing another argument.',
-    'The town sleeps. The windows do not.',
+    'Someone swapped out a booth at the Anchor for a wider one. Nobody made a fuss.',
+    'The bakery line is longer every week.',
   ] },
   { when: { softeningMin: 10 }, weight: 2, text: [
-    'Someone widened a booth at the Anchor. No one held a meeting about it.',
+    'The Anchor has two wide booths now. Sal says it was "maintenance."',
   ] },
   { when: { softeningMin: 25 }, weight: 2, text: [
-    'The bakery\'s morning line runs longer. No one complains.',
+    'The bakery runs out of the good pastries before nine on Saturdays.',
   ] },
 ]);
 
 registerPool('town.visit', [
   { when: {}, text: [
-    'You walk Halcyon with {subject.first}. The town watches politely.',
+    'You walk around Halcyon with {subject.first}. People glance, then glance again.',
   ] },
   { when: { location: 'anchor' }, text: [
-    'The Anchor smells like coffee and fryer oil and history. Mara\'s booth waits in the corner.',
+    'The Anchor smells like coffee and fryer oil. Mara\'s corner booth is already taken.',
   ] },
   { when: { location: 'market' }, text: [
-    'Pine & 4th is narrow aisles and bright labels. Mara reads them all.',
+    'Pine & 4th has narrow aisles. Mara reads every label anyway.',
   ] },
   { when: { location: 'marina' }, text: [
-    'The boardwalk benches are rated for smaller summers. Mara sits anyway.',
+    'The boardwalk bench creaks when Mara sits. She sits.',
   ] },
   { when: { location: 'crescent' }, text: [
-    'The Crescent stairs creak in a familiar way. Mara takes them one at a time.',
+    'The Crescent stairs creak. Mara takes them one step at a time.',
   ] },
 ]);
 
 registerPool('town.ledger', [
-  { when: {}, text: ['Halcyon hums along, unaware it is losing another argument.'] },
-  { when: { softeningMin: 5 }, text: ['The town sleeps softer than it did last month.'] },
+  { when: {}, text: ['Another day in Halcyon. The diner is busier than usual.'] },
+  { when: { softeningMin: 5 }, weight: 2, text: ['The bakery added a second register line.'] },
 ]);
 
 registerPool('end.settling', [
   { when: {}, text: [
-    'Mara stays at the Anchor the way landmarks stay — daily, publicly, without apology.',
-    'The corner booth is gone. The widened one has her name in Sharpie on the underside.',
-    'Kayla is heavier. Priya is heavier. Someone in the crown crowd is already leaning.',
+    'Mara still works at the Anchor every day. Everybody knows her. Everybody sees her.',
+    'The old corner booth is gone. The new wide one has her name in Sharpie underneath.',
+    'Kayla has put on weight. Priya has too. Someone at the gym is already watching.',
   ] },
 ]);
 
 registerPool('crown.mara.booth', [
   { when: {}, text: [
-    'The corner booth is retired in front of everyone who ever sat there.',
-    'They unscrew the plaque while the diner watches.',
-    'Mara takes the first seat in its widened replacement like a coronation.',
-  ] },
-  { when: { flipped: true }, weight: 3, text: [
-    'The booth that held her childhood lets go with a sound the town will quote for years.',
-    'Vinyl new, appetite older — she eats through the ceremony.',
-    'Elena claps. Priya does not look away. Kayla touches her own waistband and smiles.',
+    'They haul the broken booth out back while the whole diner watches.',
+    'Mara sits in the replacement booth and finishes her pie.',
+    'Sal says they are not fixing the old one. Mara says good.',
   ] },
 ]);

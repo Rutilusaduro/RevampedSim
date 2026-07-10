@@ -1,18 +1,17 @@
 import { registerPool } from '../../../textEngine/engine.js';
 
-// Near-miss register — evidence over verdict (exemplar §4)
 registerPool('win.near.generic', [
   { when: {}, text: [
-    'Something creaks. {subject.first} freezes, then laughs it off too quickly.',
-    'A seam complains. She pretends not to notice. You both notice.',
+    'Something creaks. {subject.first} freezes, then laughs too loud.',
+    'A seam pulls. She pretends not to notice. You noticed.',
   ] },
 ]);
 
 registerPool('win.near.garment', [
   { when: {}, text: [
-    'The blouse pulls when she reaches — a small hitch. She finishes the reach slower.',
-    'The gray jeans whisper at the hip. {subject.first} exhales and keeps walking.',
-    'A button strains. Holds. Her hand drifts to it once, then away.',
+    'Her blouse pulls when she reaches. She finishes the reach slower.',
+    'The gray jeans are tight at the hip. {subject.first} exhales and keeps walking.',
+    'A button strains. Holds. Her hand touches it once, then drops.',
   ] },
   { when: { rungMin: 3 }, weight: 2, text: [
     'The seam along her thigh goes tight when she sits. She sits anyway.',
@@ -21,77 +20,77 @@ registerPool('win.near.garment', [
 
 registerPool('win.near.chair', [
   { when: {}, text: [
-    'The chair groans. She shifts her weight and the sound stops — for now.',
-    'Wood complains under her. {subject.first} pretends she did not hear it.',
+    'The chair groans. She shifts her weight and it stops — for now.',
+    'Wood creaks under her. {subject.first} acts like she did not hear it.',
   ] },
   { when: { rungMin: 4 }, weight: 2, text: [
-    'The staff chair creaks twice when she settles. She stays seated like she earned the noise.',
+    'The staff chair creaks twice when she sits down. She stays put.',
   ] },
 ]);
 
 registerPool('win.near.booth', [
   { when: {}, text: [
-    'Vinyl sighs under her in the corner booth. She traces the menu with one finger, unbothered.',
-    'The booth leather compresses. {subject.first} does not get up.',
+    'The booth vinyl squeaks under her. She runs a finger down the menu.',
+    'The booth cushion compresses flat. {subject.first} does not get up.',
   ] },
   { when: { rungMin: 5 }, weight: 2, text: [
-    'The corner booth pinches her hips. She laughs — surprised, not offended.',
+    'The corner booth pinches her hips. She laughs, surprised.',
   ] },
 ]);
 
 registerPool('win.near.door', [
   { when: {}, text: [
-    'She turns sideways at the door. It is closer than it used to be.',
-    'The doorframe brushes her shoulder. She shoulders through without breaking stride.',
+    'She turns sideways at the door. It is a tighter fit than it used to be.',
+    'The doorframe brushes her shoulder. She pushes through.',
   ] },
 ]);
 
 registerPool('win.fire.chair', [
   { when: {}, text: [
-    'The chair gives up with a crack that silences the room.',
-    '{subject.first} stays seated on what is left, breathing hard, not leaving.',
-    'Wood splinters. The chair is done. She is not.',
+    'The chair cracks. The room goes quiet.',
+    '{subject.first} stays on what is left of the seat, breathing hard.',
+    'Wood splinters. The chair is broken. She is not moving.',
   ] },
   { when: { flipped: true }, weight: 2, text: [
-    'The chair fails. She looks at the wreckage, then at you, serene.',
+    'The chair breaks. She looks at the mess, then at you, and smiles.',
   ] },
 ]);
 
 registerPool('win.fire.booth', [
   { when: {}, text: [
-    'The booth pinches, then refuses. {subject.name} laughs — surprised, delighted.',
-    'Vinyl protests. The corner booth will never be the same.',
-    'She is stuck for a moment. She does not look like she minds.',
+    'The booth vinyl tears. {subject.name} laughs — surprised, then pleased.',
+    'She is stuck for a second. She does not look upset about it.',
+    'The booth frame cracks. Sal comes running.',
   ] },
 ]);
 
 registerPool('win.fire.garment', [
   { when: {}, text: [
-    'A button pops — small sound, huge punctuation.',
-    '{subject.first} looks down, then up at you, cheeks warm.',
-    'The seam surrenders. Fabric parts like it was always going to.',
+    'A button pops off. Small sound. Everyone looks.',
+    '{subject.first} looks down at the gap, then up at you, cheeks red.',
+    'The seam splits. Fabric gives way.',
   ] },
 ]);
 
 registerPool('win.fire.door', [
   { when: {}, text: [
-    'She turns sideways. The doorframe still wins.',
-    'She is laughing before she is free.',
-    'The door and her hips disagree. The door is learning.',
+    'She turns sideways. She still does not fit.',
+    'She laughs while she wedges herself through.',
+    'The doorframe wins. She keeps pushing anyway.',
   ] },
 ]);
 
 registerPool('win.fire.car', [
   { when: {}, text: [
-    'The seatbelt will not meet. She holds it like a necklace and drives anyway.',
-    'The hatchback seat has opinions. {subject.first} has more.',
+    'The seatbelt will not click. She holds it across her chest and drives.',
+    'The car seat groans when she sits. She starts the engine anyway.',
   ] },
 ]);
 
 registerPool('win.fire.stairs', [
   { when: {}, text: [
-    'Halfway up she stops to breathe. The stairs are not cruel — just honest.',
-    'She takes the landing sitting down. The elevator can wait.',
+    'Halfway up she stops to catch her breath.',
+    'She sits on the landing. She will take the elevator next time.',
   ] },
 ]);
 

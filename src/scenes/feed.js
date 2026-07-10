@@ -30,7 +30,7 @@ registerPool('feed.buffet', [
     'She waddles to the car smiling. "We are doing this again Friday."',
   ] },
   { when: { flipped: true }, priority: 1, text: [
-    'She treats the buffet like a sport. You lose count of her plates.',
+    'She treats the buffet like a competition. You lose count of her plates.',
     'Other diners stare. She stares back while chewing.',
     'On the drive home she asks what is in the fridge. You laugh. She is serious.',
   ] },

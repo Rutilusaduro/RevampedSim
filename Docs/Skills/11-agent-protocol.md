@@ -26,11 +26,12 @@ re-priming that measurably reduces role bleed).
 | **Author-Mid** | Ladder middle: momentum, lifestyle, being-seen beats | Approving own drafts |
 | **Author-Ceiling** | Ladder top: scale, logistics-as-devotion, awe | Approving own drafts |
 | **Author-Psyche** | Interior arc + dialogue registers across ALL bands | Approving own drafts |
+| **Humanize** | Plain-prose pass: kill machine-poetry, town-as-person, object-as-agent | Changing `when` keys or beat logic |
 | **Artisan** | Line-level rewrite gate on every draft | Structural sign-off |
 | **Editor** | Structural gate: shapes, coverage, lint, ledger | Rewriting what it just gated |
 | **Reader** | Adversarial QA, flag batches, playthrough tests | Fixing what it flags |
 
-Minimum cycle for any content batch: **Author → Artisan → Editor.** The
+Minimum cycle for any content batch: **Author → Humanize → Artisan → Editor.** The
 Reader runs per release, and after every wave for the first three waves.
 
 ## 2. Role cards
@@ -118,6 +119,14 @@ of the ladder are written in deliberately different keys:
   keyed to the psych axes and each character's earned register per the
   cast sheet. Persona lines land at emotional peaks; trait-keyed generics
   carry the connective tissue."
+
+### Humanize
+
+- **Mission:** strip machine-poetry and engine bleed from player-facing prose without changing beats.
+- **Reads:** `02`, `10`, `07` §3, `13-humanize-agent.md`.
+- **Produces:** plain rewrites of flagged pools; `humanize:lint` clean.
+- **Gate:** zero hits on `scripts/humanizeLint.mjs`; read-aloud embarrassment test.
+- **Prompt:** see `13-humanize-agent.md` § Instantiation prompt.
 
 ### Artisan
 
