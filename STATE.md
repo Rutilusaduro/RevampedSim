@@ -1,15 +1,16 @@
 # STATE
 
-phase: P5 (Arcs 2–3 — Priya partner + Sofie inhabit)
-current wave: Full arc chain with arc-specific windows, opposed/secret stance depth, attribution gate
+phase: REVAMP_PLAN Phases 0–2 (in progress)
+current wave: pacing rebuild · windows panel · day transcript · agency harness
 coverage:
-  mara: P3 complete · three-playthrough gate · argument/near-miss families (owner batch pending)
-  priya: partner seat · rung g1–g8 port/meal · gym windows · arg chain · crown bench · interstitial
-  sofie: inhabit second-person · rung g1–g8 · library windows · secret stance arg · crown chair
-  systems: window template router · anthology record · firstPersonArcs gates Sofie · per-arc crown gates
-harness: smoke · text:lint (108 modules) · p3:gate · p5:gate · p5:chain · p5:attribution (≥80%)
+  mara: indulgent ~52d/254 lbs · 7 window fires · passive stalls @ ~176 lbs
+  pacing: mealGainFactor 0.12 · crown booth open @ 252 lbs · 11 Mara windows
+  ui: WindowsPanel (bars, ghosts, crown pin, click history) · sceneHistory transcript
+harness: smoke · text:lint · humanize:lint · pace:gate · p3:gate (agency) · p5:gate (rush) · p5:chain · p5:attribution
 decisions taken, reversible:
   - text-only v1 · strict day cycle · Halcyon town name
-  - overdrive opt-in at settling · start-screen content toggles
+  - REVAMP pacing: appetite caps 1.6/3.0 · evening meal skipped on light pre-flip days
+  - max one window fire per action · nearMissBand 1.6 · wear cap 0.5
+  - cash < $20 narrows menu (Phase 3 starter)
+next: Phase 3–4 (meal differentiation, suspicion, scene runner, earned flip) · Phase 5 staged crown
 awaiting owner: playtest flag batch on Mara argument + near-miss families
-next: P6 hooks (Carmen/Noor/Bea), deepen g9–g10 pools, endless mode scaffolding

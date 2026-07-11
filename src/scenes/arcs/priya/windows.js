@@ -3,24 +3,29 @@ import { registerPool } from '../../../textEngine/engine.js';
 registerPool('priya.win.near.garment', [
   { when: {}, text: [
     'The compression top pulls when she demos a reach. She finishes the reach slower.',
-    'Studio leggings whisper at the hip mid-squat. Priya chalks the next cue like nothing shifted.',
+    'Her leggings pinch at the hip mid-squat. Priya chalks the next cue like nothing changed.',
     'A seam along her thigh goes tight when she sits on the bench. She sits anyway.',
   ] },
   { when: { rungMin: 3 }, weight: 2, text: [
     'The track jacket will not zip. She wears it open and calls it layering.',
   ] },
   { when: { rungMin: 6 }, weight: 3, text: [
-    'Leggings go sheer at the stress point. The mirror pretends not to see.',
+    'Leggings go sheer at the stress point. She keeps teaching.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
-    'The compression top has given up pretending. Priya teaches in what still closes.',
+  { when: { rungMin: 9 }, weight: 3, text: [
+    'Leggings go sheer at the stress point. She keeps teaching.',
+    'The compression top rides up when she reaches. She does not pull it down.',
+  ] },
+  { when: { rungMin: 11 }, weight: 3, text: [
+    'The compression top has given up. Priya teaches in what still closes — barely.',
+    'Her leggings split at the thigh mid-squat. She finishes the set.',
   ] },
 ]);
 
 registerPool('priya.win.near.bench', [
   { when: {}, text: [
-    'The demonstration bench groans when she sits to cue form. She stays seated like she earned the sound.',
-    'Wood complains under her mid-class. Priya does not get up.',
+    'The demonstration bench groans when she sits to cue form. She stays seated.',
+    'Wood creaks under her mid-class. Priya does not get up.',
   ] },
   { when: { rungMin: 5 }, weight: 2, text: [
     'The bench dips when she demos. The client circle watches her face, not the wood.',
@@ -29,11 +34,11 @@ registerPool('priya.win.near.bench', [
 
 registerPool('priya.win.near.scale', [
   { when: {}, text: [
-    'She steps on the gym scale between classes. The number pauses like it is thinking.',
+    'She steps on the gym scale between classes. The number pauses before it settles.',
     'The scale stutters. Priya steps off, then on again, smiling at the hesitation.',
   ] },
   { when: { stance: 'opposed', flipped: false }, weight: 3, text: [
-    'Weekly weigh-in ritual — she exhales before the display. The display is not gentle.',
+    'Weekly weigh-in — she exhales before the display. The number is higher than last week.',
   ] },
 ]);
 
@@ -50,18 +55,18 @@ registerPool('priya.win.near.turnstile', [
 registerPool('priya.win.near.generic', [
   { when: {}, text: [
     'Something creaks in the mezzanine. Priya freezes, then smiles it off too quickly.',
-    'Equipment complains. She pretends not to notice. The class notices.',
+    'Equipment creaks. She acts like she did not hear it. The class heard.',
   ] },
 ]);
 
 registerPool('priya.win.fire.garment', [
   { when: {}, text: [
-    'The compression top gives up mid-reach — a seam surrenders with a small sound.',
+    'The compression top gives up mid-reach — a seam pops with a small sound.',
     'Leggings split along the thigh. Priya finishes the set looking at the class, not the tear.',
     'A zipper retreats. She keeps teaching in what still holds.',
   ] },
   { when: { flipped: true }, weight: 2, text: [
-    'Fabric fails. She looks at you across the floor, serene, still chewing.',
+    'Fabric fails. She looks at you across the floor, calm, still chewing.',
   ] },
 ]);
 
@@ -71,14 +76,14 @@ registerPool('priya.win.fire.bench', [
     'Wood splinters mid-cue. The bench is done. She is not.',
   ] },
   { when: { flipped: true }, weight: 2, text: [
-    'The bench fails. She finishes on the floor like a queen holding court.',
+    'The bench fails. She finishes on the floor and keeps talking through the set.',
   ] },
 ]);
 
 registerPool('priya.win.fire.scale', [
   { when: {}, text: [
-    'The scale caps out with an error tone. Priya reads it like a compliment.',
-    'Numbers stop. She steps off smiling — the gym hears the surrender.',
+    'The scale caps out with an error tone. Priya grins at the ceiling.',
+    'Numbers stop. She steps off smiling — the gym hears it.',
   ] },
 ]);
 
@@ -98,14 +103,14 @@ registerPool('priya.win.fire.chair', [
 
 registerPool('priya.win.fire.stairs', [
   { when: {}, text: [
-    'Halfway up the mezzanine she stops to breathe. The stairs are honest.',
+    'Halfway up the mezzanine she stops to breathe. The stairs are steep.',
     'She takes the landing sitting down. The elevator can wait.',
   ] },
 ]);
 
 registerPool('priya.win.fire.car', [
   { when: {}, text: [
-    'The seatbelt will not meet. She holds it like a necklace and drives anyway.',
+    'The seatbelt will not meet. She holds it across her chest and drives anyway.',
   ] },
 ]);
 

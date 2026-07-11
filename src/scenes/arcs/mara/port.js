@@ -1,50 +1,75 @@
 import { registerPool } from '../../../textEngine/engine.js';
 
-// Shape: SENT — morning portrait, rung-keyed
 registerPool('port.morning', [
   { when: {}, text: [
-    '{subject.name} is already awake, {word.size} in the kitchen light.',
-    'Morning finds {subject.first} softer than she left herself last night.',
-    '{subject.name} checks her phone, then the fridge — the second look lasts longer.',
+    '{subject.name} is already up, padding around the kitchen in sleep clothes.',
+    '{subject.name} checks her phone, then the fridge. She stares at the fridge longer.',
   ] },
   { when: { rung: 1 }, weight: 3, text: [
-    'The waistband of the gray jeans leaves a quiet mark. {subject.first} smooths her shirt and does not mention it.',
-    'Coffee first. She pours two cups before she remembers she lives alone.',
+    'The gray jeans leave a red line on her waist. She pulls her shirt down and says nothing.',
+    'She pours coffee, then pours a second cup before remembering she lives alone.',
   ] },
   { when: { rungMin: 2, rungMax: 3 }, weight: 3, text: [
-    '{subject.name} stands at the mirror a beat longer than she used to.',
-    'The gray jeans negotiate before {subject.first} even pours coffee.',
-    'She tugs once at her blouse, then lets the fabric settle where it wants.',
+    '{subject.name} stands at the mirror longer than she used to.',
+    'The gray jeans are tight at the waist. She tugs her blouse straight and makes coffee.',
+    'Her blouse pulls when she reaches for a mug. She reaches anyway.',
   ] },
   { when: { rungMin: 4, rungMax: 5 }, weight: 3, text: [
-    'The kitchen chair announces her — a creak on the sit, a second settling creak after.',
-    '{subject.first} has stopped waiting for the sound to finish before she reaches for the cereal.',
+    'The kitchen chair creaks when she sits. It creaks again when she shifts.',
+    'She has stopped waiting for the creaking to stop before she reaches for the cereal.',
   ] },
   { when: { rungMin: 6, rungMax: 7 }, weight: 3, text: [
-    'She crosses the apartment on a sway that was not there in spring.',
-    'The doorframe teaches her a new angle. She learns it without comment.',
+    'She walks to the bathroom with a sway she did not have last spring.',
+    'She turns sideways to fit through the bathroom door. She does it without thinking now.',
   ] },
-  { when: { rungMin: 8 }, weight: 3, text: [
-    'Morning is a logistics problem now — where to sit, what still closes.',
-    '{subject.name} chooses the reinforced chair without being asked.',
+  { when: { rungMin: 8, rungMax: 9 }, weight: 3, text: [
+    'She picks the sturdier kitchen chair without being asked.',
+    'Half her old shirts do not button. She wears the ones that still do.',
+  ] },
+  { when: { rungMin: 10, rungMax: 11 }, weight: 3, text: [
+    'She has to turn sideways in the hallway now. She does it without sighing.',
+    'The bathroom scale groans. She steps on anyway and reads the number out loud.',
+  ] },
+  { when: { rungMin: 12 }, weight: 3, text: [
+    'Morning is a list: which chair, which route, which shirt still closes.',
+    'She eats standing at the counter because the kitchen chair is done.',
+    'She catches her reflection and does not look away. She looks bigger. She looks fine.',
   ] },
   { when: { flipped: true }, priority: 1, text: [
-    '{subject.name} moves through morning like the day already belongs to her appetite.',
-    '{subject.first} hums while she eats — not hiding, not apologizing.',
-    'She pours cereal into a bowl that looks smaller than it used to. She fills it twice.',
+    '{subject.first} hums while she eats cereal straight from the box.',
+    'She fills the bowl twice. She is not pretending to be shy about it.',
+    'She eats standing up, licking milk off her thumb, already thinking about lunch.',
+  ] },
+]);
+
+registerPool('port.rung', [
+  { when: {}, text: [
+    'Something shifts — not dramatic, just real. {subject.first} carries her weight differently today.',
+    'You notice before she does: she looks {word.size}.',
+    'The mirror catches her on the way past. She pauses. She keeps walking.',
+  ] },
+  { when: { rungMin: 6 }, weight: 2, text: [
+    'She is heavier than last month and moving like she knows it.',
+    'Furniture notices before people do. She notices after.',
   ] },
 ]);
 
 registerPool('port.evening', [
   { when: {}, text: [
-    'Evening settles. {subject.first} finds the couch and the remote and something sweet.',
-    'Dinner happens the way it has been happening — a little more, a little easier.',
+    'It is evening. {subject.first} finds the couch, the remote, and something sweet.',
+    'Dinner is bigger than it used to be. So is dessert.',
   ] },
   { when: { rungMin: 3 }, weight: 2, text: [
-    'The couch receives more of her than it did last month. She notices. She stays.',
+    'The couch dips when she sits. She notices. She does not get up.',
+  ] },
+  { when: { rungMin: 8 }, weight: 2, text: [
+    'The couch dips deep when she sits. She has stopped apologizing for it.',
+  ] },
+  { when: { rungMin: 11 }, weight: 2, text: [
+    'She needs both hands to push off the couch. She gets up anyway.',
   ] },
   { when: { flipped: true }, priority: 1, weight: 3, text: [
-    'She eats again because the day is not finished with her yet.',
-    'The refrigerator light finds her like a confessional. She does not hurry.',
+    'She goes back to the fridge after dinner. The day is not over for her yet.',
+    'She eats standing in the kitchen light, door open, not caring who might see.',
   ] },
 ]);

@@ -1,5 +1,5 @@
 /**
- * P5 per-arc gates — Priya and Sofie must reach crown-ready within 70 days.
+ * P5 per-arc gates — rush strategies reach crown-ready (Priya/Sofie inherit Mara pacing).
  */
 import { createInitialGameState } from '../src/game/state.js';
 import { loadArcIntoState } from '../src/game/arcs.js';
@@ -9,10 +9,9 @@ import {
 
 const DONE = new Set(['crown-ready', 'crown', 'settling']);
 
-function playArc(arcId, actions, maxDays = 70, prep = null) {
+function playArc(arcId, actions, maxDays = 90) {
   const state = startDay(createInitialGameState({ firstPersonArcs: true }));
-  if (prep) prep(state);
-  loadArcIntoState(state, arcId, { carryDriftFrom: prep?.carry });
+  loadArcIntoState(state, arcId);
   startDay(state);
   let day = 0;
   while (day < maxDays && !DONE.has(state.arc.stage)) {
@@ -32,22 +31,18 @@ function playArc(arcId, actions, maxDays = 70, prep = null) {
   };
 }
 
-const priyaRush = ['refeed-together', 'gym-date', 'teach-class'];
-const priyaSavor = ['observe', 'walk', 'rest'];
-const sofieRush = ['bakery-run', 'stacks-shift', 'breakfast-hearty'];
-const sofieSavor = ['mirror-check', 'cardigan-ritual', 'walk'];
-
 const results = [
-  playArc('priya', priyaRush),
-  playArc('priya', priyaSavor),
-  playArc('sofie', sofieRush),
-  playArc('sofie', sofieSavor),
+  playArc('priya', ['refeed-together', 'gym-date', 'teach-class']),
+  playArc('sofie', ['bakery-run', 'stacks-shift', 'breakfast-hearty']),
 ];
 
 let failed = false;
 for (const r of results) {
   const ok = DONE.has(r.stage);
-  console.log(`${r.arcId}/${r.days}d → ${r.stage} (flip=${r.flipped}, lbs=${r.lbs.toFixed(0)}) ${ok ? '✔' : '✖'}`);
+  console.log(
+    `${r.arcId}/rush ${r.days}d → ${r.stage} `
+    + `(flip=${r.flipped}, lbs=${r.lbs.toFixed(0)}, ratchet=${r.ratchet}) ${ok ? '✔' : '✖'}`,
+  );
   if (!ok) failed = true;
 }
 
@@ -55,4 +50,4 @@ if (failed) {
   console.error('P5 arc gate FAILED');
   process.exit(1);
 }
-console.log('✔ P5 per-arc gates passed');
+console.log('✔ P5 per-arc rush gates passed');

@@ -2,39 +2,47 @@ import { useCallback, useState } from 'react';
 import { createInitialGameState } from './game/state.js';
 import {
   startDay, executeAction, executeVisit, runEvening, runNightLedger, advanceDay, triggerCrown,
-  transitionToArc, executeLook, executeTalk,
+  transitionToArc, executeLook, executeTalk, executeWeigh,
 } from './game/dayLoop.js';
 import { saveToSlot, loadFromSlot, serializeGameState, deserializeGameState } from './game/save.js';
 import { rungFromLbs, rungDescriptor } from './gameData/ladders.js';
 import {
-  moodLine, moodLineInhabit, garmentLinePlain, garmentLinePlainInhabit,
+  moodLine, moodLineInhabit, garmentLinePlain, garmentLinePlainInhabit, weighLine,
 } from './gameData/actionLabels.js';
 import { TownMap } from './components/TownMap.jsx';
 import { RecordGallery } from './components/RecordGallery.jsx';
 import { OrbitPanel } from './components/OrbitPanel.jsx';
 import { StartScreen } from './components/StartScreen.jsx';
 import { DevPanel } from './components/DevPanel.jsx';
+import { WindowsPanel } from './components/WindowsPanel.jsx';
 import { ActionMenu } from './components/ActionMenu.jsx';
 import './styles.css';
 
 const TABS = ['day', 'map', 'record', 'orbit'];
 
-function HerCard({ woman, town, inhabit }) {
+function HerCard({ woman, town, inhabit, phase }) {
   const rung = rungFromLbs(woman.frameLbs, woman.lbs);
-  const fullnessPct = Math.min(100, Math.round((woman.fullness / 1.3) * 100));
+  const fullnessPct = Math.min(100, Math.round((woman.fullness / Math.max(woman.capacity, 1)) * 100));
   const mood = inhabit ? moodLineInhabit(woman) : moodLine(woman);
   const garment = inhabit ? garmentLinePlainInhabit(woman) : garmentLinePlain(woman);
+  const weighed = weighLine(woman, inhabit);
+  const ritualDay = phase === 'ledger' || woman.lastWeigh?.day === town.day;
+  const weightLine = ritualDay
+    ? (inhabit ? `You weigh ${woman.lbs.toFixed(1)} lbs` : `She weighs ${woman.lbs.toFixed(1)} lbs`)
+    : (inhabit ? 'You feel heavier than yesterday' : 'She feels heavier than yesterday');
 
   return (
     <aside className="panel her-card">
       <h2>{inhabit ? 'You' : woman.name}</h2>
       <p className="rung-line">{inhabit ? `You look ${rungDescriptor(rung.id)}` : `She looks ${rungDescriptor(rung.id)}`}</p>
+      <p className="weight-line">{weightLine}</p>
       <p className="mood-line">{mood}</p>
       <div className="gauge">
         <span>{inhabit ? 'How full you feel' : 'How full she is'}</span>
         <div className="bar-track warm"><div className="bar-fill" style={{ width: `${fullnessPct}%` }} /></div>
       </div>
       <p className="garment-line">{garment}</p>
+      {weighed && <p className="meta-line">{weighed}</p>}
       <p className="meta-line">Cash: ${town.economy.cash}</p>
     </aside>
   );
@@ -88,6 +96,10 @@ export default function App() {
 
   const handleLook = useCallback(() => {
     mutate((next) => executeLook(next));
+  }, [mutate]);
+
+  const handleWeigh = useCallback(() => {
+    mutate((next) => executeWeigh(next));
   }, [mutate]);
 
   const handleVisit = useCallback((locationId) => {
@@ -159,11 +171,21 @@ export default function App() {
 
       {tab === 'day' && (
         <main className="day-screen">
+          <WindowsPanel
+            windows={state.windows}
+            woman={state.woman}
+            lastNearMiss={state.ui.lastNearMiss}
+            journal={state.ui.windowJournal}
+          />
           <section className="scene-column">
             <div className="scene-text">
-              {state.ui.sceneText.split('\n\n').map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
+              {state.ui.sceneHistory.length > 0
+                ? state.ui.sceneHistory.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))
+                : state.ui.sceneText.split('\n\n').map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
             </div>
             {(state.ui.phase === 'morning' || state.ui.phase === 'evening-ready') && state.arc.stage !== 'settling' && (
               <ActionMenu
@@ -171,6 +193,7 @@ export default function App() {
                 onAction={handleAction}
                 onTalk={handleTalk}
                 onLook={handleLook}
+                onWeigh={handleWeigh}
                 onEvening={handleEvening}
               />
             )}
@@ -202,7 +225,7 @@ export default function App() {
               </div>
             )}
           </section>
-          <HerCard woman={state.woman} town={state.town} inhabit={inhabit} />
+          <HerCard woman={state.woman} town={state.town} inhabit={inhabit} phase={state.ui.phase} />
         </main>
       )}
 

@@ -10,11 +10,14 @@
     "preview": "vite preview",
     "smoke": "node scripts/smoke.mjs",
     "text:lint": "node scripts/textLint.mjs",
-    "headless": "node scripts/headlessRun.mjs",
+    "headless": "node scripts/paceGate.mjs",
+    "pace:gate": "node scripts/paceGate.mjs",
+    "pace:gate:strict": "PACE_GATE_STRICT=1 node scripts/paceGate.mjs",
     "p3:gate": "node scripts/p3Gate.mjs",
     "p5:gate": "node scripts/p5Gate.mjs",
     "p5:chain": "node scripts/p5Chain.mjs",
-    "p5:attribution": "node scripts/attributionTest.mjs"
+    "p5:attribution": "node scripts/attributionTest.mjs",
+    "humanize:lint": "node scripts/humanizeLint.mjs"
   },
   "dependencies": {
     "react": "^19.2.6",

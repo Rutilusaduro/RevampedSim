@@ -18,8 +18,8 @@ export function createMaraWoman() {
     frameLbs: 145,
     lbs: 158,
     appetite: 1.0,
-    capacity: 4,
-    fullness: 0.3,
+    capacity: 1.0,
+    fullness: 0.95,
     stance: 'reluctant',
     resolve: 100,
     flipped: false,
@@ -41,14 +41,17 @@ export function createMaraWoman() {
 }
 
 export const MARA_WINDOWS = [
-  { id: 'mara-jeans', eventClass: 'seamSplit', target: 'garment', objectId: 'home-jeans', openLbs: 161, certainLbs: 207, state: 'closed', wear: 0, firedOn: null, label: 'the gray jeans' },
-  { id: 'mara-blouse', eventClass: 'buttonPop', target: 'garment', objectId: 'home-top', openLbs: 166, certainLbs: 212, state: 'closed', wear: 0, firedOn: null, label: 'the work blouse' },
-  { id: 'mara-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'home-chair', openLbs: 193, certainLbs: 248, state: 'closed', wear: 0, firedOn: null, label: 'the kitchen chair' },
-  { id: 'mara-booth', eventClass: 'boothPinch', target: 'object', objectId: 'anchor-booth', openLbs: 202, certainLbs: 260, state: 'closed', wear: 0, firedOn: null, label: 'the corner booth', crown: true },
-  { id: 'mara-car', eventClass: 'carSeatBelt', target: 'object', objectId: 'motorline-seat', openLbs: 221, certainLbs: 283, state: 'closed', wear: 0, firedOn: null, label: 'the hatchback seat' },
-  { id: 'mara-stairs', eventClass: 'stairsWinded', target: 'task', objectId: 'crescent-stairs', openLbs: 258, certainLbs: 330, state: 'closed', wear: 0, firedOn: null, label: 'the apartment stairs' },
-  { id: 'mara-door', eventClass: 'doorframeBrush', target: 'location', objectId: 'home-door', openLbs: 294, certainLbs: 378, state: 'closed', wear: 0, firedOn: null, label: 'the apartment door' },
-  { id: 'mara-staff-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'anchor-chair', openLbs: 184, certainLbs: 236, state: 'closed', wear: 0, firedOn: null, label: 'a staff-room chair' },
+  { id: 'mara-jeans', eventClass: 'seamSplit', target: 'garment', objectId: 'home-jeans', openLbs: 163, certainLbs: 205, state: 'closed', wear: 0, firedOn: null, label: 'the gray jeans' },
+  { id: 'mara-blouse', eventClass: 'buttonPop', target: 'garment', objectId: 'home-top', openLbs: 168, certainLbs: 210, state: 'closed', wear: 0, firedOn: null, label: 'the work blouse' },
+  { id: 'mara-apron', eventClass: 'seamSplit', target: 'garment', objectId: 'home-apron', openLbs: 176, certainLbs: 218, state: 'closed', wear: 0, firedOn: null, label: 'the diner apron' },
+  { id: 'mara-staff-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'anchor-chair', openLbs: 182, certainLbs: 234, state: 'closed', wear: 0, firedOn: null, label: 'a staff-room chair' },
+  { id: 'mara-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'home-chair', openLbs: 192, certainLbs: 244, state: 'closed', wear: 0, firedOn: null, label: 'the kitchen chair' },
+  { id: 'mara-scale', eventClass: 'scaleCap', target: 'object', objectId: 'home-scale', openLbs: 202, certainLbs: 252, state: 'closed', wear: 0, firedOn: null, label: 'the bathroom scale' },
+  { id: 'mara-couch', eventClass: 'chairCreakFail', target: 'object', objectId: 'home-couch', openLbs: 208, certainLbs: 258, state: 'closed', wear: 0, firedOn: null, label: 'the living-room couch' },
+  { id: 'mara-car', eventClass: 'carSeatBelt', target: 'object', objectId: 'motorline-seat', openLbs: 224, certainLbs: 286, state: 'closed', wear: 0, firedOn: null, label: 'the hatchback seat' },
+  { id: 'mara-booth', eventClass: 'boothPinch', target: 'object', objectId: 'anchor-booth', openLbs: 252, certainLbs: 288, state: 'closed', wear: 0, firedOn: null, label: 'the corner booth', crown: true },
+  { id: 'mara-stairs', eventClass: 'stairsWinded', target: 'task', objectId: 'crescent-stairs', openLbs: 268, certainLbs: 340, state: 'closed', wear: 0, firedOn: null, label: 'the apartment stairs' },
+  { id: 'mara-door', eventClass: 'doorframeBrush', target: 'location', objectId: 'home-door', openLbs: 304, certainLbs: 388, state: 'closed', wear: 0, firedOn: null, label: 'the apartment door' },
 ];
 
 export const MARA_ARC = {
