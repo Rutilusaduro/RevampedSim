@@ -1,8 +1,13 @@
 import { TUNING } from '../gameData/tuning.js';
 import { rungFromLbs } from '../gameData/ladders.js';
 
-export function applyMeal(woman, mealSize) {
-  const lbsGained = mealSize * woman.appetite * TUNING.mealGainFactor;
+export function applyMeal(woman, mealSize, { passive = false, pacing = null } = {}) {
+  let factor = passive ? TUNING.mealGainFactor : TUNING.actionMealGainFactor;
+  if (pacing?.crownOpenLbs != null && pacing.day < TUNING.minCrownReadyDay
+      && woman.lbs >= pacing.crownOpenLbs - TUNING.crownPlateauLbs) {
+    factor *= TUNING.crownPlateauFactor;
+  }
+  const lbsGained = mealSize * woman.appetite * factor;
   woman.lbs += lbsGained;
   woman.fullness += (mealSize * TUNING.fullnessPerMeal) / woman.capacity;
   if (woman.fullness >= TUNING.capacityGrowthThreshold) {
@@ -30,11 +35,11 @@ export function mealCost(town, woman, mealSize) {
   return Math.round(town.economy.mealCostBase * mealSize * woman.appetite);
 }
 
-/** Evening meal scales with rung and day so passive play still climbs the ladder. */
+/** Evening meal scales with rung and day — tuned for ~85-day arcs. */
 export function eveningMealSize(woman, day = 1) {
   const rung = rungFromLbs(woman.frameLbs, woman.lbs).id;
   const base = woman.flipped ? 3 : 2;
-  const rungBoost = Math.floor(rung / 2);
-  const dayBoost = Math.floor(day / 12);
-  return Math.min(10, base + rungBoost + dayBoost);
+  const rungBoost = Math.floor(rung / 3);
+  const dayBoost = Math.floor(day / Math.round(TUNING.arcTargetDays / 7));
+  return Math.min(9, base + rungBoost + dayBoost);
 }

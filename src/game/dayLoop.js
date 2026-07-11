@@ -1,6 +1,7 @@
 import { seededRandom, setRandomSource, createContext, createFacts, createSessionUsed, render, hasModule } from '../textEngine/engine.js';
 import '../scenes/index.js';
 import { rungFromLbs, rungDescriptor } from '../gameData/ladders.js';
+import { TUNING } from '../gameData/tuning.js';
 import { applyMeal, decayFullness, decayAppetite, mealCost, eveningMealSize } from './appetite.js';
 import { updateWindowStates, rollWindow, getOpenWindows } from './windows.js';
 import { recordRatchet, failObject } from './ratchet.js';
@@ -14,6 +15,11 @@ import { nearMissTemplate, fireTemplate } from './windowTemplates.js';
 import { LOCATIONS } from '../gameData/town.js';
 import { arcTemplates } from './templates.js';
 import { beginArc, nextArcId, snapshotWoman } from './arcs.js';
+
+function mealPacing(state) {
+  const crown = state.windows.find((w) => w.crown && w.state !== 'fired');
+  return { day: state.town.day, crownOpenLbs: crown?.openLbs ?? null };
+}
 
 function tpl(state) {
   return arcTemplates(state.arc.id);
@@ -104,6 +110,12 @@ function processWindowRolls(state, action, rng) {
       state.ui.lastNearMiss = w.id;
     }
     if (outcome.fired) {
+      if (w.crown && state.town.day < TUNING.minCrownReadyDay) {
+        w.wear = (w.wear ?? 0) + 0.05;
+        results.push({ type: 'nearMiss', window: w, text: renderBeat(state, nearMissTpl(state, w)) });
+        state.ui.lastNearMiss = w.id;
+        continue;
+      }
       w.state = 'fired';
       w.firedOn = { day: state.town.day, sceneRef: action.id };
       const obj = failObject(state.town, w.objectId, state.town.day, w.label);
@@ -156,9 +168,9 @@ function updateArcStage(state) {
   if (state.woman.flipped && rung >= 6 && state.arc.stage !== 'crown-ready') {
     state.arc.stage = 'convergence';
   }
-  if (crown && state.woman.flipped) {
+  if (crown && state.woman.flipped && state.town.day >= TUNING.minCrownReadyDay) {
     updateWindowStates(state.windows, state.woman);
-    if (crown.state === 'open' || crown.state === 'imminent' || state.woman.lbs >= crown.openLbs || rung >= 12) {
+    if (crown.state === 'open' || crown.state === 'imminent' || state.woman.lbs >= crown.openLbs) {
       state.arc.stage = 'crown-ready';
     }
   }
@@ -236,7 +248,7 @@ export function executeAction(state, actionId) {
   }
 
   if (action.effects?.meal) {
-    lbsGained += applyMeal(state.woman, action.effects.meal);
+    lbsGained += applyMeal(state.woman, action.effects.meal, { pacing: mealPacing(state) });
     if (action.effects.feedTpl) {
       texts.push(renderParagraphSequence(state, action.effects.feedTpl, action.effects.feedParts ?? 3));
     } else {
@@ -250,7 +262,7 @@ export function executeAction(state, actionId) {
     texts.push(renderBeat(state, t.morning));
   } else if (action.effects?.work) {
     state.town.economy.cash += state.town.economy.incomePerShift;
-    lbsGained += applyMeal(state.woman, action.effects.meal ?? 1);
+    lbsGained += applyMeal(state.woman, action.effects.meal ?? 1, { pacing: mealPacing(state) });
     texts.push(renderBeat(state, t.meal));
   } else if (action.effects?.rest) {
     texts.push(renderBeat(state, t.evening));
@@ -294,7 +306,7 @@ export function executeAction(state, actionId) {
 export function runEvening(state) {
   const t = tpl(state);
   state._eventScopes = null;
-  applyMeal(state.woman, eveningMealSize(state.woman, state.town.day));
+  applyMeal(state.woman, eveningMealSize(state.woman, state.town.day), { passive: true, pacing: mealPacing(state) });
   let text = renderBeat(state, t.evening);
   const stage = currentArgStage(state.arc);
   let flippedNow = false;
@@ -380,7 +392,7 @@ export function executeVisit(state, locationId) {
   const rng = makeRng(state);
   const texts = [renderBeat(state, '{town.visit}', { location: locationId, locationName: loc.name })];
   if (locationId === 'anchor' || locationId === 'fitness') {
-    applyMeal(state.woman, 2);
+    applyMeal(state.woman, 2, { pacing: mealPacing(state) });
     texts.push(renderBeat(state, t.meal));
     tickGravity(state.woman, state.npcs, { sharedMeal: true });
   }

@@ -1,12 +1,12 @@
 # STATE
 
 phase: P5 + extended arc ladder
-current wave: 16-rung ladder (g0–g15) · windows spread to ~500 lbs · g9–g13 prose bands
+current wave: 16-rung ladder · ~85-day arc target · split action/passive meal gain
 coverage:
-  mara: P3 complete · crown ~455 lbs open · rush ~29d/458 lbs · savor/hostile ~83d/467 lbs
-  priya: partner seat · g1–g13 port/meal/windows · crown ~460 lbs
-  sofie: inhabit · g1–g13 content · crown ~450 lbs
-  systems: evening meal scales with rung+day · rung milestones in night ledger · RecordGallery full ladder
+  mara: rush ~82d/518 lbs · savor ~90d/456 lbs · crown min day 84
+  priya: rush ~82d · savor ~92d
+  sofie: rush ~82d · savor ~89d
+  pacing: actionMealGainFactor 0.052 · passive 0.272 · crown plateau before min day
 harness: smoke · text:lint · humanize:lint · p3:gate (110d) · p5:gate · p5:chain · p5:attribution (100%)
 decisions taken, reversible:
   - text-only v1 · strict day cycle · Halcyon town name
