@@ -18,8 +18,8 @@ export function createSofieWoman() {
     frameLbs: 140,
     lbs: 152,
     appetite: 1.1,
-    capacity: 4,
-    fullness: 0.35,
+    capacity: 1.0,
+    fullness: 1.0,
     stance: 'secret',
     resolve: 40,
     flipped: true,
@@ -41,14 +41,14 @@ export function createSofieWoman() {
 }
 
 export const SOFIE_WINDOWS = [
-  { id: 'sofie-cardigan', eventClass: 'buttonPop', target: 'garment', objectId: 'library-cardigan', openLbs: 160, certainLbs: 185, state: 'closed', wear: 0, firedOn: null, label: 'the inherited cardigan' },
-  { id: 'sofie-skirt', eventClass: 'seamSplit', target: 'garment', objectId: 'library-skirt', openLbs: 185, certainLbs: 210, state: 'closed', wear: 0, firedOn: null, label: 'the library skirt' },
-  { id: 'sofie-desk-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'library-desk-chair', openLbs: 210, certainLbs: 240, state: 'closed', wear: 0, firedOn: null, label: 'the desk chair' },
-  { id: 'sofie-cart', eventClass: 'chairCreakFail', target: 'object', objectId: 'library-cart', openLbs: 240, certainLbs: 270, state: 'closed', wear: 0, firedOn: null, label: 'the book cart' },
-  { id: 'sofie-bakery-run', eventClass: 'doorframeBrush', target: 'location', objectId: 'home-door', openLbs: 270, certainLbs: 305, state: 'closed', wear: 0, firedOn: null, label: 'the bakery door' },
-  { id: 'sofie-stairs', eventClass: 'stairsWinded', target: 'task', objectId: 'crescent-stairs', openLbs: 305, certainLbs: 340, state: 'closed', wear: 0, firedOn: null, label: 'the mezzanine stairs' },
-  { id: 'sofie-elevator', eventClass: 'turnstile', target: 'location', objectId: 'library-elevator', openLbs: 340, certainLbs: 380, state: 'closed', wear: 0, firedOn: null, label: 'the slow elevator' },
-  { id: 'sofie-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'library-reading-chair', openLbs: 450, certainLbs: 490, state: 'closed', wear: 0, firedOn: null, label: 'the rotunda reading chair', crown: true },
+  { id: 'sofie-cardigan', eventClass: 'buttonPop', target: 'garment', objectId: 'library-cardigan', openLbs: 152, certainLbs: 195, state: 'closed', wear: 0, firedOn: null, label: 'the inherited cardigan' },
+  { id: 'sofie-skirt', eventClass: 'seamSplit', target: 'garment', objectId: 'library-skirt', openLbs: 157, certainLbs: 201, state: 'closed', wear: 0, firedOn: null, label: 'the library skirt' },
+  { id: 'sofie-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'library-reading-chair', openLbs: 184, certainLbs: 236, state: 'closed', wear: 0, firedOn: null, label: 'the rotunda reading chair', crown: true },
+  { id: 'sofie-desk-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'library-desk-chair', openLbs: 178, certainLbs: 228, state: 'closed', wear: 0, firedOn: null, label: 'the desk chair' },
+  { id: 'sofie-stairs', eventClass: 'stairsWinded', target: 'task', objectId: 'crescent-stairs', openLbs: 220, certainLbs: 282, state: 'closed', wear: 0, firedOn: null, label: 'the mezzanine stairs' },
+  { id: 'sofie-bakery-run', eventClass: 'doorframeBrush', target: 'location', objectId: 'home-door', openLbs: 200, certainLbs: 256, state: 'closed', wear: 0, firedOn: null, label: 'the bakery door' },
+  { id: 'sofie-elevator', eventClass: 'turnstile', target: 'location', objectId: 'library-elevator', openLbs: 240, certainLbs: 308, state: 'closed', wear: 0, firedOn: null, label: 'the slow elevator' },
+  { id: 'sofie-cart', eventClass: 'chairCreakFail', target: 'object', objectId: 'library-cart', openLbs: 190, certainLbs: 244, state: 'closed', wear: 0, firedOn: null, label: 'the book cart' },
 ];
 
 export const SOFIE_ARC = {

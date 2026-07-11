@@ -215,6 +215,7 @@ export const WINDOW_TAG_MAP = {
   doorframeBrush: ['transit'],
   doorStuck: ['transit'],
   carSeatBelt: ['transit'],
+  scaleCap: ['garment'],
   stairsWinded: ['stairs'],
   stairsRoute: ['stairs'],
 };

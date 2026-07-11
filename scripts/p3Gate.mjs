@@ -1,6 +1,5 @@
 /**
- * P3 gate — three playthrough strategies must reach crown-ready (~85-day target).
- * rush: feed aggressively · savor: observe/rest · hostile: minimal engagement
+ * P3 gate — REVAMP_PLAN agency: indulgent crowns; passive does not.
  */
 import { createInitialGameState } from '../src/game/state.js';
 import { startDay, executeAction, runEvening, runNightLedger, advanceDay } from '../src/game/dayLoop.js';
@@ -11,14 +10,13 @@ const STRATEGIES = {
   hostile: ['rest', 'rest', 'walk'],
 };
 
-function playArc(strategyName, actions, maxDays = 100) {
+const DONE = new Set(['crown-ready', 'crown', 'settling']);
+
+function playArc(strategyName, actions, maxDays = 75) {
   const state = startDay(createInitialGameState());
   let day = 0;
-  const done = (s) => ['crown-ready', 'crown', 'settling'].includes(s.arc.stage);
-  while (day < maxDays && !done(state)) {
-    for (const id of actions) {
-      executeAction(state, id);
-    }
+  while (day < maxDays && !DONE.has(state.arc.stage)) {
+    for (const id of actions) executeAction(state, id);
     runEvening(state);
     runNightLedger(state);
     advanceDay(state);
@@ -38,13 +36,24 @@ const results = Object.entries(STRATEGIES).map(([name, acts]) => playArc(name, a
 let failed = false;
 
 for (const r of results) {
-  const ok = ['crown-ready', 'crown', 'settling'].includes(r.stage);
-  console.log(`${r.strategy}: ${r.days}d → ${r.stage} (flip=${r.flipped}, lbs=${r.lbs.toFixed(0)}, ratchet=${r.ratchet}) ${ok ? '✔' : '✖'}`);
-  if (!ok) failed = true;
+  const crowned = DONE.has(r.stage);
+  console.log(
+    `${r.strategy}: ${r.days}d → ${r.stage} `
+    + `(flip=${r.flipped}, lbs=${r.lbs.toFixed(0)}, ratchet=${r.ratchet})`,
+  );
+  if (r.strategy === 'rush') {
+    const ok = crowned && r.days >= 40 && r.days <= 70 && r.ratchet >= 5;
+    console.log(ok ? '  ✔ indulgent crown band' : '  ✖ indulgent crown band');
+    if (!ok) failed = true;
+  } else {
+    const ok = !crowned;
+    console.log(ok ? '  ✔ passive did not crown' : '  ✖ passive crowned too early');
+    if (!ok) failed = true;
+  }
 }
 
 if (failed) {
-  console.error('P3 gate FAILED — not all strategies reached crown-ready');
+  console.error('P3 gate FAILED');
   process.exit(1);
 }
-console.log('✔ P3 three-playthrough gate passed');
+console.log('✔ P3 agency gate passed');

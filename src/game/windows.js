@@ -9,7 +9,7 @@ export function computeWindowProbability(window, woman, { spurtActive = false } 
   const base = Math.pow((W - O) / (C - O), TUNING.windowRampExponent);
   const fullnessMod = woman.fullness >= TUNING.fullnessModThreshold ? TUNING.fullnessMod : 1.0;
   const spurtMod = spurtActive ? TUNING.spurtMod : 1.0;
-  const wearMod = 1 + (window.wear ?? 0);
+  const wearMod = 1 + Math.min(TUNING.nearMissWearCap, window.wear ?? 0);
   const p = Math.min(1, base * fullnessMod * spurtMod * wearMod);
   return { base, p, guaranteed: false };
 }
@@ -44,10 +44,8 @@ export function rollWindow(window, woman, rng, opts = {}) {
   if (!guaranteed && p <= 0) return { fired: false, nearMiss: false, p };
   const roll = rng();
   if (guaranteed || roll < p) return { fired: true, nearMiss: false, p, roll };
-  if (roll < p + (1 - p) * 0.5 || p / 2 > roll * 0.5) {
-    return { fired: false, nearMiss: true, p, roll };
-  }
-  return { fired: false, nearMiss: false, p, roll };
+  const nearMiss = roll < p * TUNING.nearMissBand;
+  return { fired: false, nearMiss, p, roll };
 }
 
 export function deriveWindowThresholds(ratingLbs) {

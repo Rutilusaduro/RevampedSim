@@ -42,6 +42,18 @@ registerPool('port.morning', [
   ] },
 ]);
 
+registerPool('port.rung', [
+  { when: {}, text: [
+    'Something shifts — not dramatic, just real. {subject.first} carries her weight differently today.',
+    'You notice before she does: she looks {word.size}.',
+    'The mirror catches her on the way past. She pauses. She keeps walking.',
+  ] },
+  { when: { rungMin: 6 }, weight: 2, text: [
+    'She is heavier than last month and moving like she knows it.',
+    'Furniture notices before people do. She notices after.',
+  ] },
+]);
+
 registerPool('port.evening', [
   { when: {}, text: [
     'It is evening. {subject.first} finds the couch, the remote, and something sweet.',

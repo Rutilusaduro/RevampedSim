@@ -18,8 +18,8 @@ export function createPriyaWoman() {
     frameLbs: 150,
     lbs: 162,
     appetite: 0.9,
-    capacity: 4,
-    fullness: 0.25,
+    capacity: 1.0,
+    fullness: 0.9,
     stance: 'opposed',
     resolve: 100,
     flipped: false,
@@ -41,14 +41,14 @@ export function createPriyaWoman() {
 }
 
 export const PRIYA_WINDOWS = [
-  { id: 'priya-top', eventClass: 'seamSplit', target: 'garment', objectId: 'fitness-top', openLbs: 170, certainLbs: 195, state: 'closed', wear: 0, firedOn: null, label: 'the compression top' },
-  { id: 'priya-leggings', eventClass: 'seamSplit', target: 'garment', objectId: 'fitness-leggings', openLbs: 195, certainLbs: 220, state: 'closed', wear: 0, firedOn: null, label: 'the studio leggings' },
-  { id: 'priya-office-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'fitness-office-chair', openLbs: 220, certainLbs: 250, state: 'closed', wear: 0, firedOn: null, label: 'the office chair' },
-  { id: 'priya-scale', eventClass: 'scaleCap', target: 'object', objectId: 'fitness-scale', openLbs: 250, certainLbs: 280, state: 'closed', wear: 0, firedOn: null, label: 'the gym scale' },
-  { id: 'priya-car', eventClass: 'carSeatBelt', target: 'object', objectId: 'motorline-seat', openLbs: 280, certainLbs: 315, state: 'closed', wear: 0, firedOn: null, label: 'the car seat' },
-  { id: 'priya-stairs', eventClass: 'stairsWinded', target: 'task', objectId: 'crescent-stairs', openLbs: 315, certainLbs: 350, state: 'closed', wear: 0, firedOn: null, label: 'the mezzanine stairs' },
-  { id: 'priya-turnstile', eventClass: 'turnstile', target: 'location', objectId: 'fitness-turnstile', openLbs: 350, certainLbs: 390, state: 'closed', wear: 0, firedOn: null, label: 'the gym turnstile' },
-  { id: 'priya-bench', eventClass: 'chairCreakFail', target: 'object', objectId: 'fitness-bench', openLbs: 460, certainLbs: 500, state: 'closed', wear: 0, firedOn: null, label: 'the demonstration bench', crown: true },
+  { id: 'priya-top', eventClass: 'seamSplit', target: 'garment', objectId: 'fitness-top', openLbs: 166, certainLbs: 212, state: 'closed', wear: 0, firedOn: null, label: 'the compression top' },
+  { id: 'priya-leggings', eventClass: 'seamSplit', target: 'garment', objectId: 'fitness-leggings', openLbs: 171, certainLbs: 218, state: 'closed', wear: 0, firedOn: null, label: 'the studio leggings' },
+  { id: 'priya-bench', eventClass: 'chairCreakFail', target: 'object', objectId: 'fitness-bench', openLbs: 198, certainLbs: 254, state: 'closed', wear: 0, firedOn: null, label: 'the demonstration bench', crown: true },
+  { id: 'priya-office-chair', eventClass: 'chairCreakFail', target: 'object', objectId: 'fitness-office-chair', openLbs: 188, certainLbs: 241, state: 'closed', wear: 0, firedOn: null, label: 'the office chair' },
+  { id: 'priya-scale', eventClass: 'scaleCap', target: 'object', objectId: 'fitness-scale', openLbs: 210, certainLbs: 270, state: 'closed', wear: 0, firedOn: null, label: 'the gym scale' },
+  { id: 'priya-stairs', eventClass: 'stairsWinded', target: 'task', objectId: 'crescent-stairs', openLbs: 248, certainLbs: 318, state: 'closed', wear: 0, firedOn: null, label: 'the mezzanine stairs' },
+  { id: 'priya-car', eventClass: 'carSeatBelt', target: 'object', objectId: 'motorline-seat', openLbs: 228, certainLbs: 292, state: 'closed', wear: 0, firedOn: null, label: 'the car seat' },
+  { id: 'priya-turnstile', eventClass: 'turnstile', target: 'location', objectId: 'fitness-turnstile', openLbs: 268, certainLbs: 344, state: 'closed', wear: 0, firedOn: null, label: 'the gym turnstile' },
 ];
 
 export const PRIYA_ARC = {
