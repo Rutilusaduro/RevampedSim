@@ -4,7 +4,7 @@ registerPool('priya.mind.flip', [
   { when: { stance: 'opposed' }, priority: 1, text: [
     'She writes GAIN where the class programs go. The marker squeaks.',
     'Opposition ends the way a plank ends — shaking, then still on the gym floor.',
-    'Something disciplined dies. GAIN stays on the whiteboard. Something hungrier takes its mat.',
+    'The old discipline gives up. GAIN stays on the whiteboard. She reaches for seconds.',
   ] },
   { when: {}, text: [
     'Resistance ends the way a set ends — not all at once, but without argument.',

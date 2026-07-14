@@ -5,3 +5,4 @@ import './argument.js';
 import './mind.js';
 import './town.js';
 import './seat.js';
+import './crown.js';

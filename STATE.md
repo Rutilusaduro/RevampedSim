@@ -1,15 +1,17 @@
 # STATE
 
-phase: P5 (Arcs 2–3 — Priya partner + Sofie inhabit)
-current wave: Full arc chain with arc-specific windows, opposed/secret stance depth, attribution gate
+phase: P5 + extended arc ladder
+current wave: 16-rung ladder · ~85-day arc target · split action/passive meal gain
 coverage:
-  mara: P3 complete · three-playthrough gate · argument/near-miss families (owner batch pending)
-  priya: partner seat · rung g1–g8 port/meal · gym windows · arg chain · crown bench · interstitial
-  sofie: inhabit second-person · rung g1–g8 · library windows · secret stance arg · crown chair
-  systems: window template router · anthology record · firstPersonArcs gates Sofie · per-arc crown gates
-harness: smoke · text:lint (108 modules) · p3:gate · p5:gate · p5:chain · p5:attribution (≥80%)
+  mara: rush ~82d/518 lbs · savor ~90d/456 lbs · crown min day 84
+  priya: rush ~82d · savor ~92d
+  sofie: rush ~82d · savor ~89d
+  pacing: actionMealGainFactor 0.052 · passive 0.272 · crown plateau before min day
+harness: smoke · text:lint · humanize:lint · p3:gate (110d) · p5:gate · p5:chain · p5:attribution (100%)
 decisions taken, reversible:
   - text-only v1 · strict day cycle · Halcyon town name
-  - overdrive opt-in at settling · start-screen content toggles
+  - 16 rungs; g13 ≈ frame+355 (~500 lbs for 145-frame Mara)
+  - crown-ready at rung ≥12 or crown window open; crown trigger +12 lbs
+  - mealGainFactor 0.28 · arcTargetDays 55–110
 awaiting owner: playtest flag batch on Mara argument + near-miss families
-next: P6 hooks (Carmen/Noor/Bea), deepen g9–g10 pools, endless mode scaffolding
+next: P6 hooks (Carmen/Noor/Bea), overdrive day-loop wiring, endless mode scaffolding

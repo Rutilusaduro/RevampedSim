@@ -2,20 +2,20 @@ import { registerPool } from '../../../textEngine/engine.js';
 
 registerPool('mind.flip', [
   { when: { stance: 'reluctant' }, priority: 1, text: [
-    'The walk-in at the Anchor is cold and bright. Mara licks frosting from her thumb and says, without looking up: "Bring two next time."',
-    'Something quiet dies. Something warmer takes its chair.',
-    'She does not announce it. She just stops fighting in her shoulders.',
+    'Mara licks frosting off her thumb at the Anchor and says, without looking up: "Bring two next time."',
+    'Her shoulders drop. The fight goes out of them.',
+    'She does not make a speech. She just stops saying no.',
   ] },
   { when: {}, text: [
-    'Resistance ends the way a candle ends — not all at once, but without argument.',
-    '{subject.first} reaches for seconds before the question is finished.',
+    '{subject.first} reaches for seconds before you finish asking.',
+    'She smiles while she chews. That is new.',
   ] },
 ]);
 
 registerPool('mind.denial', [
-  { when: {}, text: ['She smooths her shirt and does not comment.', 'A glance at the mirror, then away.', ''] },
+  { when: {}, text: ['She smooths her shirt and changes the subject.', 'A glance in the mirror, then away.'] },
   { when: { flipped: false, rungMax: 3 }, weight: 3, text: [
-    'She mentions the scale like it owes her an apology.',
-    'Her hand, unsupervised, rests on her waistband and stays there.',
+    'She mentions the scale like it is lying to her.',
+    'Her hand rests on her waistband. It stays there.',
   ] },
 ]);

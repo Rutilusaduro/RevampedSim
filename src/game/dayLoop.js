@@ -1,7 +1,8 @@
-import { seededRandom, setRandomSource, createContext, createFacts, createSessionUsed, render } from '../textEngine/engine.js';
+import { seededRandom, setRandomSource, createContext, createFacts, createSessionUsed, render, hasModule } from '../textEngine/engine.js';
 import '../scenes/index.js';
-import { rungFromLbs } from '../gameData/ladders.js';
-import { applyMeal, decayFullness, decayAppetite, mealCost } from './appetite.js';
+import { rungFromLbs, rungDescriptor } from '../gameData/ladders.js';
+import { TUNING } from '../gameData/tuning.js';
+import { applyMeal, decayFullness, decayAppetite, mealCost, eveningMealSize } from './appetite.js';
 import { updateWindowStates, rollWindow, getOpenWindows } from './windows.js';
 import { recordRatchet, failObject } from './ratchet.js';
 import { tickGravity, applySofteningFromDrift } from './gravity.js';
@@ -15,8 +16,38 @@ import { LOCATIONS } from '../gameData/town.js';
 import { arcTemplates } from './templates.js';
 import { beginArc, nextArcId, snapshotWoman } from './arcs.js';
 
+function mealPacing(state) {
+  const crown = state.windows.find((w) => w.crown && w.state !== 'fired');
+  return { day: state.town.day, crownOpenLbs: crown?.openLbs ?? null };
+}
+
 function tpl(state) {
   return arcTemplates(state.arc.id);
+}
+
+function renderParagraphSequence(state, baseKey, maxParts = 12) {
+  const parts = [];
+  for (let i = 1; i <= maxParts; i++) {
+    const key = `${baseKey}.p${i}`;
+    if (!hasModule(key)) break;
+    const t = renderBeat(state, `{${key}}`);
+    if (t) parts.push(t);
+  }
+  return parts.join('\n\n');
+}
+
+function crownSequenceKey(state) {
+  const arc = state.arc.id;
+  if (arc === 'mara') return 'crown.mara.booth';
+  if (arc === 'priya') return 'priya.crown.bench';
+  return 'crown.sofie.chair';
+}
+
+function renderCrownScene(state) {
+  const base = crownSequenceKey(state);
+  const seq = renderParagraphSequence(state, base, 14);
+  if (seq) return seq;
+  return renderBeat(state, tpl(state).crown, { spurtActive: true, crownNear: true, witnesses: 'many' });
 }
 
 function makeRng(state) {
@@ -79,6 +110,12 @@ function processWindowRolls(state, action, rng) {
       state.ui.lastNearMiss = w.id;
     }
     if (outcome.fired) {
+      if (w.crown && state.town.day < TUNING.minCrownReadyDay) {
+        w.wear = (w.wear ?? 0) + 0.05;
+        results.push({ type: 'nearMiss', window: w, text: renderBeat(state, nearMissTpl(state, w)) });
+        state.ui.lastNearMiss = w.id;
+        continue;
+      }
       w.state = 'fired';
       w.firedOn = { day: state.town.day, sceneRef: action.id };
       const obj = failObject(state.town, w.objectId, state.town.day, w.label);
@@ -96,7 +133,9 @@ function processWindowRolls(state, action, rng) {
         if (slot && state.woman.wardrobe[slot]) state.woman.wardrobe[slot].integrity = 0;
       }
       onPublicWindowFire(state.arc, state.town);
-      const text = renderBeat(state, fireTpl(w, state), { spurtActive: true });
+      const text = w.crown
+        ? renderCrownScene(state)
+        : renderBeat(state, fireTpl(w, state), { spurtActive: true });
       results.push({ type: 'fire', window: w, text });
       if (w.crown) state.arc.stage = 'crown';
     }
@@ -111,6 +150,12 @@ function checkRungCross(state) {
   state._lastRung = now;
   if (now > prev) {
     onRungCross(state.arc, state.town);
+    state.ui.rungMilestone = {
+      id: now,
+      label: rungDescriptor(now),
+      lbs: state.woman.lbs,
+      day: state.town.day,
+    };
     return true;
   }
   return false;
@@ -120,10 +165,10 @@ function updateArcStage(state) {
   if (state.arc.stage === 'settling' || state.arc.stage === 'crown') return;
   const rung = rungFromLbs(state.woman.frameLbs, state.woman.lbs).id;
   const crown = state.windows.find((w) => w.crown && w.state !== 'fired');
-  if (state.woman.flipped && rung >= 4 && state.arc.stage !== 'crown-ready') {
+  if (state.woman.flipped && rung >= 6 && state.arc.stage !== 'crown-ready') {
     state.arc.stage = 'convergence';
   }
-  if (crown && state.woman.flipped) {
+  if (crown && state.woman.flipped && state.town.day >= TUNING.minCrownReadyDay) {
     updateWindowStates(state.windows, state.woman);
     if (crown.state === 'open' || crown.state === 'imminent' || state.woman.lbs >= crown.openLbs) {
       state.arc.stage = 'crown-ready';
@@ -149,8 +194,19 @@ export function renderActionMenu(state) {
 export function executeLook(state) {
   const arc = state.arc.id;
   state._eventScopes = null;
-  const parts = [1, 2, 3].map((n) => renderBeat(state, `{look.${arc}.p${n}}`));
-  const text = parts.join('\n\n');
+  const text = renderParagraphSequence(state, `look.${arc}`, 3);
+  const base = state.ui.sceneHistory.length
+    ? state.ui.sceneHistory.join('\n\n')
+    : state.ui.morningText;
+  state.ui.sceneText = `${base}\n\n${text}`;
+  return text;
+}
+
+export function executeWeigh(state) {
+  const arc = state.arc.id;
+  state._eventScopes = null;
+  const text = renderParagraphSequence(state, `weigh.${arc}`, 4);
+  state.woman.lastWeigh = { day: state.town.day, lbs: state.woman.lbs };
   const base = state.ui.sceneHistory.length
     ? state.ui.sceneHistory.join('\n\n')
     : state.ui.morningText;
@@ -161,11 +217,16 @@ export function executeLook(state) {
 export function executeTalk(state, topicId) {
   if (state.ui.slotsUsed >= 3) return { ok: false };
   state._eventScopes = null;
-  const text = renderBeat(state, `{talk.${state.arc.id}.${topicId}}`);
+  const base = `talk.${state.arc.id}.${topicId}`;
+  const text = renderParagraphSequence(state, base, 6);
+  if (!text) return { ok: false, error: 'missing dialogue' };
   bumpArgPressure(state.arc, 1);
   advanceArgStage(state.arc);
   updateArcStage(state);
   state.ui.slotsUsed += 1;
+  if (state.ui.sceneHistory.length === 0) {
+    state.ui.sceneHistory.push(state.ui.morningText);
+  }
   state.ui.sceneHistory.push(text);
   state.ui.sceneText = state.ui.sceneHistory.join('\n\n');
   state.ui.actionMenu = renderActionMenu(state);
@@ -187,14 +248,21 @@ export function executeAction(state, actionId) {
   }
 
   if (action.effects?.meal) {
-    lbsGained += applyMeal(state.woman, action.effects.meal);
-    texts.push(renderBeat(state, t.meal));
+    lbsGained += applyMeal(state.woman, action.effects.meal, { pacing: mealPacing(state) });
+    if (action.effects.feedTpl) {
+      texts.push(renderParagraphSequence(state, action.effects.feedTpl, action.effects.feedParts ?? 3));
+    } else {
+      texts.push(renderBeat(state, t.meal));
+    }
     tickGravity(state.woman, state.npcs, { sharedMeal: true });
+  } else if (action.effects?.intimate) {
+    state.woman.appetite = Math.min(2.5, state.woman.appetite + 0.06);
+    texts.push(renderParagraphSequence(state, action.effects.intimate, action.effects.feedParts ?? 3));
   } else if (action.effects?.observe) {
     texts.push(renderBeat(state, t.morning));
   } else if (action.effects?.work) {
     state.town.economy.cash += state.town.economy.incomePerShift;
-    lbsGained += applyMeal(state.woman, action.effects.meal ?? 1);
+    lbsGained += applyMeal(state.woman, action.effects.meal ?? 1, { pacing: mealPacing(state) });
     texts.push(renderBeat(state, t.meal));
   } else if (action.effects?.rest) {
     texts.push(renderBeat(state, t.evening));
@@ -224,6 +292,9 @@ export function executeAction(state, actionId) {
   updateArcStage(state);
   decayFullness(state.woman, action.slotCost);
   state.ui.slotsUsed += action.slotCost;
+  if (state.ui.sceneHistory.length === 0 && texts.length) {
+    state.ui.sceneHistory.push(state.ui.morningText);
+  }
   state.ui.sceneHistory.push(...texts);
   state.ui.sceneText = texts.join('\n\n');
   state.ui.actionMenu = renderActionMenu(state);
@@ -235,7 +306,7 @@ export function executeAction(state, actionId) {
 export function runEvening(state) {
   const t = tpl(state);
   state._eventScopes = null;
-  applyMeal(state.woman, state.woman.flipped ? 3 : 2);
+  applyMeal(state.woman, eveningMealSize(state.woman, state.town.day), { passive: true, pacing: mealPacing(state) });
   let text = renderBeat(state, t.evening);
   const stage = currentArgStage(state.arc);
   let flippedNow = false;
@@ -266,9 +337,13 @@ export function runNightLedger(state) {
   const lines = [
     `Day ${state.town.day}`,
     `She gained ${delta >= 0 ? '+' : ''}${delta.toFixed(1)} lbs today`,
+    `Weight: ${state.woman.lbs.toFixed(1)} lbs`,
     `Cash: $${state.town.economy.cash}`,
     renderBeat(state, '{town.ledger}'),
   ];
+  if (state.ui.rungMilestone?.day === state.town.day) {
+    lines.splice(2, 0, `Milestone: she looks ${state.ui.rungMilestone.label}`);
+  }
   if (state.woman.ratchetLog.length) {
     const last = state.woman.ratchetLog[state.woman.ratchetLog.length - 1];
     lines.push(`Ratchet: ${last.summary}`);
@@ -317,7 +392,7 @@ export function executeVisit(state, locationId) {
   const rng = makeRng(state);
   const texts = [renderBeat(state, '{town.visit}', { location: locationId, locationName: loc.name })];
   if (locationId === 'anchor' || locationId === 'fitness') {
-    applyMeal(state.woman, 2);
+    applyMeal(state.woman, 2, { pacing: mealPacing(state) });
     texts.push(renderBeat(state, t.meal));
     tickGravity(state.woman, state.npcs, { sharedMeal: true });
   }
@@ -356,7 +431,7 @@ export function triggerCrown(state) {
   const crown = state.windows.find((w) => w.crown);
   if (!crown) return null;
   const t = tpl(state);
-  state.woman.lbs += 8;
+  state.woman.lbs += 12;
   crown.state = 'fired';
   crown.firedOn = { day: state.town.day, sceneRef: 'crown' };
   failObject(state.town, crown.objectId, state.town.day, crown.label);
@@ -378,7 +453,7 @@ export function triggerCrown(state) {
   });
   state.woman.fixture = { location: t.crownLocation, overdrive: state.toggles?.overdrive ?? false, odLbsPerDay: 0.5 };
   state.arc.stage = 'settling';
-  const crownText = renderBeat(state, t.crown, { spurtActive: true, crownNear: true, witnesses: 'many' });
+  const crownText = renderCrownScene(state);
   state.ui.sceneText = crownText;
   finalizeSettling(state);
   return state.ui.sceneText;
